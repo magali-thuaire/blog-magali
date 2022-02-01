@@ -12,4 +12,9 @@ class App
 		require_once CORE . '/Autoloader.php';
 		CoreAutoloader::register();
 	}
+
+	public static function not_found()
+	{
+		require_once VIEWS . '/security/404.html';
+	}
 }
