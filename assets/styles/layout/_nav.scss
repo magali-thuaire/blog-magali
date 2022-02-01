@@ -1,0 +1,13 @@
+.nav {
+    &-link {
+        color: white !important;
+        text-transform: uppercase;
+        &.active {
+            color: $primary-color !important;
+        }
+        &:hover{
+            color: $primary-color !important;
+            transition: color 800ms;
+        }
+    }
+}

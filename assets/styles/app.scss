@@ -1,5 +1,7 @@
 @import '~bootstrap';
 
-body {
-  background-color: $info;
-}
+@import 'utils/variables';
+@import 'components/button';
+@import 'components/icon';
+@import 'layout/nav';
+@import 'pages/homepage';

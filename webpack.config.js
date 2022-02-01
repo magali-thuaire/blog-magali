@@ -20,6 +20,7 @@ const config = {
     new CopyPlugin({
       patterns: [
         { from: "./assets/images", to: "images" },
+        { from: "./assets/files", to: "files" },
       ],
     }),
     new CleanWebpackPlugin(),
