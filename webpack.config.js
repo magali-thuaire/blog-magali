@@ -20,6 +20,7 @@ const config = {
     new CopyPlugin({
       patterns: [
         { from: "./assets/images", to: "images" },
+        { from: "./assets/files", to: "files" },
       ],
     }),
     new CleanWebpackPlugin(),
@@ -39,21 +40,9 @@ const config = {
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-        type: "asset",
-      },
-      // {
-      //   test: /\.(jpe?g|png|gif|svg|ico)$/i,
-      //   use: [{
-      //     loader: 'file-loader',
-      //     options: {
-      //       name: '[name].[ext]',
-      //       outputPath: 'images/'
-      //     }
-      //   }]
-      // }
-      // Add your rules for custom modules here
-      // Learn more about loaders from https://webpack.js.org/loaders/
+        test: /\.(svg|eot|woff|woff2|ttf)$/,
+        type: 'asset/resource',
+      }
     ],
   },
 };

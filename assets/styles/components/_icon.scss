@@ -1,0 +1,15 @@
+.icon {
+  margin-right: 10px !important;
+  font-size: 0.8em;
+  &-social {
+    background-color: $background-color-icon;
+    width: 60px;
+    height: 60px;
+    font-size: 26px;
+    text-align: center;
+    margin: 0 20px 0 0;
+    line-height: 60px;
+    border-radius: 50px;
+    color: $primary-color;
+  }
+}

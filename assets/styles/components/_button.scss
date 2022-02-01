@@ -1,0 +1,24 @@
+.btn-hover-primary-color {
+  color: white;
+  text-transform: uppercase;
+  &:hover {
+    background-color: $primary-color;
+    border-color: $primary-color;
+    color: white;
+    transition: background-color 500ms;
+  }
+}
+
+.btn-primary-color {
+  background-color: $primary-color;
+  border-color: $primary-color;
+  color: white;
+  text-transform: uppercase;
+  font-size: 0.9em;
+  padding: 0.5em 1em;
+  &:hover {
+    background-color: white;
+    color: $primary-color;
+    transition: background-color 500ms;
+  }
+}
