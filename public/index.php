@@ -1,11 +1,10 @@
 <?php
 
-use Core\Autoloader;
 use Core\Security;
 
 require_once '../_config/_define.php';
-require_once '../core/Autoloader.php';
-Autoloader::register();
+require APP . '/App.php';
+App::load();
 
 // Récupération de la page à partir de l'URL
 if(isset($_GET['p']) && !empty($_GET['p'])) {
