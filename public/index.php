@@ -1,6 +1,10 @@
 <?php
 
+use Core\Autoloader;
+
 require_once '../_config/_define.php';
+require_once '../core/Autoloader.php';
+Autoloader::register();
 
 $pages = [
 	'homepage' => VIEWS . '/homepage/index.php',
