@@ -65,36 +65,34 @@
 				</div>
 			</div>
 			<div class="col-lg-6 mt-lg-1">
-				<div class="vfx-form-group">
-                    <!-- TODO : supprimer le novalidate -->
-                    <!-- TODO : token CSRF -->
-					<form id="contactForm" action="<?= './index.php?p=contact'?>" method="POST" novalidate>
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="form-group mb-4">
-									<input class="form-control mb-4" id="name" name="name" placeholder="Votre nom*" required type="text">
-								</div>
-							</div>
-							<div class="col-lg-12">
-								<div class="form-group mb-4">
-									<input class="form-control" id="email" name="email" placeholder="Votre email*" required type="email">
-								</div>
-							</div>
-							<div class="col-lg-12">
-								<div class="form-group mb-4">
-									<textarea class="form-control" id="message" name="message" placeholder="Votre message ..." rows="10" required></textarea>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-lg-12 text-center">
-								<button class="btn btn-primary-color" name="submit" type="submit" value="Envoyer votre message">
-									Envoyer votre message
-								</button>
-							</div>
-						</div>
-					</form>
-				</div>
+                <!-- TODO : supprimer le novalidate -->
+                <!-- TODO : token CSRF -->
+                <form id="contactForm" action="<?= './index.php?p=contact'?>" method="POST" novalidate>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group mb-4">
+                                <input class="form-control mb-4" type="text" name="name" placeholder="Votre nom*" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group mb-4">
+                                <input class="form-control" type="email" name="email" placeholder="Votre email*" required>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="form-group mb-4">
+                                <textarea class="form-control" name="message" placeholder="Votre message ..." rows="10" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <button class="btn btn-primary-color" name="submit" type="submit" value="Envoyer votre message">
+                                Envoyer votre message
+                            </button>
+                        </div>
+                    </div>
+                </form>
 			</div>
 		</div>
 	</div>
