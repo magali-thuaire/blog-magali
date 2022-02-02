@@ -17,6 +17,9 @@ if(isset($_GET['p']) && !empty($_GET['p'])) {
 if($p === 'homepage') {
 	$controller = new HomeController();
 	$controller->index();
+} elseif($p === 'contact') {
+	$controller = new HomeController();
+	$controller->newContact();
 } else {
 	App::not_found();
 }

@@ -66,11 +66,13 @@
 			</div>
 			<div class="col-lg-6 mt-lg-1">
 				<div class="vfx-form-group">
-					<form action="#">
+                    <!-- TODO : supprimer le novalidate -->
+                    <!-- TODO : token CSRF -->
+					<form id="contactForm" action="<?= './index.php?p=contact'?>" method="POST" novalidate>
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="form-group mb-4">
-									<input class="form-control" id="name" name="name" placeholder="Votre nom*" required type="text">
+									<input class="form-control mb-4" id="name" name="name" placeholder="Votre nom*" required type="text">
 								</div>
 							</div>
 							<div class="col-lg-12">
