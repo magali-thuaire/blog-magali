@@ -8,8 +8,8 @@ class FormModel extends ClassModel
 {
 	use MagicTrait;
 
-	protected $error;
-	protected $success;
+	public $error;
+	public $success;
 
 	public function getError(): ?string
 	{

@@ -39,7 +39,7 @@ class HomeController extends AppController
 			// TODO: envoi du mail
 		}
 
-		$this->render('homepage.index', $form);
+		echo json_encode(['form' => $form]);
 
 	}
 

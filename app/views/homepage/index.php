@@ -65,24 +65,9 @@
                 </div>
             </div>
             <div class="col-lg-6 mt-lg-1">
-                <?php
-                if(isset($form) && $form->error == true) : ?>
-                    <div class="alert alert-danger d-flex align-items-center" role="alert">
-                        <div>
-                            <?= $form->error ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
-				<?php if(isset($form) && $form->success == true) : ?>
-                    <div class="alert alert-success js-alert d-flex align-items-center" role="alert">
-                        <div>
-							<?= $form->success ?>
-                        </div>
-                    </div>
-				<?php endif; ?>
-                <!-- TODO : supprimer le novalidate -->
                 <!-- TODO : token CSRF -->
-                <form id="contactForm" action="<?= './index.php?p=contact'?>" method="POST" novalidate>
+                <form id="contactForm" data-href="<?= './index.php?p=contact'?>" method="POST">
+                    <div class="alert d-flex align-items-center js-form-message d-none" role="alert"></div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group mb-4">
