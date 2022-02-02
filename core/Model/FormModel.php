@@ -9,8 +9,9 @@ class FormModel extends ClassModel
 	use MagicTrait;
 
 	protected $error;
+	protected $success;
 
-	public function getError(): string
+	public function getError(): ?string
 	{
 		return $this->error;
 	}
@@ -18,6 +19,17 @@ class FormModel extends ClassModel
 	public function setError($error): self
 	{
 		$this->error = $error;
+		return $this;
+	}
+
+	public function getSuccess(): ?string
+	{
+		return $this->success;
+	}
+
+	public function setSuccess($success): self
+	{
+		$this->success = $success;
 		return $this;
 	}
 
