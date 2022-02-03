@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App;
-use App\Entity\Contact;
+use App\Entity\ContactEntity;
+use App\Manager\ContactManager;
 use App\Model\AppMail;
 use Core\Model\FormModel;
 use Core\Security\CsrfToken;
@@ -42,7 +43,7 @@ class HomeController extends AppController
 
 			try {
 				// Création du contact
-				$contact = new Contact();
+				$contact = new ContactEntity();
 				$contact->hydrate($formData);
 			} catch (Exception $e) {
 				$form->setError($e->getMessage());
@@ -55,12 +56,19 @@ class HomeController extends AppController
 				$send_email = $email->sendEmail($contact);
 
 				if ($send_email) {
+
+					// Enregistrement en BDD
+					$app = App::getInstance();
+					/** @var ContactManager $em */
+					$em = $app->getManager('contact');
+					$em->new($contact);
+
+					// Message de réussite
 					$form->setSuccess(CONTACT_SUCCESS_MESSAGE);
 				} else {
+					// Message d'erreur
 					$form->setError(ERROR_SEND_SEMAIL);
 				}
-
-				// TODO: enregistrement en BDD
 			}
 
 		} else {
