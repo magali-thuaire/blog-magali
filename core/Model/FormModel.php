@@ -3,6 +3,8 @@
 namespace Core\Model;
 
 use Core\Model\ClassModel;
+use Core\Model\MagicTrait;
+use Core\Security\CsrfToken;
 
 class FormModel extends ClassModel
 {
@@ -10,6 +12,19 @@ class FormModel extends ClassModel
 
 	public $error;
 	public $success;
+	public CsrfToken $csrfToken;
+
+	const INVALID_SESSION_TOKEN = 'Invalid Session token';
+
+	public function __construct(string $keyToken = null)
+	{
+		if($keyToken && in_array($keyToken, SESSION)) {
+			$csrfToken = new CsrfToken($keyToken, $_SESSION[$keyToken]);
+			$this->setCsrfToken($csrfToken);
+		} else {
+			throw new \Exception(self::INVALID_SESSION_TOKEN);
+		}
+	}
 
 	public function getError(): ?string
 	{
@@ -31,6 +46,22 @@ class FormModel extends ClassModel
 	{
 		$this->success = $success;
 		return $this;
+	}
+
+	public function getCsrfToken(): ?CsrfToken
+	{
+		return $this->csrfToken;
+	}
+
+	public function setCsrfToken(CsrfToken $csrfToken): self
+	{
+		$this->csrfToken = $csrfToken;
+		return $this;
+	}
+
+	public function isTokenValid(CsrfToken $csrfToken): bool
+	{
+		return $csrfToken == $this->csrfToken;
 	}
 
 }

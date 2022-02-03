@@ -65,26 +65,26 @@
                 </div>
             </div>
             <div class="col-lg-6 mt-lg-1">
-                <!-- TODO : token CSRF -->
                 <form id="contactForm" data-href="<?= './index.php?p=contact'?>" method="POST">
                     <div class="alert d-flex align-items-center js-form-message d-none" role="alert"></div>
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="form-group mb-4">
-                                <input class="form-control mb-4" type="text" name="name" value="<?= (isset($form) && $form->error == true) ? $form->name : '' ?>" placeholder="Votre nom*" required>
+                                <input class="form-control mb-4" type="text" name="name" value="<?= ($form->error == true) ? $form->name : '' ?>" placeholder="Votre nom*" required>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group mb-4">
-                                <input class="form-control" type="email" name="email" value="<?= (isset($form) && $form->error == true) ? $form->email : '' ?>" placeholder="Votre email*" required>
+                                <input class="form-control" type="email" name="email" value="<?= ($form->error == true) ? $form->email : '' ?>" placeholder="Votre email*" required>
                             </div>
                         </div>
                         <div class="col-lg-12">
                             <div class="form-group mb-4">
-                                <textarea class="form-control" name="message" placeholder="Votre message ..." rows="10" required><?= (isset($form) && $form->error == true) ? $form->message : '' ?></textarea>
+                                <textarea class="form-control" name="message" placeholder="Votre message ..." rows="10" required><?= ($form->error == true) ? $form->message : '' ?></textarea>
                             </div>
                         </div>
                     </div>
+                    <input type="hidden" name="csrfToken" value="<?= $form->csrfToken ?>">
                     <div class="row">
                         <div class="col-lg-12 text-center">
                             <button class="btn btn-primary-color" name="submit" type="submit" value="Envoyer votre message">

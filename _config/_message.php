@@ -6,3 +6,5 @@ define('CONTACT_ERROR_EMAIL', sprintf(CONTACT_ERROR, 'email'));
 define('CONTACT_ERROR_MESSAGE', sprintf(CONTACT_ERROR, 'message'));
 
 define('CONTACT_SUCCESS_MESSAGE', 'Votre message a bien été envoyé');
+
+define('INVALID_CSRF_TOKEN', 'Invalid CSRF token');

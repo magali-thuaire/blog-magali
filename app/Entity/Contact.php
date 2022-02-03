@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Model;
+namespace App\Entity;
 
-use Core\Model\FormModel;
-use Core\Model\MagicTrait;
+use Core\Model\ClassModel;
 
-class FormContact extends FormModel
+class Contact extends ClassModel
 {
-	use MagicTrait;
 
 	private $name;
 	private $email;
