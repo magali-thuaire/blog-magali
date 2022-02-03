@@ -2,7 +2,7 @@
 
 namespace Core\Model;
 
-Class ClassModel
+Trait HydrateTrait
 {
 	public function hydrate(array $data = [])
 	{

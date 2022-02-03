@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
-use Core\Model\ClassModel;
+use Core\Model\HydrateTrait;
 
-class Contact extends ClassModel
+class Contact
 {
+
+	use HydrateTrait;
 
 	private $name;
 	private $email;
