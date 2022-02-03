@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App;
 use App\Entity\Contact;
+use App\Model\AppMail;
 use Core\Model\FormModel;
 use Core\Security\CsrfToken;
 use Core\Security\Security;
+use Exception;
 
 class HomeController extends AppController
 {
@@ -24,9 +26,6 @@ class HomeController extends AppController
 	// Validation du formulaire depuis appel AJAX
 	public function newContact()
 	{
-		// Initialisation du formulaire
-		$form = $this->initFormContact();
-
 		// Nettoyage des données postées
 		$formData = Security::checkInputs($_POST);
 
@@ -34,28 +33,38 @@ class HomeController extends AppController
 		$token = new CsrfToken('contact', $formData['csrfToken']);
 		unset($formData['csrfToken']);
 
-		// Création du contact
-		$contact = new Contact();
+		// Initialisation du formulaire avec données nettoyées
+		$form = $this
+			->initFormContact()
+			->hydrate($formData);
 
 		if($form->isTokenValid($token)) {
+
 			try {
+				// Création du contact
+				$contact = new Contact();
 				$contact->hydrate($formData);
-			} catch (\Exception $e) {
+			} catch (Exception $e) {
 				$form->setError($e->getMessage());
 			}
 
-			// Si erreur
-			if($form->getError()) {
-				// Récupération des données du formulaire et des erreurs
-				$form->hydrate($formData);
-				// Si succès
-			} else {
-				$form->setSuccess(CONTACT_SUCCESS_MESSAGE);
+			if(!$form->getError()) {
+
+				// Envoi du mail
+				$email = new AppMail();
+				$send_email = $email->sendEmail($contact);
+
+				if ($send_email) {
+					$form->setSuccess(CONTACT_SUCCESS_MESSAGE);
+				} else {
+					$form->setError(ERROR_SEND_SEMAIL);
+				}
+
 				// TODO: enregistrement en BDD
-				// TODO: envoi du mail
 			}
+
 		} else {
-			throw new \Exception('Invalid CSRF token');
+			throw new Exception('Invalid CSRF token');
 		}
 
 		// Données du formulaire en json
