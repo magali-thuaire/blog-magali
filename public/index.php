@@ -4,7 +4,7 @@ use App\Controller\HomeController as HomeController;
 use Core\Security\Security;
 
 require_once '../_config/_define.php';
-require APP . '/App.php';
+require_once APP . '/App.php';
 App::load();
 
 // Récupération de la page à partir de l'URL

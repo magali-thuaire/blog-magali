@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Core\Model\HydrateTrait;
 
-class Contact
+class ContactEntity
 {
 
 	use HydrateTrait;
