@@ -13,6 +13,14 @@ use Exception;
 
 class HomeController extends AppController
 {
+
+	private $contactManager;
+
+	public function __construct()
+	{
+		$this->contactManager = $this->getManager('contact');
+	}
+
 	// Demande de la page d'accueil
 	public function index()
 	{
@@ -20,7 +28,9 @@ class HomeController extends AppController
 		$form = $this->initFormContact();
 
 		// Affichage de la vue
-		$this->render('homepage.index', $form);
+		$this->render('homepage.index', [
+			'form' => $form
+		]);
 
 	}
 
@@ -56,13 +66,8 @@ class HomeController extends AppController
 				$send_email = $email->sendEmail($contact);
 
 				if ($send_email) {
-
 					// Enregistrement en BDD
-					$app = App::getInstance();
-					/** @var ContactManager $em */
-					$em = $app->getManager('contact');
-					$em->new($contact);
-
+					$this->contactManager->new($contact);
 					// Message de réussite
 					$form->setSuccess(CONTACT_SUCCESS_MESSAGE);
 				} else {
