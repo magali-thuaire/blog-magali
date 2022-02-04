@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Core\Model\HydrateTrait;
+use DateTime;
 
 class ContactEntity
 {
@@ -12,10 +13,15 @@ class ContactEntity
 	private $name;
 	private $email;
 	private $message;
+	private $date;
 
 	const ERROR_NAME = CONTACT_ERROR_NAME;
 	const ERROR_EMAIL = CONTACT_ERROR_EMAIL;
 	const ERROR_MESSAGE = CONTACT_ERROR_MESSAGE;
+
+	public function __construct()
+	{
+	}
 
 	public function getName(): ?string
 	{
@@ -62,6 +68,17 @@ class ContactEntity
 			throw new \Exception(self::ERROR_MESSAGE);
 		}
 
+		return $this;
+	}
+
+	public function getDate(): DateTime
+	{
+		return $this->date;
+	}
+
+	public function setDate(DateTime $date): self
+	{
+		$this->date = $date;
 		return $this;
 	}
 
