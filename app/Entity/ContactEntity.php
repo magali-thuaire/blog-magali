@@ -28,16 +28,6 @@ class ContactEntity
 		return $this->name;
 	}
 
-	public function getEmail(): ?string
-	{
-		return $this->email;
-	}
-
-	public function getMessage(): ?string
-	{
-		return $this->message;
-	}
-
 	public function setName($name): self
 	{
 		if(is_string($name) && !empty($name)) {
@@ -50,6 +40,11 @@ class ContactEntity
 
 	}
 
+	public function getEmail(): ?string
+	{
+		return $this->email;
+	}
+
 	public function setEmail($email): self
 	{
 		if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -58,6 +53,11 @@ class ContactEntity
 			throw new \Exception(self::ERROR_EMAIL);
 		}
 		return $this;
+	}
+
+	public function getMessage(): ?string
+	{
+		return $this->message;
 	}
 
 	public function setMessage($message): self

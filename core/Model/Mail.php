@@ -15,7 +15,6 @@ class Mail
 		return $this;
 	}
 
-
 	public function setSubject($subject): self
 	{
 		$this->subject = $subject;
