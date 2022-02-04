@@ -2,13 +2,13 @@
 
 namespace App\Model;
 
-use App\Entity\Contact;
+use App\Entity\ContactEntity;
 use Core\Model\Mail;
 
 class AppMail extends Mail
 {
 
-	public function sendEmail(Contact $contact, $to = EMAIL_DEFAULT_TO, $subject = EMAIL_DEFAULT_SUBJECT): bool
+	public function sendEmail(ContactEntity $contact, $to = EMAIL_DEFAULT_TO, $subject = EMAIL_DEFAULT_SUBJECT): bool
 	{
 		$this
 			->setTo($to)

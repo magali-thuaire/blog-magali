@@ -1,12 +1,21 @@
 
-CREATE TABLE Role (
+CREATE TABLE contact (
+                id INT AUTO_INCREMENT NOT NULL,
+                message TEXT NOT NULL,
+                name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                PRIMARY KEY (id)
+);
+
+
+CREATE TABLE role (
                 id INT NOT NULL,
                 name VARCHAR(50) NOT NULL,
                 PRIMARY KEY (id)
 );
 
 
-CREATE TABLE User (
+CREATE TABLE user (
                 id INT NOT NULL,
                 username VARCHAR(100) NOT NULL,
                 email VARCHAR(100) NOT NULL,
@@ -22,17 +31,17 @@ CREATE TABLE User (
 
 
 CREATE UNIQUE INDEX user_name_idx
- ON User
+ ON user
  ( username );
 
-CREATE TABLE user_admin_valid (
+CREATE TABLE user_admin (
                 user INT NOT NULL,
-                admin_valid INT NOT NULL,
-                PRIMARY KEY (user, admin_valid)
+                admin INT NOT NULL,
+                PRIMARY KEY (user, admin)
 );
 
 
-CREATE TABLE Post (
+CREATE TABLE post (
                 id INT NOT NULL,
                 title VARCHAR(255) NOT NULL,
                 header TEXT NOT NULL,
@@ -46,7 +55,7 @@ CREATE TABLE Post (
 );
 
 
-CREATE TABLE Comment (
+CREATE TABLE comment (
                 id INT NOT NULL,
                 content TEXT NOT NULL,
                 post INT NOT NULL,
@@ -57,38 +66,38 @@ CREATE TABLE Comment (
 );
 
 
-ALTER TABLE User ADD CONSTRAINT role_user_fk
+ALTER TABLE user ADD CONSTRAINT role_user_fk
 FOREIGN KEY (role)
-REFERENCES Role (id)
+REFERENCES role (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE Post ADD CONSTRAINT user_post_fk
+ALTER TABLE post ADD CONSTRAINT user_post_fk
 FOREIGN KEY (author)
-REFERENCES User (id)
+REFERENCES user (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE user_admin_valid ADD CONSTRAINT user_user_admin_valid_fk
+ALTER TABLE user_admin ADD CONSTRAINT user_user_admin_valid_fk
 FOREIGN KEY (user)
-REFERENCES User (id)
+REFERENCES user (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE user_admin_valid ADD CONSTRAINT user_user_admin_valid_fk1
-FOREIGN KEY (admin_valid)
-REFERENCES User (id)
+ALTER TABLE user_admin ADD CONSTRAINT user_user_admin_valid_fk1
+FOREIGN KEY (admin)
+REFERENCES user (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE Comment ADD CONSTRAINT user_comment_fk
+ALTER TABLE comment ADD CONSTRAINT user_comment_fk
 FOREIGN KEY (author)
-REFERENCES User (id)
+REFERENCES user (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;
 
-ALTER TABLE Comment ADD CONSTRAINT post_comment_fk
+ALTER TABLE comment ADD CONSTRAINT post_comment_fk
 FOREIGN KEY (post)
-REFERENCES Post (id)
+REFERENCES post (id)
 ON DELETE NO ACTION
 ON UPDATE NO ACTION;

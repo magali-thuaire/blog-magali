@@ -2,12 +2,13 @@
 
 namespace Core\Model;
 
-use Core\Model\ClassModel;
+use Core\Model\HydrateTrait;
 use Core\Model\MagicTrait;
 use Core\Security\CsrfToken;
 
-class FormModel extends ClassModel
+class FormModel
 {
+	use HydrateTrait;
 	use MagicTrait;
 
 	public $error;
