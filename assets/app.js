@@ -7,3 +7,5 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
 
 import './scripts/pages/homepage';
+import './scripts/components/nav';
+import './scripts/components/scrolltop';
