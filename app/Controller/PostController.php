@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\PostEntity;
 use App\Manager\Postmanager;
+use App\Manager\UserManager;
 
 class PostController extends AppController
 {

@@ -2,8 +2,6 @@
 
 namespace Core\Controller;
 
-use Core\Model\FormModel;
-
 class CoreController
 {
 

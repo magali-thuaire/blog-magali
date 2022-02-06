@@ -25,8 +25,12 @@ class EntityManager
 		return $this->db->execute($statement, $attributs);
 	}
 
-	public function query($statement) {
-		return $this->db->query($statement, str_replace('Manager', 'Entity', get_class($this)));
+	public function query($statement, $fetchClass = false) {
+		if($fetchClass) {
+			return $this->db->query($statement, str_replace('Manager', 'Entity', get_class($this)));
+		} else {
+			return $this->db->query($statement);
+		}
 	}
 
 	public function prepare($statement, $attributs, $one = false) {

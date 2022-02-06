@@ -3,6 +3,8 @@
 define('R_HOMEPAGE', '../public#header');
 define('R_CONTACT', '../public#contact');
 define('R_BLOG', '../public/index.php?p=post#posts');
+define('R_POST', '../public/index.php?p=post&id=');
+
 
 // assets
 define('CSS', '../public/build/app.css');

@@ -3,22 +3,23 @@
 namespace App\Entity;
 
 use Core\Model\DateTrait;
+use Core\Model\HydrateTrait;
 use Core\Model\MagicTrait;
 use DateTime;
 
 class PostEntity
 {
 
+	use HydrateTrait;
 	use MagicTrait;
 	use DateTrait;
 
-	const dateFormat = 'd F Y à H:i';
+	const dateFormat = 'd F Y';
 
 	private $id;
 	private $title;
 	private $header;
 	private $content;
-	// TODO: author depuis user database
 	private $author;
 	private $published;
 	private $publishedAt;
@@ -69,12 +70,17 @@ class PostEntity
 		return $this;
 	}
 
-	public function getAuthor(): ?int
+	public function getAuthor(): ?UserEntity
 	{
+		if(!($this->author instanceof UserEntity)) {
+			$author = (new UserEntity())->setId($this->author);
+			$this->author = $author;
+		}
+
 		return $this->author;
 	}
 
-	public function setAuthor(int $author): self
+	public function setAuthor(UserEntity $author): self
 	{
 		$this->author = $author;
 		return $this;
@@ -93,44 +99,56 @@ class PostEntity
 
 	public function getPublishedAt(): ?DateTime
 	{
-		if(!($this->publishedAt instanceof DateTime) && is_string($this->publishedAt)) {
+		if(is_string($this->publishedAt)) {
 			$this->publishedAt = new DateTime($this->publishedAt);
 		}
 
 		return $this->publishedAt;
 	}
 
-	public function setPublishedAt(DateTime $publishedAt): self
+	public function setPublishedAt(DateTime|string|null $publishedAt): self
 	{
+		if(is_string($publishedAt)) {
+			$publishedAt = new DateTime($publishedAt);
+		}
+
 		$this->publishedAt = $publishedAt;
 		return $this;
 	}
 
 	public function getCreatedAt(): ?DateTime
 	{
-		if(!($this->createdAt instanceof DateTime) && is_string($this->createdAt)) {
+		if(is_string($this->createdAt)) {
 			$this->createdAt = new DateTime($this->createdAt);
 		}
 		return $this->createdAt;
 	}
 
-	public function setCreatedAt(DateTime $createdAt): self
+	public function setCreatedAt(DateTime|string $createdAt): self
 	{
+		if(is_string($createdAt)) {
+			$createdAt = new DateTime($createdAt);
+		}
+
 		$this->createdAt = $createdAt;
 		return $this;
 	}
 
 	public function getUpdatedAt(): ?DateTime
 	{
-		if(!($this->updatedAt instanceof DateTime) && is_string($this->updatedAt)) {
+		if(is_string($this->updatedAt)) {
 			$this->updatedAt = new DateTime($this->updatedAt);
 		}
 
 		return $this->updatedAt;
 	}
 
-	public function setUpdatedAt(DateTime $updatedAt): self
+	public function setUpdatedAt(DateTime|string|null $updatedAt): self
 	{
+		if(is_string($updatedAt)) {
+			$updatedAt = new DateTime($updatedAt);
+		}
+
 		$this->updatedAt = $updatedAt;
 		return $this;
 	}

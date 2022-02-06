@@ -1,5 +1,3 @@
-<!--TODO: création de la vue-->
-
 <!-- Posts section-->
 <section id="posts" class="py-5">
     <div class="container px-5 my-5">

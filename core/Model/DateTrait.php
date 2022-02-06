@@ -6,7 +6,7 @@ use DateTime;
 
 trait DateTrait
 {
-	protected $months = [
+	private static $_months = [
 		'january' 	=> 'janvier',
 		'february' 	=> 'février',
 		'march' 	=> 'mars',
@@ -21,10 +21,10 @@ trait DateTrait
 		'december' 	=> 'décembre',
 	];
 
-	protected function dateFormatted(DateTime $dateTime, $format = 'Y-d-m h:i:s') {
+	private function dateFormatted(DateTime $dateTime, $format = 'Y-d-m h:i:s') {
 
 		$date = $dateTime->format($format);
-		foreach ($this->months as $month => $mois) {
+		foreach (self::$_months as $month => $mois) {
 			if(strpos(strtolower($date), $month)) {
 				$date = str_replace($month, $mois, strtolower($date));
 			}

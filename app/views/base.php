@@ -10,10 +10,10 @@
         <script type="text/javascript" src="<?= JS ?>" defer></script>
         <script></script>
     </head>
-    <body data-bs-spy="scroll" data-bs-target="#navbarNav" class="d-flex flex-column h-100" data-bs-offset="70">
+    <body data-bs-spy="scroll" data-bs-target="#navbarNav" class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
             <!-- Navigation-->
-            <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark" role="navigation">
+            <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
                 <div class="container-fluid px-5">
                     <a class="navbar-brand logo" href="<?= R_HOMEPAGE ?>">
                         <span class="text-info">Magali</span>
