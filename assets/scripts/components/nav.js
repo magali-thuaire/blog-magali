@@ -31,11 +31,8 @@ $(document).ready(function() {
             href = href.substr(href.indexOf('#'));
             // update anchors HREF with new one
             $a.attr('data-bs-target',href);
+        } else {
+            $a.attr('href','#');
         }
-        // Now refresh scrollspy
-        $('[data-spy="scroll"]').each(function (i,spy) {
-            $(spy).scrollspy('refresh');
-        });
     });
-
 });

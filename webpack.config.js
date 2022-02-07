@@ -37,11 +37,23 @@ const config = {
       },
       {
         test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader',
+            options: {
+              url: false
+            }
+          },
+          'sass-loader'
+        ]
       },
       {
         test: /\.(svg|eot|woff|woff2|ttf)$/,
         type: 'asset/resource',
+        generator: {
+          filename: 'fonts/[name][ext]',
+        },
       }
     ],
   },

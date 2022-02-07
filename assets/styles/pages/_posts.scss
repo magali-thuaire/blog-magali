@@ -1,6 +1,15 @@
 #posts {
-  h5 {
-    color: $primary-color;
+  h3 > a{
+    color: $primary-color !important;
     text-transform: uppercase;
   }
+}
+
+#blog {
+  background-image: url('../build/images/blog.jpeg');
+  background-attachment: fixed;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 80vh;
 }
