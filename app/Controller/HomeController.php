@@ -14,6 +14,7 @@ use Exception;
 class HomeController extends AppController
 {
 
+	/** @var ContactManager */
 	private $contactManager;
 
 	public function __construct()

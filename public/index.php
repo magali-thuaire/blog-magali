@@ -1,5 +1,6 @@
 <?php
 
+use App\Controller\PostController;
 use App\Controller\HomeController as HomeController;
 use Core\Security\Security;
 
@@ -21,6 +22,9 @@ if($p === 'homepage') {
 } elseif($p === 'contact' && $_POST) {
 	$controller = new HomeController();
 	$controller->newContact();
+} elseif($p === 'post') {
+	$controller = new PostController();
+	$controller->index();
 } else {
 	App::not_found();
 }

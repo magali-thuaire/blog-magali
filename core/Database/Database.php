@@ -34,9 +34,13 @@ class Database {
     }
 
     // Récupère les résultats de la requête SQL sous forme d'objet spécifique
-    public function query($statement, $class) {
+    public function query($statement, $class = '') {
         $req = $this->getPDO()->query($statement);
-        return $req->fetchAll(PDO::FETCH_CLASS, $class);
+        if(!empty($class)) {
+            return $req->fetchAll(PDO::FETCH_CLASS, $class);
+        } else {
+            return $req->fetchAll(PDO::FETCH_CLASS);
+        }
     }
 
     // Récupère les résultats de la requête SQL sous forme d'objet spécifique
