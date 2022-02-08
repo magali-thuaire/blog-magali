@@ -26,15 +26,26 @@ class EntityManager
 	}
 
 	public function query($statement, $fetchClass = false) {
+
 		if($fetchClass) {
-			return $this->db->query($statement, str_replace('Manager', 'Entity', get_class($this)));
+			$fetchClass =  str_replace('Manager', 'Entity', get_class($this));
 		} else {
-			return $this->db->query($statement);
+			$fetchClass = '';
 		}
+
+		return $this->db->query($statement, $fetchClass);
 	}
 
-	public function prepare($statement, $attributs, $one = false) {
-		return $this->db->prepare($statement, $attributs, str_replace('Manager', 'Entity', get_class($this)), $one);
+	public function prepare($statement, $attributs, $fetchClass = false, $one = false) {
+
+		if($fetchClass) {
+			$fetchClass =  str_replace('Manager', 'Entity', get_class($this));
+		} else {
+			$fetchClass = '';
+		}
+
+		return $this->db->prepare($statement, $attributs, $fetchClass, $one);
+
 	}
 
 }

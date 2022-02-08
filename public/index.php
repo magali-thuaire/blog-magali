@@ -24,7 +24,14 @@ if($p === 'homepage') {
 	$controller->newContact();
 } elseif($p === 'post') {
 	$controller = new PostController();
-	$controller->index();
+	// Demande de visualisation d'un article
+	if(isset($_GET['id']) && !empty($_GET['id'])) {
+		$id = Security::checkInput($_GET['id']);
+		$controller->show($id);
+	} else {
+		// Demande de visualisation des articles
+		$controller->index();
+	}
 } else {
 	App::not_found();
 }

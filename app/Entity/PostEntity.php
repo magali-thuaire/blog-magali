@@ -16,15 +16,16 @@ class PostEntity
 
 	const dateFormat = 'd F Y';
 
-	private $id;
-	private $title;
-	private $header;
-	private $content;
-	private $author;
-	private $published;
-	private $publishedAt;
-	private $createdAt;
-	private $updatedAt;
+	private int $id;
+	private string $title;
+	private string $header;
+	private string $content;
+	private UserEntity $author;
+	private bool $published;
+	private ?DateTime $publishedAt;
+	private DateTime $createdAt;
+	private ?DateTime $updatedAt;
+	private array $comments = [];
 
 	public function getId(): ?int
 	{
@@ -178,5 +179,19 @@ class PostEntity
 		}
 
 		return null;
+	}
+
+	/**
+	 * @return CommentEntity[]|null
+	 */
+	public function getComments(): ?array
+	{
+		return $this->comments;
+	}
+
+	public function addComment(CommentEntity $comment): self
+	{
+		$this->comments[] = $comment;
+		return $this;
 	}
 }

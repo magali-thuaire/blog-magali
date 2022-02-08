@@ -39,16 +39,20 @@ class Database {
         if(!empty($class)) {
             return $req->fetchAll(PDO::FETCH_CLASS, $class);
         } else {
-            return $req->fetchAll(PDO::FETCH_CLASS);
+            return $req->fetchAll(PDO::FETCH_OBJ);
         }
     }
 
     // Récupère les résultats de la requête SQL sous forme d'objet spécifique
-    public function prepare($statement, $attributs, $class, $one = false) {
+    public function prepare($statement, $attributs, $class = '', $one = false) {
         $req = $this->getPDO()->prepare($statement);
         $req->execute($attributs);
         // Mise en forme de la récupération : objet spécifique
-        $req->setFetchMode(PDO::FETCH_CLASS, $class);
+        if(!empty($class)) {
+            $req->setFetchMode(PDO::FETCH_CLASS, $class);
+        } else {
+            $req->setFetchMode(PDO::FETCH_OBJ);
+        }
         // Si un seul élément est demandé : récupère un seul élément
         if($one) {
             return $req->fetch();
