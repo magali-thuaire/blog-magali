@@ -5,7 +5,6 @@ namespace App\Controller;
 use App;
 use App\Entity\PostEntity;
 use App\Manager\Postmanager;
-use App\Manager\UserManager;
 
 class PostController extends AppController
 {
@@ -20,7 +19,7 @@ class PostController extends AppController
 	public function index()
 	{
 		/** @var PostEntity[]|null $posts */
-		$posts = $this->postManager->findAllPublishedOrdereByNewest();
+		$posts = $this->postManager->findAllPublishedWithCommentsOrdereByNewest();
 
 		$this->render('post.index', [
 			'posts' => $posts

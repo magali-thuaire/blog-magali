@@ -14,9 +14,9 @@ class PostManager extends EntityManager
 	/**
 	 * Retourne tous les articles publiés, ordonné du plus récent au plus ancien
 	 */
-	public function findAllPublishedOrdereByNewest(): ?array
+	public function findAllPublishedWithCommentsOrdereByNewest(): ?array
 	{
-		$statement = $this->getAllPublishedOrderByNewest()->getQuery();
+		$statement = $this->getAllPublishedWithCommentsOrderByNewest()->getQuery();
 		$postsData = $this->query($statement);
 
 		$posts = [];
@@ -59,7 +59,8 @@ class PostManager extends EntityManager
 			->addSelect('a.username')
 			->from('post', 'p')
 			->innerJoin('user', 'a', 'p.author = a.id')
-			->innerJoin('role', 'r', 'r.id = a.role');
+			->innerJoin('role', 'r', 'r.id = a.role')
+		;
 	}
 
 	/**
@@ -67,15 +68,28 @@ class PostManager extends EntityManager
 	 */
 	private function getAllPublished(): QueryBuilder {
 		return $this->getAll()
-			->andWhere('p.published IS TRUE');
+			->andWhere('p.published IS TRUE')
+			;
+	}
+
+	/**
+	 * Retourne la requête SQL de tous les articles
+	 */
+	private function getAllPublishedWithComments(): QueryBuilder
+	{
+		return $this->getAllPublished()
+			->addCount('c.id', 'comments', 'p.id')
+			->leftJoin('comment', 'c', 'c.post = p.id', 'c.approved IS TRUE')
+			;
 	}
 
 	/**
 	 * Retourne la requête SQL de tous les article publiés, ordonnés du plus récent au plus ancien
 	 */
-	private function getAllPublishedOrderByNewest(): QueryBuilder {
-		return $this->getAllPublished()
-			->orderBy('p.published_at', 'DESC');
+	private function getAllPublishedWithCommentsOrderByNewest(): QueryBuilder {
+		return $this->getAllPublishedWithComments()
+			->orderBy('p.published_at', 'DESC')
+		;
 	}
 
 	/**
@@ -84,7 +98,8 @@ class PostManager extends EntityManager
 	private function getOneById(): QueryBuilder
 	{
 		return $this->getAllPublished()
-			->andWhere('p.id = :id');
+			->andWhere('p.id = :id')
+		;
 	}
 
 	/**
@@ -96,7 +111,8 @@ class PostManager extends EntityManager
 			->addSelect('c.content as commentContent, c.created_at as commentCreatedAt')
 			->addSelect('ca.username as commentAuthor')
 			->leftJoin('comment', 'c', 'c.post = p.id', 'c.approved IS TRUE')
-			->leftJoin('user', 'ca', 'ca.id = c.author');
+			->leftJoin('user', 'ca', 'ca.id = c.author')
+		;
 	}
 
 	/**
@@ -104,12 +120,14 @@ class PostManager extends EntityManager
 	 */
 	private function createPostWithAuthor($data): PostEntity {
 
+		// Création de l'auteur
 		$authorData = [
 			'username' 			=> $data->username
 		];
 		$author = new UserEntity();
 		$author->hydrate($authorData);
 
+		// Création de l'article
 		$postData = [
 			'id' 				=> $data->id,
 			'title' 			=> $data->title,
@@ -123,7 +141,17 @@ class PostManager extends EntityManager
 		];
 		
 		$post = new PostEntity();
-		return $post->hydrate($postData);
+		$post->hydrate($postData);
+
+		// Création des commentaires
+		if(property_exists($data, 'comments')) {
+			while($data->comments-- > 0) {
+				$comment = new CommentEntity();
+				$post->addComment($comment);
+			}
+		}
+		
+		return $post;
 
 	}
 

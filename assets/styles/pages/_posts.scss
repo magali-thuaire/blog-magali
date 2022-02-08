@@ -1,10 +1,3 @@
-#posts {
-  h3 > a{
-    color: $primary-color !important;
-    text-transform: uppercase;
-  }
-}
-
 #blog {
   background-image: url('../build/images/blog.jpeg');
   background-attachment: fixed;
@@ -12,4 +5,33 @@
   background-repeat: no-repeat;
   background-size: cover;
   height: 80vh;
+}
+
+#posts {
+  .blog-post {
+    box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);
+    &__container {
+      border-top-right-radius: .25rem;
+      border-top-left-radius: .25rem;
+      background-color: #efefee;
+    }
+    &__title {
+      & > a {
+        color: $primary-color !important;
+        text-transform: uppercase;
+      }
+    }
+    &__header {
+      background: #fff;
+      border-radius: .25rem;
+    }
+    &__comment {
+      background: darken($primary-color, 10);
+      color: white;
+      &-icon {
+        font-size: 1.5em;
+        margin-right: 0.5em;
+      }
+    }
+  }
 }

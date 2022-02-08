@@ -26,7 +26,7 @@
                    </div>
                </article>
                <?php
-               if(current($post->comments)):
+               if(count($post->comments)):
                    foreach ($post->comments as $comment):
                        require VIEWS . '/post/_comment.php';
                    endforeach;
