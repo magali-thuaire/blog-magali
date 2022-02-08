@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\Entity\CommentEntity;
 use App\Entity\PostEntity;
 use App\Entity\UserEntity;
 use Core\Database\QueryBuilder;
@@ -40,16 +41,11 @@ class PostManager extends EntityManager
 
 		if($postsData) {
 			$post = $this->createPostWithAuthor(current($postsData));
-			/** @var PostEntity $post */
-			foreach ($postsData as $postData) {
-				$post->addComment($postData->comment);
-			}
-
+			$this->addComments($post, $postsData);
 			return $post;
 		} else {
 			return null;
 		}
-
 	}
 
 	/**
@@ -60,10 +56,10 @@ class PostManager extends EntityManager
 		$qb = new QueryBuilder();
 		return $qb
 			->select('p.id', 'p.title', 'p.header', 'p.content', 'p.author', 'p.published', 'p.published_at as publishedAt', 'p.created_at as createdAt', 'p.updated_at as updatedAt')
-			->addSelect('u.username')
+			->addSelect('a.username')
 			->from('post', 'p')
-			->innerJoin('user', 'u', 'p.author = u.id')
-			->innerJoin('role', 'r', 'r.id = u.role');
+			->innerJoin('user', 'a', 'p.author = a.id')
+			->innerJoin('role', 'r', 'r.id = a.role');
 	}
 
 	/**
@@ -97,8 +93,10 @@ class PostManager extends EntityManager
 	private function getOneByIdWithCommentsApproved(): QueryBuilder
 	{
 		return $this->getOneById()
-			->addSelect('c.content as comment')
-			->leftJoin('comment', 'c', 'c.post = p.id', 'c.approved IS TRUE');
+			->addSelect('c.content as commentContent, c.created_at as commentCreatedAt')
+			->addSelect('ca.username as commentAuthor')
+			->leftJoin('comment', 'c', 'c.post = p.id', 'c.approved IS TRUE')
+			->leftJoin('user', 'ca', 'ca.id = c.author');
 	}
 
 	/**
@@ -128,4 +126,37 @@ class PostManager extends EntityManager
 		return $post->hydrate($postData);
 
 	}
+
+	/**
+	 * Retourne un object Post dont ses commentaires sont des objets Comment
+	 */
+	private function addComments(PostEntity $post, $postData): PostEntity
+	{
+		foreach ($postData as $data) {
+
+			// Si l'article dispose de commentaires
+			if ($data->commentAuthor) {
+
+				$commentAuthorData = [
+					'username' => $data->commentAuthor
+				];
+				$author = new UserEntity();
+				$author->hydrate($commentAuthorData);
+
+				$commentData = [
+					'content' => $data->commentContent,
+					'createdAt' => $data->commentCreatedAt,
+					'author' => $author,
+				];
+
+				$comment = new CommentEntity();
+				$comment->hydrate($commentData);
+				$post->addComment($comment);
+			}
+		}
+
+		return $post;
+
+	}
+	
 }

@@ -10,10 +10,10 @@ class ContactEntity
 
 	use HydrateTrait;
 
-	private $name;
-	private $email;
-	private $message;
-	private $date;
+	private string $name;
+	private string $email;
+	private string $message;
+	private DateTime $date;
 
 	const ERROR_NAME = CONTACT_ERROR_NAME;
 	const ERROR_EMAIL = CONTACT_ERROR_EMAIL;

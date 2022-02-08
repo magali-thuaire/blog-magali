@@ -12,16 +12,16 @@ class UserEntity
 	use HydrateTrait;
 	use MagicTrait;
 
-	private $id;
-	private $username;
-	private $email;
-	private $login;
-	private $password;
-	private $validationToken;
-	private $userConfirmed;
-	private $adminValidated;
-	private $createdAt;
-	private $role;
+	private int $id;
+	private string $username;
+	private string $email;
+	private string $login;
+	private string $password;
+	private string $validationToken;
+	private bool $userConfirmed;
+	private bool $adminValidated;
+	private DateTime $createdAt;
+	private string $role;
 
 	public function getId(): ?int
 	{
