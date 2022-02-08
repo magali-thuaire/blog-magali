@@ -25,6 +25,7 @@ class PostEntity
 	private $publishedAt;
 	private $createdAt;
 	private $updatedAt;
+	private $comments = [];
 
 	public function getId(): ?int
 	{
@@ -178,5 +179,16 @@ class PostEntity
 		}
 
 		return null;
+	}
+
+	public function getComments(): array
+	{
+		return $this->comments;
+	}
+
+	public function addComment($comment): self
+	{
+		$this->comments[] = $comment;
+		return $this;
 	}
 }

@@ -8,7 +8,7 @@
            <div class="col-8">
 			   <?php
 			   foreach ($posts as $post):
-				   require VIEWS . '/post/_post_card.php';
+				   require VIEWS . '/post/_post.php';
 			   endforeach;
 			   ?>
            </div>
