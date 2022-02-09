@@ -6,6 +6,7 @@ use Core\Model\DateTrait;
 use Core\Model\HydrateTrait;
 use Core\Model\MagicTrait;
 use DateTime;
+use Exception;
 
 class CommentEntity
 {
@@ -22,6 +23,10 @@ class CommentEntity
 	private string $author;
 	private DateTime $createdAt;
 	private bool $approved;
+
+	const ERROR_CONTENT = COMMENT_ERROR_CONTENT;
+	const ERROR_AUTHOR = COMMENT_ERROR_AUTHOR;
+	const ERROR_AUTHOR_LENGTH = COMMENT_ERROR_AUTHOR_LENGTH;
 
 	public function getId(): ?int
 	{
@@ -41,7 +46,13 @@ class CommentEntity
 
 	public function setContent(string $content): self
 	{
-		$this -> content = $content;
+		if(is_string($content) && !empty($content)) {
+			$this->content = $content;
+		} else {
+			throw new Exception(self::ERROR_CONTENT);
+		}
+
+		$this->content = $content;
 		return $this;
 	}
 
@@ -63,7 +74,17 @@ class CommentEntity
 
 	public function setAuthor(string $author): self
 	{
-		$this -> author = $author;
+		if(is_string($author) && !empty($author)) {
+			if(strlen($author) < 20) {
+				$this->author = $author;
+			} else {
+				throw new Exception(self::ERROR_AUTHOR_LENGTH);
+			}
+		} else {
+			throw new Exception(self::ERROR_AUTHOR);
+		}
+
+		$this->author = strtolower($author);
 		return $this;
 	}
 

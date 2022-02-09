@@ -10,7 +10,6 @@ use App\Manager\Postmanager;
 use Core\Model\FormModel;
 use Core\Security\CsrfToken;
 use Core\Security\Security;
-use DateTime;
 use Exception;
 
 class PostController extends AppController
@@ -91,7 +90,7 @@ class PostController extends AppController
 		}
 
 		// Données du formulaire en json
-//		echo json_encode(['form' => $form]);
+		echo json_encode(['form' => $form]);
 
 	}
 
