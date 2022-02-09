@@ -26,7 +26,7 @@ CREATE TABLE blog_magali.user (
                       validation_token VARCHAR(255) NOT NULL,
                       user_confirmed BOOLEAN DEFAULT false NOT NULL,
                       admin_validated BOOLEAN DEFAULT false NOT NULL,
-                      created_at DATETIME NOT NULL,
+                      created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
                       role INT NOT NULL,
                       PRIMARY KEY (id)
 );
@@ -55,7 +55,7 @@ CREATE TABLE blog_magali.post (
                       author INT NOT NULL,
                       published BOOLEAN DEFAULT false NOT NULL,
                       published_at DATETIME,
-                      created_at DATETIME NOT NULL,
+                      created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
                       updated_at DATETIME,
                       PRIMARY KEY (id)
 );
@@ -66,7 +66,7 @@ CREATE TABLE blog_magali.comment (
                          content TEXT NOT NULL,
                          post INT NOT NULL,
                          author VARCHAR(50) NOT NULL,
-                         created_at DATETIME NOT NULL,
+                         created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ,
                          approved BOOLEAN DEFAULT false NOT NULL,
                          PRIMARY KEY (id)
 );
