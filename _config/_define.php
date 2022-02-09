@@ -1,20 +1,29 @@
 <?php
 
+use Core\Config;
+
 define('ROOT', dirname(__DIR__));
-define('APP', ROOT . '/app');
-define('VIEWS', APP . '/views');
-define('CORE', ROOT . '/core');
-define('CONFIG', ROOT . '/_config');
-define('PUB', ROOT . '/public');
 
-define('CONFIG_DB', CONFIG . '/_database.php');
-define('TEMPLATE','base');
+require '../core/Config.php';
+require '../_config/define/_directory.php';
+require '../_config/define/_security.php';
+require '../_config/define/_message.php';
+require '../_config/define/_assets.php';
+require '../_config/define/_route.php';
 
-// Nom des token Csrf
-define('SESSION', ['contact']);
+$array = [
+	'directory',
+	'token',
+	'contactConst',
+	'securityConst',
+	'emailConst',
+	'assets',
+	'routes'
+];
 
-// Définition des messages
-require_once ROOT . '/_config/_message.php';
+$const = [];
+foreach ($array as $v) {
+	$const = array_merge($const, ${$v});
+}
 
-// Définition des routes
-require_once ROOT . '/_config/_route.php';
+Config::define($const);
