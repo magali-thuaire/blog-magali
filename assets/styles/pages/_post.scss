@@ -1,0 +1,55 @@
+#blog {
+  background-image: url('../build/images/blog.jpeg');
+  background-attachment: fixed;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 80vh;
+}
+
+.blog-post {
+  box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);
+  &__container {
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+    background-color: $background-color-post;
+  }
+  &__title {
+    & > a {
+      color: $primary-color !important;
+      text-transform: uppercase;
+    }
+  }
+  &__header {
+    background: white;
+    border-radius: .25rem;
+  }
+  &__comment {
+    background: darken($primary-color, 10);
+    color: white;
+    &-icon {
+      font-size: 1.5em;
+      margin-right: 0.5em;
+    }
+  }
+}
+
+#post {
+  .blog-post {
+    &__container {
+      background-color: rgba($primary-color, 0.7);
+    }
+    &__title {
+      & > a {
+        color: white !important;
+      }
+    }
+  }
+}
+
+#comments {
+  background-color: $background-color;
+  h2 {
+    color: $primary-color;
+  }
+}

@@ -10,7 +10,7 @@
             </div>
             <div class="col blog-post__body">
                 <h3 class="blog-post__title">
-                    <a class="text-decoration-none link-dark stretched-link" href="<?= R_POST . $post->id ?>">
+                    <a class="text-decoration-none" href="<?= R_POST . $post->id ?>">
                         <?= $post->title ?>
                     </a>
                 </h3>
