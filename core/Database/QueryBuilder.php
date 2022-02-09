@@ -6,11 +6,13 @@ class QueryBuilder
 {
 
 	private $select = [];
+	private $count = [];
 	private $where = [];
 	private $from;
 	private $innerJoin = [];
 	private $leftJoin = [];
 	private $orderBy = [];
+	private $groupBy = [];
 
 	public function select() {
 		$this->select = func_get_args();
@@ -61,6 +63,13 @@ class QueryBuilder
 		return $this;
 	}
 
+	public function addCount($count, $alias, $groupBy)
+	{
+		$this->select[] = 'count(' . $count . ') as ' .$alias;
+		$this->groupBy[] = $groupBy;
+		return $this;
+	}
+
 	public function getQuery()
 	{
 
@@ -86,7 +95,12 @@ class QueryBuilder
 			$statement .= ' WHERE ' . implode(' AND ', $this->where);
 		}
 
-		// where
+		// groupBy
+		if(!empty($this->groupBy)) {
+			$statement .= ' GROUP BY ' . implode(', ', $this->groupBy);
+		}
+
+		// orderBy
 		if(!empty($this->orderBy)) {
 			$statement .= ' ORDER BY ' . implode(', ', $this->orderBy);
 		}
