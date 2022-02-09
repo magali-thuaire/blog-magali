@@ -17,6 +17,7 @@ $array = [
 	'contactConst',
 	'securityConst',
 	'emailConst',
+	'commentConst',
 	'assets',
 	'routes'
 ];

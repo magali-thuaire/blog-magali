@@ -10,6 +10,17 @@ use Core\Manager\EntityManager;
 
 class PostManager extends EntityManager
 {
+	/**
+	 * Retourne un article identifié à partir de son id
+	 */
+	public function findOneById(int $id): ?PostEntity
+	{
+		$statement = $this->getOneById()->getQuery();
+		$postData = $this->prepare($statement, [':id' => $id], true);
+		$post = $this->createPost($postData);
+
+		return $post;
+	}
 
 	/**
 	 * Retourne tous les articles publiés, ordonné du plus récent au plus ancien
@@ -37,7 +48,7 @@ class PostManager extends EntityManager
 	public function findOneByIdWithCommentsApproved(int $id): ?PostEntity
 	{
 		$statement = $this->getOneByIdWithCommentsApproved()->getQuery();
-		$postsData = $this->prepare($statement, [':id' => $id], false);
+		$postsData = $this->prepare($statement, [':id' => $id], false, false);
 
 		if($postsData) {
 			$post = $this->createPostWithAuthor(current($postsData));
@@ -119,27 +130,11 @@ class PostManager extends EntityManager
 	private function createPostWithAuthor($data): PostEntity {
 
 		// Création de l'auteur
-		$authorData = [
-			'username' 			=> $data->username
-		];
-		$author = new UserEntity();
-		$author->hydrate($authorData);
+		$author = $this->createAuthor($data);
 
 		// Création de l'article
-		$postData = [
-			'id' 				=> $data->id,
-			'title' 			=> $data->title,
-			'header' 			=> $data->header,
-			'content' 			=> $data->content,
-			'author' 			=> $author,
-			'published' 		=> $data->published,
-			'publishedAt' 		=> $data->publishedAt,
-			'createdAt' 		=> $data->createdAt,
-			'updatedAt' 		=> $data->updatedAt,
-		];
-		
-		$post = new PostEntity();
-		$post->hydrate($postData);
+		$post = $this->createPost($data);
+		$post->setAuthor($author);
 
 		// Création des commentaires
 		if(property_exists($data, 'comments')) {
@@ -151,6 +146,42 @@ class PostManager extends EntityManager
 		
 		return $post;
 
+	}
+
+	/** Retourne un objet Post
+	 *
+	 */
+	private function createPost($data): PostEntity {
+		// Création de l'article
+		$postData = [
+			'id' 				=> $data->id,
+			'title' 			=> $data->title,
+			'header' 			=> $data->header,
+			'content' 			=> $data->content,
+			'published' 		=> $data->published,
+			'publishedAt' 		=> $data->publishedAt,
+			'createdAt' 		=> $data->createdAt,
+			'updatedAt' 		=> $data->updatedAt,
+		];
+
+		$post = new PostEntity();
+		$post->hydrate($postData);
+
+		return $post;
+	}
+
+	/** Retourne un objet User qui est l'auteur de l'article
+	 *
+	 */
+	private function createAuthor($data): UserEntity
+	{
+		$authorData = [
+			'username' 			=> $data->username
+		];
+		$author = new UserEntity();
+		$author->hydrate($authorData);
+
+		return $author;
 	}
 
 	/**

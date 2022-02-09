@@ -18,3 +18,7 @@ $emailConst = [
 	'EMAIL_DEFAULT_SUBJECT' 	=> 'Message de votre blog',
 	'EMAIL_DEFAULT_TO' 			=> 'magali.thuaire@gmail.com'
 ];
+
+$commentConst = [
+	'COMMENT_SUCCESS_MESSAGE' => 'Votre commentaire a bien été enregistré, il sera visible après validation'
+];
