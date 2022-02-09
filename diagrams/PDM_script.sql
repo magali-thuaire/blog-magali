@@ -65,7 +65,7 @@ CREATE TABLE blog_magali.comment (
                          id INT AUTO_INCREMENT NOT NULL,
                          content TEXT NOT NULL,
                          post INT NOT NULL,
-                         author INT NOT NULL,
+                         author VARCHAR(50) NOT NULL,
                          created_at DATETIME NOT NULL,
                          approved BOOLEAN DEFAULT false NOT NULL,
                          PRIMARY KEY (id)
@@ -96,12 +96,6 @@ ALTER TABLE blog_magali.user_admin ADD CONSTRAINT user_user_admin_valid_fk1
         ON DELETE NO ACTION
         ON UPDATE NO ACTION;
 
-ALTER TABLE blog_magali.comment ADD CONSTRAINT user_comment_fk
-    FOREIGN KEY (author)
-        REFERENCES blog_magali.user (id)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION;
-
 ALTER TABLE blog_magali.comment ADD CONSTRAINT post_comment_fk
     FOREIGN KEY (post)
         REFERENCES blog_magali.post (id)
@@ -124,6 +118,8 @@ INSERT INTO blog_magali.comment (content, post, author, created_at, approved)
 VALUES
     ('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid assumenda aut culpa cupiditate est nam
     perspiciatis reiciendis rem sed voluptatibus! Amet architecto, aut autem cum facere officia quis reiciendis
-    voluptatem?', 1, 1, '2022-02-08 09:00:00', 1),
-    ('Aliquid commodi, distinctio dolorum eaque eius illo impedit, ipsam mollitia, nulla perferendis placeat qui!', 1, 1, '2022-02-08 09:00:00', 1),
-    ('Perspiciatis sit suscipit tempore velit voluptatibus! Corporis dolorum facilis quas soluta voluptas voluptatem.', 1, 1, '2022-02-08 09:00:00', 0);
+    voluptatem?', 1, 'olivier', '2022-02-08 09:00:00', true),
+    ('Aliquid commodi, distinctio dolorum eaque eius illo impedit, ipsam mollitia, nulla perferendis placeat qui!', 1, 'charlotte', '2022-02-08 09:00:00', true),
+    ('Perspiciatis sit suscipit tempore velit voluptatibus! Corporis dolorum facilis quas soluta voluptas voluptatem.', 6, 'alexine', '2022-02-08 09:00:00', false),
+    ('Assumenda at culpa delectus et facilis molestias officia provident saepe tenetur?', 6, 'alexine', '2022-02-08 09:00:00', true)
+;

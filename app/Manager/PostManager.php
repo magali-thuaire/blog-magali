@@ -108,10 +108,8 @@ class PostManager extends EntityManager
 	private function getOneByIdWithCommentsApproved(): QueryBuilder
 	{
 		return $this->getOneById()
-			->addSelect('c.content as commentContent, c.created_at as commentCreatedAt')
-			->addSelect('ca.username as commentAuthor')
+			->addSelect('c.content as commentContent, c.created_at as commentCreatedAt, c.author as commentAuthor')
 			->leftJoin('comment', 'c', 'c.post = p.id', 'c.approved IS TRUE')
-			->leftJoin('user', 'ca', 'ca.id = c.author')
 		;
 	}
 
@@ -165,16 +163,10 @@ class PostManager extends EntityManager
 			// Si l'article dispose de commentaires
 			if ($data->commentAuthor) {
 
-				$commentAuthorData = [
-					'username' => $data->commentAuthor
-				];
-				$author = new UserEntity();
-				$author->hydrate($commentAuthorData);
-
 				$commentData = [
 					'content' => $data->commentContent,
 					'createdAt' => $data->commentCreatedAt,
-					'author' => $author,
+					'author' => $data->commentAuthor,
 				];
 
 				$comment = new CommentEntity();

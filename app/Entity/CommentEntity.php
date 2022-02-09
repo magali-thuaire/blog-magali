@@ -19,7 +19,7 @@ class CommentEntity
 	private int $id;
 	private string $content;
 	private PostEntity $post;
-	private UserEntity $author;
+	private string $author;
 	private DateTime $createdAt;
 	private bool $approved;
 
@@ -56,12 +56,12 @@ class CommentEntity
 		return $this;
 	}
 
-	public function getAuthor(): ?UserEntity
+	public function getAuthor(): ?string
 	{
 		return $this -> author;
 	}
 
-	public function setAuthor(UserEntity $author): self
+	public function setAuthor(string $author): self
 	{
 		$this -> author = $author;
 		return $this;
