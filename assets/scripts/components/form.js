@@ -1,13 +1,24 @@
 import $ from "jquery";
 import alert from "./alert";
 
-export default function(target) {
+export default function(target, callbackForm = []) {
     //Formulaire de contact : transmission des données
     $(target).submit(function (e) {
 
         e.preventDefault();
         let url = $(target).data('href');
         let formData = $(target).serialize();
+        let messageTarget = '.js-form-message';
+        let button = 'button[type=submit]';
+        let alertCallback = [buttonEnabled];
+
+        if (callbackForm.length !== 0) {
+            alertCallback = alertCallback.concat(callbackForm);
+        }
+
+        function buttonEnabled() {
+            $(button).removeAttr('disabled');
+        }
 
         $.ajax({
             method: "POST",
@@ -16,8 +27,6 @@ export default function(target) {
             dataType: 'json',
             success: function (result) {
 
-                let messageTarget = '.js-form-message';
-                let button = 'button[type=submit]';
                 alert(messageTarget, true);
 
                 if(result.form.error) {
@@ -35,12 +44,8 @@ export default function(target) {
 
                     $(button).attr('disabled','disabled');
 
-                    function buttonEnabled() {
-                        $(button).removeAttr('disabled');
-                    }
-
                     $(target)[0].reset();
-                    alert(messageTarget, false, buttonEnabled);
+                    alert(messageTarget, false, alertCallback);
                 }
             }
         });

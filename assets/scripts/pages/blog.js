@@ -3,5 +3,9 @@ import alert from '../components/alert';
 import form from '../components/form';
 
 $(document).ready(function() {
-    form("#commentForm");
+   form("#commentForm", [collapseForm]);
 });
+
+function collapseForm() {
+    $("#collapseExample").removeClass('show');
+}

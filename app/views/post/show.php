@@ -1,12 +1,9 @@
-<!-- Header-->
-<header id="blog" class="bg-dark"></header>
-
 <!-- Post section-->
-<section id="post">
+<section id="post" class="mt-5">
     <article class="py-5 blog-post">
         <div class="container blog-post__container p-4 my-2">
             <div class="row">
-                <div class="col-4 col-md-2 text-center blog-post__aside">
+                <div class="col-12 col-md-2 text-center blog-post__aside">
                     <div class="mt-3">
                         <p class="mb-0">Publié le</p>
                         <p><?= $post->publishedAtFormatted ?></p>
@@ -19,11 +16,12 @@
 							<?= $post->title ?>
                         </a>
                     </h3>
-                    <div class="p-3 blog-post__header">
+                    <div class="p-3 blog-post__content">
                         <i class="fa fa-quote-left mr-5"></i>
                         <p><?= $post->header ?></p>
+                        <p><?= $post->content ?></p>
                     </div>
-                    <div class="text-end text-muted text fst-italic mt-2">
+                    <div class="text-end text-black-50 fst-italic mt-2">
                         <small>
 							<?php
 							if($post->updatedAtFormatted):
@@ -40,16 +38,16 @@
 
 <!-- Comments section-->
 <section id="comments" class="p-5">
-    <div class="px-4 pb-4 d-flex justify-content-between align-items-center">
+    <div class="px-4 pb-4 d-md-flex justify-content-between align-items-center">
         <h2>
             Commentaires
 			<?= '(' . count($post->comments) . ')' ?>
         </h2>
-        <a class="btn btn-primary-color" data-bs-toggle="collapse" href="#collapseExample" role="button">Déposer un commentaire</a>
+        <a class="btn btn-primary-color mt-3 mt-md-0" data-bs-toggle="collapse" href="#collapseExample" role="button">Déposer un commentaire</a>
     </div>
-    <div class="collapse" id="collapseExample">
+    <div class="collapse mb-5" id="collapseExample">
         <div class="d-flex justify-content-center">
-            <form id="commentForm" class="col-6 mt-4" data-href="<?= './index.php?p=post&id=' . $post->id?>" method="POST">
+            <form id="commentForm" class="col-10 col-md-6 mt-4" data-href="<?= './index.php?p=post&id=' . $post->id?>" method="POST">
                 <div class="alert d-flex align-items-center js-form-message d-none" role="alert"></div>
                 <div class="form-group mb-4">
                     <input class="form-control mb-4" type="text" name="author" value="<?= ($form->error == true) ? $form->author : '' ?>" placeholder="Nom d'utilisateur*" required>
