@@ -1,7 +1,7 @@
 import $ from 'jquery';
 import alert from '../components/alert';
-import form from "../components/form";
+import form from '../components/form';
 
 $(document).ready(function() {
-    form("#contactForm");
+    form("#commentForm");
 });

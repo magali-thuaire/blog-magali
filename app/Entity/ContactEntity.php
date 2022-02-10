@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Core\Model\HydrateTrait;
 use DateTime;
+use Exception;
 
 class ContactEntity
 {
@@ -33,7 +34,7 @@ class ContactEntity
 		if(is_string($name) && !empty($name)) {
 			$this->name = $name;
 		} else {
-			throw new \Exception(self::ERROR_NAME);
+			throw new Exception(self::ERROR_NAME);
 		}
 
 		return $this;
@@ -50,7 +51,7 @@ class ContactEntity
 		if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			$this->email = $email;
 		} else {
-			throw new \Exception(self::ERROR_EMAIL);
+			throw new Exception(self::ERROR_EMAIL);
 		}
 		return $this;
 	}
@@ -65,7 +66,7 @@ class ContactEntity
 		if(is_string($message) && !empty($message)) {
 			$this->message = $message;
 		} else {
-			throw new \Exception(self::ERROR_MESSAGE);
+			throw new Exception(self::ERROR_MESSAGE);
 		}
 
 		return $this;

@@ -49,8 +49,8 @@ class App
 
 	public static function loadSession()
 	{
-		session_unset();
 		foreach (SESSION as $sessionKey) {
+			unset($_SESSION[$sessionKey]);
 			$_SESSION[$sessionKey] = uniqid(rand(), true);
 		}
 	}

@@ -15,23 +15,40 @@ if(isset($_GET['p']) && !empty($_GET['p'])) {
 	$p = 'homepage';
 }
 
-if($p === 'homepage') {
-	App::loadSession();
-	$controller = new HomeController();
-	$controller->index();
-} elseif($p === 'contact' && $_POST) {
-	$controller = new HomeController();
-	$controller->newContact();
-} elseif($p === 'post') {
-	$controller = new PostController();
-	// Demande de visualisation d'un article
-	if(isset($_GET['id']) && !empty($_GET['id'])) {
-		$id = Security::checkInput($_GET['id']);
-		$controller->show($id);
-	} else {
-		// Demande de visualisation des articles
+switch(true) {
+	case $p === 'homepage':
+		App::loadSession();
+		$controller = new HomeController();
 		$controller->index();
-	}
-} else {
-	App::not_found();
+		break;
+	case $p === 'contact' && $_POST:
+		$controller = new HomeController();
+		$controller->newContact();
+		break;
+	case $p === 'post':
+		$controller = new PostController();
+		switch(true) {
+			// Demande de la page d'un article
+			case isset($_GET['id']) && !empty($_GET['id']):
+				$id = Security::checkInput($_GET['id']);
+				switch($_POST) {
+					// Demande d'ajout d'un commentaire
+					case true:
+						$controller->newComment($id);
+						break;
+					// Visualisation d'un article
+					default:
+						App::loadSession();
+						$controller->show($id);
+				}
+				break;
+			// Demande de visualisation des articles
+			default:
+				App::loadSession();
+				$controller->index();
+		}
+		break;
+	default:
+		App::not_found();
 }
+

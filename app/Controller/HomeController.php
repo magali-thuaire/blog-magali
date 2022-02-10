@@ -26,7 +26,7 @@ class HomeController extends AppController
 	public function index()
 	{
 		// Initialisation du formulaire
-		$form = $this->initFormContact();
+		$form = $this->initContactForm();
 
 		// Affichage de la vue
 		$this->render('homepage.index', [
@@ -47,7 +47,7 @@ class HomeController extends AppController
 
 		// Initialisation du formulaire avec données nettoyées
 		$form = $this
-			->initFormContact()
+			->initContactForm()
 			->hydrate($formData);
 
 		if($form->isTokenValid($token)) {
@@ -86,7 +86,7 @@ class HomeController extends AppController
 
 	}
 
-	private function initFormContact()
+	private function initContactForm()
 	{
 		return new FormModel('contact');
 	}

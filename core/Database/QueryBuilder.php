@@ -13,6 +13,8 @@ class QueryBuilder
 	private $leftJoin = [];
 	private $orderBy = [];
 	private $groupBy = [];
+	private $insert;
+	private $columns = [];
 
 	public function select() {
 		$this->select = func_get_args();
@@ -70,6 +72,18 @@ class QueryBuilder
 		return $this;
 	}
 
+	public function insert($table)
+	{
+		$this->insert = $table;
+		return $this;
+	}
+
+	public function values($values)
+	{
+		$this->columns = func_get_args();
+		return $this;
+	}
+
 	public function getQuery()
 	{
 
@@ -88,6 +102,16 @@ class QueryBuilder
 			foreach ($this->leftJoin as $leftJoin) {
 				$statement .= ' LEFT JOIN ' . $leftJoin;
 			}
+		}
+
+		// insert
+		if(!empty($this->insert)) {
+			$statement = 'INSERT INTO ' . $this->insert;
+		}
+
+		// values
+		if(!empty($this->columns)) {
+			$statement .= ' (' . implode(', ', $this->columns) . ')' . ' VALUES (' . ':' . implode(', :', $this->columns) . ')';
 		}
 
 		// where

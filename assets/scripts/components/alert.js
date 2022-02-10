@@ -9,6 +9,7 @@ export default function(target, init = false, callback = null) {
 
             if(callback) {
                 callback();
+                $("#collapseExample").removeClass('show');
             }
         });
     }

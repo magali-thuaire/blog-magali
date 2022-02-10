@@ -44,7 +44,7 @@ class Database {
     }
 
     // Récupère les résultats de la requête SQL sous forme d'objet spécifique
-    public function prepare($statement, $attributs, $class = '', $one = false) {
+    public function prepare($statement, $attributs, $one = false, $class = '') {
         $req = $this->getPDO()->prepare($statement);
         $req->execute($attributs);
         // Mise en forme de la récupération : objet spécifique

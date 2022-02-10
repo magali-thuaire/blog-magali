@@ -36,7 +36,7 @@ class EntityManager
 		return $this->db->query($statement, $fetchClass);
 	}
 
-	public function prepare($statement, $attributs, $fetchClass = false, $one = false) {
+	public function prepare($statement, $attributs, $one = false, $fetchClass = false) {
 
 		if($fetchClass) {
 			$fetchClass =  str_replace('Manager', 'Entity', get_class($this));
@@ -44,7 +44,7 @@ class EntityManager
 			$fetchClass = '';
 		}
 
-		return $this->db->prepare($statement, $attributs, $fetchClass, $one);
+		return $this->db->prepare($statement, $attributs, $one, $fetchClass);
 
 	}
 

@@ -84,7 +84,7 @@
                     <input type="hidden" name="csrfToken" value="<?= $form->csrfToken ?>">
                     <div class="row">
                         <div class="col-lg-12 text-center">
-                            <button class="btn btn-primary-color" name="submit" type="submit" value="Envoyer votre message">
+                            <button class="btn btn-primary-color" name="submit" type="submit">
                                 Envoyer votre message
                             </button>
                         </div>
