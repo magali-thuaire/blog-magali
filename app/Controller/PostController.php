@@ -41,7 +41,7 @@ class PostController extends AppController
 		$post = $this->postManager->findOneByIdWithCommentsApproved($id);
 
 		if(!$post) {
-			App::not_found();
+			return App::not_found();
 		}
 
 		$form = $this->initCommentForm();
@@ -60,7 +60,6 @@ class PostController extends AppController
 		// Récupération du token
 		$token = new CsrfToken('comment', $formData['csrfToken']);
 		unset($formData['csrfToken']);
-
 		// Initialisation du formulaire avec données nettoyées
 		$form = $this
 			->initCommentForm()
@@ -72,7 +71,14 @@ class PostController extends AppController
 				$comment = new CommentEntity();
 				$comment->hydrate($formData);
 				$post = $this->postManager->findOneByIdWithCommentsApproved($id);
-				$comment->setPost($post);
+
+				// Si l'article existe bien
+				if($post) {
+					$comment->setPost($post);
+				} else {
+					$form->setError(COMMENT_ERROR_ARTICLE);
+				}
+
 			} catch (Exception $e) {
 				$form->setError($e->getMessage());
 			}
