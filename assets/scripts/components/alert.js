@@ -1,6 +1,6 @@
 import $ from 'jquery';
 
-export default function(target, init = false, callback = null) {
+export default function(target, init = false, callback = []) {
     if(init === true) {
         $(target).css('opacity', '100');
     } else {
@@ -8,8 +8,9 @@ export default function(target, init = false, callback = null) {
             $(target).addClass('d-none');
 
             if(callback) {
-                callback();
-                $("#collapseExample").removeClass('show');
+                callback.forEach((callbackElement) => {
+                   callbackElement();
+                })
             }
         });
     }

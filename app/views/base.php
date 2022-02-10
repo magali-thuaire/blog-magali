@@ -10,7 +10,7 @@
         <script type="text/javascript" src="<?= JS ?>" defer></script>
         <script></script>
     </head>
-    <body data-bs-spy="scroll" data-bs-target="#navbarNav" class="d-flex flex-column h-100">
+    <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
             <!-- Navigation-->
             <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">

@@ -6,6 +6,7 @@ $(document).ready(function() {
     let nav = ['post'];
     let navLinks = $('.navbar-nav').find('.nav-link');
     navLinks.first().removeClass('active');
+    let navLinksWithoutAnchor = [];
 
     nav.forEach(function(value) {
         if (url.href.includes(value)) {
@@ -25,14 +26,29 @@ $(document).ready(function() {
         let $a = $(a);
         let href = $a.attr('href');
 
-        // check is anchor href starts with page's URI
+        // vérifie que le href contient une ancre
         if (href.includes('#')) {
-            // remove URI from href
+            // recupère l'ancre
             href = href.substr(href.indexOf('#'));
-            // update anchors HREF with new one
+            // créer un attribut data-bs-target avec l'ancre
             $a.attr('data-bs-target',href);
         } else {
-            $a.attr('href','#');
+            navLinksWithoutAnchor.push($a);
+            // ajout une ancre vide
+            $a.attr('href',href + '#');
+            $a.attr('data-bs-target','#');
         }
     });
+
+    // Initialisation du scrollspy
+    if(!url.href.includes('p=post')) {
+        new bootstrap.ScrollSpy(document.body, {
+                target: '#navbarNav'
+        });
+        // supprimer les ancres vides
+        navLinksWithoutAnchor.forEach((element) => {
+                let deleteAnchor = element.attr('href').replace('#', '');
+                element.attr('href', deleteAnchor);
+            })
+    }
 });
