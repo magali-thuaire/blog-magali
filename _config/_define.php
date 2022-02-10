@@ -19,7 +19,8 @@ $array = [
 	'emailConst',
 	'commentConst',
 	'assets',
-	'routes'
+	'routes',
+	'form'
 ];
 
 $const = [];

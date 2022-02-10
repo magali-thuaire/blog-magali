@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="col-lg-6 mt-lg-1">
-                <form id="contactForm" data-href="<?= './index.php?p=contact'?>" method="POST">
+                <form id="contactForm" data-href="<?= F_CONTACT ?>" method="POST">
                     <div class="alert d-flex align-items-center js-form-message d-none" role="alert"></div>
                     <div class="row">
                         <div class="col-lg-12">
