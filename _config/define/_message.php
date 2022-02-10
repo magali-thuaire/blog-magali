@@ -23,6 +23,7 @@ $commentConst = [
 	'COMMENT_ERROR'					=> 'Veuillez renseigner un %s valide',
 	'COMMENT_ERROR_AUTHOR'	  		=> ['COMMENT_ERROR' => 'nom d\'utilisateur'],
 	'COMMENT_ERROR_CONTENT'	  		=> ['COMMENT_ERROR' => 'message'],
+	'COMMENT_ERROR_ARTICLE'	  		=> 'Cet article n\'existe pas',
 	'COMMENT_ERROR_AUTHOR_LENGTH'	=> ['COMMENT_ERROR' => 'nom d\'utilisateur'],
 	'COMMENT_SUCCESS_MESSAGE' 		=> 'Votre commentaire a bien été enregistré, il sera visible après validation'
 ];
