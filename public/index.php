@@ -29,7 +29,7 @@ switch(true) {
 		$controller = new PostController();
 		switch(true) {
 			// Demande de la page d'un article
-			case isset($_GET['id']) && !empty($_GET['id']):
+			case isset($_GET['id']) && !empty($_GET['id'] && is_int($_GET['id'])):
 				$id = Security::checkInput($_GET['id']);
 				switch($_POST) {
 					// Demande d'ajout d'un commentaire
