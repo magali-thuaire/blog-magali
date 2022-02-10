@@ -49,6 +49,6 @@ switch(true) {
 		}
 		break;
 	default:
-		App::not_found();
+		App::notFound();
 }
 

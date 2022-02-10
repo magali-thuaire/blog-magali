@@ -41,7 +41,7 @@ class PostController extends AppController
 		$post = $this->postManager->findOneByIdWithCommentsApproved($id);
 
 		if(!$post) {
-			return App::not_found();
+			return App::notFound();
 		}
 
 		$form = $this->initCommentForm();
