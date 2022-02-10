@@ -16,6 +16,7 @@ $array = [
 	'token',
 	'contactConst',
 	'securityConst',
+	'userConst',
 	'emailConst',
 	'commentConst',
 	'assets',

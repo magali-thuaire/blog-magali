@@ -5,6 +5,7 @@ namespace App\Entity;
 use Core\Model\HydrateTrait;
 use Core\Model\MagicTrait;
 use DateTime;
+use Exception;
 
 class UserEntity
 {
@@ -22,6 +23,9 @@ class UserEntity
 	private bool $adminValidated;
 	private DateTime $createdAt;
 	private string $role;
+
+	const ERROR_LOGIN = USER_ERROR_LOGIN;
+	const ERROR_PASSWORD = USER_ERROR_PASSWORD;
 
 	public function getId(): ?int
 	{
@@ -63,7 +67,12 @@ class UserEntity
 
 	public function setLogin(?string $login): self
 	{
-		$this->login = $login;
+
+		if(is_string($login) && !empty($login)) {
+			$this->login = $login;
+		} else {
+			throw new Exception(self::ERROR_LOGIN);
+		}
 		return $this;
 	}
 
@@ -74,7 +83,11 @@ class UserEntity
 
 	public function setPassword(?string $password): self
 	{
-		$this->password = $password;
+		if(is_string($password) && !empty($password)) {
+			$this->password = $password;
+		} else {
+			throw new Exception(self::ERROR_PASSWORD);
+		}
 		return $this;
 	}
 
@@ -139,6 +152,11 @@ class UserEntity
 	{
 		$this->role = $role;
 		return $this;
+	}
+
+	public function isUserValidated(): bool
+	{
+		return $this->isUserConfirmed() && $this->isAdminValidated();
 	}
 
 	public function __toString(): string

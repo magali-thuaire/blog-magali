@@ -23,11 +23,19 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
-                        <div class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <a class="nav-link" href="<?= R_HOMEPAGE ?>">Accueil</a>
-                            <a class="nav-link" href="<?= R_BLOG ?>">Mon blog</a>
-                            <a class="nav-link" href="<?= R_CONTACT ?>">Contact</a>
-                        </div>
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item"><a class="nav-link" href="<?= R_HOMEPAGE ?>">Accueil</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="<?= R_BLOG ?>">Mon blog</a></li>
+                            <li class="nav-item"><a class="nav-link" href="<?= R_CONTACT ?>">Contact</a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i></a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
+                                    <a class="nav-link dropdown-item" href="<?= R_LOGIN ?>">Se connecter</a>
+                                    <a class="nav-link dropdown-item" href="">S'inscrire</a>
+                                </ul>
+                            </li>
+
+                        </ul>
                     </div>
                 </div>
             </nav>

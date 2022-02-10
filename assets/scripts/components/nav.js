@@ -3,22 +3,15 @@ import $ from "jquery";
 $(document).ready(function() {
 
     let url = new URL(window.location.href);
-    let nav = ['post'];
-    let navLinks = $('.navbar-nav').find('.nav-link');
-    navLinks.first().removeClass('active');
+    let $navLinks = $('.navbar-nav').find('.nav-link');
+    $navLinks.first().removeClass('active');
+    let $dropdown = $('.navbar-nav').find('.nav-link.dropdown-toggle');
     let navLinksWithoutAnchor = [];
 
-    nav.forEach(function(value) {
-        if (url.href.includes(value)) {
-            navLinks.removeClass('active').attr('href', function (i, val) {
-                if (val.includes(value)) {
-                    $(this).addClass('active');
-                }
-            });
-        } else {
-            navLinks.first().addClass('active');
-        }
-    });
+    let excludedPages =  [
+        'p=post',
+        'p=login'
+    ];
 
     // Find all anchors
     $('nav').find('a.nav-link[href]').each(function(i,a){
@@ -41,14 +34,26 @@ $(document).ready(function() {
     });
 
     // Initialisation du scrollspy
-    if(!url.href.includes('p=post')) {
+    if(!excludedPages.some(el => url.href.includes(el))) {
         new bootstrap.ScrollSpy(document.body, {
-                target: '#navbarNav'
+            target: '#navbarNav'
         });
-        // supprimer les ancres vides
-        navLinksWithoutAnchor.forEach((element) => {
-                let deleteAnchor = element.attr('href').replace('#', '');
-                element.attr('href', deleteAnchor);
+    } else {
+        $navLinks.attr('href', function(k,v) {
+            excludedPages.forEach((element) => {
+                if(v.includes(element) && url.href.includes(element)) {
+                    $(this).addClass('active');
+                }
             })
+        })
+    }
+    // supprimer les ancres vides
+    navLinksWithoutAnchor.forEach((element) => {
+        let deleteAnchor = element.attr('href').replace('#', '');
+        element.attr('href', deleteAnchor);
+    })
+
+    if(url.href.includes('login')) {
+        $dropdown.addClass('active');
     }
 });

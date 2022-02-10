@@ -43,7 +43,6 @@ class EntityManager
 		} else {
 			$fetchClass = '';
 		}
-
 		return $this->db->prepare($statement, $attributs, $one, $fetchClass);
 
 	}

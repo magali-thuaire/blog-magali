@@ -11,3 +11,29 @@
         }
     }
 }
+
+.dropdown {
+    &-menu {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+    &-item {
+        &:hover {
+            color:  white !important;
+            background-color: $primary-color;
+        }
+        &.active {
+            color:  white !important;
+            background-color: $primary-color;
+        }
+    }
+    &-toggle {
+        &.active {
+            color: $primary-color !important;
+        }
+        &::after {
+            color: white;
+
+        }
+    }
+}
+

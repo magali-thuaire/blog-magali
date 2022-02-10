@@ -1,6 +1,7 @@
 @import '~bootstrap';
 
 @import 'utils/variables';
+@import 'base/base';
 @import 'components/button';
 @import 'components/icon';
 @import 'components/scrolltop';
@@ -9,3 +10,4 @@
 @import 'pages/404';
 @import 'pages/homepage';
 @import 'pages/post';
+@import 'pages/login';
