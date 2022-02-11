@@ -45,11 +45,10 @@ body {
   transform: translate(-50%, -50%);
   font-size: 186px;
   font-weight: 200;
-  margin: 0px;
+  margin: 0;
   background: linear-gradient(130deg, $color404, $primary-color);
   color:transparent;
   -webkit-background-clip: text;
-  background-clip: text;
   text-transform: uppercase;
 }
 
@@ -58,7 +57,7 @@ body {
   font-size: 33px;
   font-weight: 200;
   text-transform: uppercase;
-  margin-top: 0px;
+  margin-top: 0;
   margin-bottom: 25px;
   letter-spacing: 3px;
 }
@@ -68,7 +67,7 @@ body {
   font-family: 'Kanit', sans-serif;
   font-size: 16px;
   font-weight: 200;
-  margin-top: 0px;
+  margin-top: 0;
   margin-bottom: 25px;
 }
 
