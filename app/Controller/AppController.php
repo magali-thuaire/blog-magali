@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App;
+use App\App;
 use Core\Controller\CoreController;
 
 class AppController extends CoreController

@@ -1,5 +1,6 @@
 <?php
 
+use App\App;
 use App\Controller\PostController;
 use App\Controller\HomeController as HomeController;
 use App\Controller\SecurityController;
