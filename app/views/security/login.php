@@ -9,7 +9,7 @@
                     <label>Email</label>
                 </div>
                 <div class="form-floating mt-2">
-                    <input type="password" name="password" class="form-control" placeholder="mot de passe" value="" required>
+                    <input type="password" name="plainPassword" class="form-control" placeholder="mot de passe" value="" required>
                     <label>Mot de passe</label>
                 </div>
 <!--                TODO: Remember me-->

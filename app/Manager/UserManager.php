@@ -22,8 +22,9 @@ class UserManager extends EntityManager
 		if(!($user->isUserValidated())) {
 			throw new Exception(USER_ERROR_VALIDATION);
 		}
+		
 		// Vérification du mot de passe
-		if(!$this->isPasswordValid($user, $userData->getPassword())) {
+		if(!$this->isPasswordValid($user, $userData->plainPassword)) {
 			throw new Exception(INVALID_CREDENTIALS);
 		};
 
@@ -46,7 +47,7 @@ class UserManager extends EntityManager
 		}
 
 		// Création de l'utilisateur
-		if(!($userId = $this->createUser($userData))) {
+		if(!($this->createUser($userData))) {
 			throw new Exception(USER_ERROR_EXISTS);
 		}
 
@@ -71,10 +72,9 @@ class UserManager extends EntityManager
 		;
 	}
 
-	//TODO: cryptage du mot de passe
 	private function isPasswordValid($user, $plainPassword): bool
 	{
-		return $plainPassword === $user->getPassword();
+		return password_verify($plainPassword, $user->getPassword());
 	}
 
 	private function createUserSession(UserEntity $user) {
