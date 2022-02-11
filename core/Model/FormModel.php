@@ -2,67 +2,68 @@
 
 namespace Core\Model;
 
-use Core\Model\HydrateTrait;
-use Core\Model\MagicTrait;
 use Core\Security\CsrfToken;
+use Exception;
 
 class FormModel
 {
-	use HydrateTrait;
-	use MagicTrait;
+    use HydrateTrait;
+    use MagicTrait;
 
-	public $error;
-	public $success;
-	public CsrfToken $csrfToken;
+    public $error;
+    public $success;
+    public CsrfToken $csrfToken;
 
-	const INVALID_SESSION_TOKEN = 'Invalid Session token';
+    private const INVALID_SESSION_TOKEN = 'Invalid Session token';
 
-	public function __construct(string $keyToken = null)
-	{
-		if($keyToken && in_array($keyToken, SESSION)) {
-			$csrfToken = new CsrfToken($keyToken, $_SESSION[$keyToken]);
-			$this->setCsrfToken($csrfToken);
-		} else {
-			throw new \Exception(self::INVALID_SESSION_TOKEN);
-		}
-	}
+    /**
+     * @throws Exception
+     */
+    public function __construct(string $keyToken = null)
+    {
+        if ($keyToken && in_array($keyToken, SESSION)) {
+            $csrfToken = new CsrfToken($keyToken, $_SESSION[$keyToken]);
+            $this->setCsrfToken($csrfToken);
+        } else {
+            throw new Exception(self::INVALID_SESSION_TOKEN);
+        }
+    }
 
-	public function getError(): ?string
-	{
-		return $this->error;
-	}
+    public function getError(): ?string
+    {
+        return $this->error;
+    }
 
-	public function setError($error): self
-	{
-		$this->error = $error;
-		return $this;
-	}
+    public function setError($error): self
+    {
+        $this->error = $error;
+        return $this;
+    }
 
-	public function getSuccess(): ?string
-	{
-		return $this->success;
-	}
+    public function getSuccess(): ?string
+    {
+        return $this->success;
+    }
 
-	public function setSuccess($success): self
-	{
-		$this->success = $success;
-		return $this;
-	}
+    public function setSuccess($success): self
+    {
+        $this->success = $success;
+        return $this;
+    }
 
-	public function getCsrfToken(): ?CsrfToken
-	{
-		return $this->csrfToken;
-	}
+    public function getCsrfToken(): ?CsrfToken
+    {
+        return $this->csrfToken;
+    }
 
-	public function setCsrfToken(CsrfToken $csrfToken): self
-	{
-		$this->csrfToken = $csrfToken;
-		return $this;
-	}
+    public function setCsrfToken(CsrfToken $csrfToken): self
+    {
+        $this->csrfToken = $csrfToken;
+        return $this;
+    }
 
-	public function isTokenValid(CsrfToken $csrfToken): bool
-	{
-		return $csrfToken == $this->csrfToken;
-	}
-
+    public function isTokenValid(CsrfToken $csrfToken): bool
+    {
+        return $csrfToken === $this->csrfToken;
+    }
 }

@@ -1,7 +1,6 @@
 import $ from 'jquery';
-import alert from '../components/alert';
 import form from "../components/form";
 
-$(document).ready(function() {
+$(document).ready(function () {
     form("#contactForm");
 });

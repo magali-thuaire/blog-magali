@@ -12,133 +12,132 @@ use Exception;
 
 class SecurityController extends AppController
 {
+    private UserManager $userManager;
 
-	private UserManager $userManager;
+    public function __construct()
+    {
+        $this->userManager = $this->getManager('user');
+    }
 
-	public function __construct()
-	{
-		$this->userManager = $this->getManager('user');
-	}
+    public function login()
+    {
+        // Initialisation du formulaire
+        $form = $this->initLoginForm();
 
-	public function login()
-	{
-		// Initialisation du formulaire
-		$form = $this->initLoginForm();
+        // Affichage de la vue
+        $this->render('security.login', [
+            'form' => $form
+        ]);
+    }
 
-		// Affichage de la vue
-		$this->render('security.login', [
-			'form' => $form
-		]);
-	}
+    /**
+     * @throws Exception
+     */
+    public function authenticate()
+    {
+        // Nettoyage des données postées
+        $formData = Security::checkInputs($_POST);
 
-	public function authenticate()
-	{
-		// Nettoyage des données postées
-		$formData = Security::checkInputs($_POST);
+        // Récupération du token
+        $token = new CsrfToken('authenticate', $formData['csrfToken']);
+        unset($formData['csrfToken']);
 
-		// Récupération du token
-		$token = new CsrfToken('authenticate', $formData['csrfToken']);
-		unset($formData['csrfToken']);
+        // Initialisation du formulaire avec données nettoyées
+        $form = $this
+            ->initLoginForm()
+            ->hydrate($formData);
 
-		// Initialisation du formulaire avec données nettoyées
-		$form = $this
-			->initLoginForm()
-			->hydrate($formData);
+        if ($form->isTokenValid($token)) {
+            try {
+                // Création de l'utilisateur
+                $user = new UserEntity();
+                $user->hydrate($formData);
+                $this->userManager->login($user);
+            } catch (Exception $e) {
+                $form->setError($e->getMessage());
+            }
 
-		if($form->isTokenValid($token)) {
+            if (!$form->getError()) {
+                header('Location: ' . R_BLOG);
+            }
+        } else {
+            throw new Exception('Invalid CSRF token');
+        }
 
-			try {
-				// Création de l'utilisateur
-				$user = new UserEntity();
-				$user->hydrate($formData);
-				$this->userManager->login($user);
-			} catch (Exception $e) {
-				$form->setError($e->getMessage());
-			}
+        // Affichage de la vue
+        $this->render('security.login', [
+            'form' => $form
+        ]);
+    }
 
-			if(!$form->getError()) {
-				header('Location: ' . R_BLOG);
-			}
+    public function signin()
+    {
+        // Initialisation du formulaire
+        $form = $this->initRegisterForm();
 
-		} else {
-			throw new Exception('Invalid CSRF token');
-		}
+        // Affichage de la vue
+        $this->render('security.register', [
+            'form' => $form
+        ]);
+    }
 
-		// Affichage de la vue
-		$this->render('security.login', [
-			'form' => $form
-		]);
-	}
+    /**
+     * @throws Exception
+     */
+    public function register()
+    {
+        // Nettoyage des données postées
+        $formData = Security::checkInputs($_POST);
 
-	public function signin()
-	{
-		// Initialisation du formulaire
-		$form = $this->initRegisterForm();
+        // Récupération du token
+        $token = new CsrfToken('register', $formData['csrfToken']);
+        unset($formData['csrfToken']);
 
-		// Affichage de la vue
-		$this->render('security.register', [
-			'form' => $form
-		]);
-	}
+        // Initialisation du formulaire avec données nettoyées
+        $form = $this
+            ->initRegisterForm()
+            ->hydrate($formData);
 
-	public function register()
-	{
-		// Nettoyage des données postées
-		$formData = Security::checkInputs($_POST);
+        if ($form->isTokenValid($token)) {
+            try {
+                // Création de l'utilisateur
+                $user = new UserEntity();
+                $user->hydrate($formData);
+                $this->userManager->register($user);
+            } catch (Exception $e) {
+                $form->setError($e->getMessage());
+            }
 
-		// Récupération du token
-		$token = new CsrfToken('register', $formData['csrfToken']);
-		unset($formData['csrfToken']);
+            if (!$form->getError()) {
+                // Envoi du mail
+                $email = new UserMail();
+                $send_email = $email->sendEmail($user);
 
-		// Initialisation du formulaire avec données nettoyées
-		$form = $this
-			->initRegisterForm()
-			->hydrate($formData);
+                if ($send_email) {
+                    // Message de réussite
+                    $form->setSuccess(USER_SUCCESS_REGISTRATION);
+                } else {
+                    // Message d'erreur
+                    $form->setError(ERROR_SEND_SEMAIL);
+                }
+            }
+        } else {
+            throw new Exception('Invalid CSRF token');
+        }
 
-		if($form->isTokenValid($token)) {
+        // Affichage de la vue
+        $this->render('security.register', [
+            'form' => $form
+        ]);
+    }
 
-			try {
-				// Création de l'utilisateur
-				$user = new UserEntity();
-				$user->hydrate($formData);
-				$this->userManager->register($user);
+    private function initLoginForm(): FormModel
+    {
+        return new FormModel('authenticate');
+    }
 
-			} catch (Exception $e) {
-				$form->setError($e->getMessage());
-			}
-
-			if(!$form->getError()) {
-				// Envoi du mail
-				$email = new UserMail();
-				$send_email = $email->sendEmail($user);
-
-				if ($send_email) {
-					// Message de réussite
-					$form->setSuccess(USER_SUCCESS_REGISTRATION);
-				} else {
-					// Message d'erreur
-					$form->setError(ERROR_SEND_SEMAIL);
-				}
-			}
-
-		} else {
-			throw new Exception('Invalid CSRF token');
-		}
-
-		// Affichage de la vue
-		$this->render('security.register', [
-			'form' => $form
-		]);
-		
-	}
-
-	private function initLoginForm()
-	{
-		return new FormModel('authenticate');
-	}
-
-	private function initRegisterForm()
-	{
-		return new FormModel('register');
-	}
+    private function initRegisterForm(): FormModel
+    {
+        return new FormModel('register');
+    }
 }

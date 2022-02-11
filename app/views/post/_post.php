@@ -21,8 +21,8 @@
                 <div class="text-end text-muted text fst-italic mt-2">
                     <small>
                         <?php
-                        if($post->updatedAtFormatted):
-                            echo 'Dernière mise à jour : '. $post->updatedAtFormatted;
+                        if ($post->updatedAtFormatted) :
+                            echo 'Dernière mise à jour : ' . $post->updatedAtFormatted;
                         endif;
                         ?>
                     </small>

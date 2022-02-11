@@ -1,11 +1,12 @@
 import $ from "jquery";
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     let url = new URL(window.location.href);
-    let $navLinks = $('.navbar-nav').find('.nav-link');
+    let $navbarNav = $('.navbar-nav');
+    let $navLinks = $navbarNav.find('.nav-link');
     $navLinks.first().removeClass('active');
-    let $dropdown = $('.navbar-nav').find('.nav-link.dropdown-toggle');
+    let $dropdown = $navbarNav.find('.nav-link.dropdown-toggle');
     let navLinksWithoutAnchor = [];
 
     let excludedPages =  [
@@ -14,7 +15,7 @@ $(document).ready(function() {
     ];
 
     // Find all anchors
-    $('nav').find('a.nav-link[href]').each(function(i,a){
+    $('nav').find('a.nav-link[href]').each(function (i,a) {
 
         let $a = $(a);
         let href = $a.attr('href');
@@ -34,14 +35,14 @@ $(document).ready(function() {
     });
 
     // Initialisation du scrollspy
-    if(!excludedPages.some(el => url.href.includes(el))) {
+    if (!excludedPages.some(el => url.href.includes(el))) {
         new bootstrap.ScrollSpy(document.body, {
             target: '#navbarNav'
         });
     } else {
-        $navLinks.attr('href', function(k,v) {
+        $navLinks.attr('href', function (k,v) {
             excludedPages.forEach((element) => {
-                if(v.includes(element) && url.href.includes(element)) {
+                if (v.includes(element) && url.href.includes(element)) {
                     $(this).addClass('active');
                 }
             })
@@ -53,7 +54,7 @@ $(document).ready(function() {
         element.attr('href', deleteAnchor);
     })
 
-    if(url.href.includes('login') || url.href.includes('register')) {
+    if (url.href.includes('login') || url.href.includes('register')) {
         $dropdown.addClass('active');
     }
 });
