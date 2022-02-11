@@ -5,11 +5,11 @@
             <div class="alert alert-danger d-flex align-items-center mb-2 <?php if($form->error == true): echo '';  else: echo 'd-none'; endif; ?>" role="alert"><?= ($form->error == true) ? $form->error : '' ?></div>
 	        <form id="loginForm" action="<?= F_LOGIN ?>" method="POST">
                 <div class="form-floating">
-                    <input type="text" name="login" class="form-control" placeholder="nom d'utilisateur" value="<?= ($form->error == true) ? $form->login : '' ?>" required>
-                    <label>Nom d'utilisateur</label>
+                    <input type="email" name="email" class="form-control" placeholder="email" value="<?= ($form->error == true) ? $form->email : '' ?>" required>
+                    <label>Email</label>
                 </div>
-                <div class="form-floating">
-                    <input type="password" name="password" class="form-control" placeholder="mot de passe" value="<?= ($form->error == true) ? $form->password : '' ?>" required>
+                <div class="form-floating mt-2">
+                    <input type="password" name="password" class="form-control" placeholder="mot de passe" value="" required>
                     <label>Mot de passe</label>
                 </div>
 <!--                TODO: Remember me-->

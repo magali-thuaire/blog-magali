@@ -5,7 +5,7 @@ namespace App\Model;
 use App\Entity\ContactEntity;
 use Core\Model\Mail;
 
-class AppMail extends Mail
+class ContactMail extends Mail
 {
 
 	public function sendEmail(ContactEntity $contact, $to = EMAIL_DEFAULT_TO, $subject = EMAIL_DEFAULT_SUBJECT): bool

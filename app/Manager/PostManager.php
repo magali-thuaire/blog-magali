@@ -70,7 +70,6 @@ class PostManager extends EntityManager
 			->addSelect('a.username')
 			->from('post', 'p')
 			->innerJoin('user', 'a', 'p.author = a.id')
-			->innerJoin('role', 'r', 'r.id = a.role')
 		;
 	}
 

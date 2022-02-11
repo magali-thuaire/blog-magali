@@ -15,6 +15,7 @@ if(isset($_GET['p']) && !empty($_GET['p'])) {
 } else {
 	$p = 'homepage';
 }
+
 switch(true) {
 	// Demande de la page d'accueil
 	case $p === 'homepage':
@@ -53,13 +54,24 @@ switch(true) {
 	case $p === 'login':
 		$controller = new SecurityController();
 		switch($_POST) {
-			// TODO: Validation du formulaire de connexion
 			case true:
 				$controller->authenticate();
 				break;
 			default:
 				App::loadSession();
 				$controller->login();
+		}
+		break;
+	case $p === 'register':
+		$controller = new SecurityController();
+		switch($_POST) {
+			// TODO: Validation du formulaire d'inscription
+			case true:
+				$controller->register();
+				break;
+			default:
+				App::loadSession();
+				$controller->signin();
 		}
 		break;
 	default:

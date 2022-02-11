@@ -11,7 +11,7 @@
                             <i class="fas fa-file-download icon"></i>
                             Mon CV
                         </a>
-                        <a class="btn btn-outline-light btn-hover-primary-color btn-lg px-4" href="<?= R_CONTACT ?>">
+                        <a class="btn btn-outline-primary-color btn-hover-primary-color btn-lg px-4" href="<?= R_CONTACT ?>">
                             <i class="fas fa-paper-plane icon"></i>
                             Me contacter
                         </a>

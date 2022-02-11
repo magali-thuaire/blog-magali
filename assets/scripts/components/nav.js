@@ -53,7 +53,7 @@ $(document).ready(function() {
         element.attr('href', deleteAnchor);
     })
 
-    if(url.href.includes('login')) {
+    if(url.href.includes('login') || url.href.includes('register')) {
         $dropdown.addClass('active');
     }
 });

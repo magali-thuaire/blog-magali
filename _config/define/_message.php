@@ -12,7 +12,8 @@ $contactConst = [
 $emailConst = [
 	'ERROR_SEND_SEMAIL' 		=> 'Problème lors de l\'envoi de l\'email',
 	'EMAIL_DEFAULT_SUBJECT' 	=> 'Message de votre blog',
-	'EMAIL_DEFAULT_TO' 			=> 'magali.thuaire@gmail.com'
+	'EMAIL_DEFAULT_TO' 			=> 'magali.thuaire@gmail.com',
+	'EMAIL_DEFAULT_FROM' 		=> 'magali.thuaire@gmail.com'
 ];
 
 $commentConst = [
@@ -20,6 +21,6 @@ $commentConst = [
 	'COMMENT_ERROR_AUTHOR'	  		=> ['COMMENT_ERROR' => 'nom d\'utilisateur'],
 	'COMMENT_ERROR_CONTENT'	  		=> ['COMMENT_ERROR' => 'message'],
 	'COMMENT_ERROR_ARTICLE'	  		=> 'Cet article n\'existe pas',
-	'COMMENT_ERROR_AUTHOR_LENGTH'	=> ['COMMENT_ERROR' => 'nom d\'utilisateur'],
+	'COMMENT_ERROR_AUTHOR_LENGTH'	=> 'Veuillez renseigner un nom d\'utilisateur de moins de 50 caractères',
 	'COMMENT_SUCCESS_MESSAGE' 		=> 'Votre commentaire a bien été enregistré, il sera visible après validation'
 ];

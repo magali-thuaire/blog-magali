@@ -24,8 +24,14 @@ class UserEntity
 	private DateTime $createdAt;
 	private string $role;
 
+	const ROLE_USER = 'ROLE_USER';
+	const ROLE_ADMIN = 'ROLE_ADMIN';
+	const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
 	const ERROR_LOGIN = USER_ERROR_LOGIN;
+	const ERROR_EMAIL = USER_ERROR_EMAIL;
 	const ERROR_PASSWORD = USER_ERROR_PASSWORD;
+	const ERROR_USERNAME_LENGTH = USER_ERROR_AUTHOR_LENGTH;
+	const ERROR_USERNAME = USER_ERROR_USERNAME;
 
 	public function getId(): ?int
 	{
@@ -45,7 +51,15 @@ class UserEntity
 
 	public function setUsername(?string $username): self
 	{
-		$this->username = $username;
+		if(is_string($username) && !empty($username)) {
+			if(strlen($username) < 20) {
+				$this->username = $username;
+			} else {
+				throw new Exception(self::ERROR_USERNAME_LENGTH);
+			}
+		} else {
+			throw new Exception(self::ERROR_USERNAME);
+		}
 		return $this;
 	}
 
@@ -56,7 +70,11 @@ class UserEntity
 
 	public function setEmail(?string $email): self
 	{
-		$this->email = $email;
+		if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			$this->email = $email;
+		} else {
+			throw new Exception(self::ERROR_EMAIL);
+		}
 		return $this;
 	}
 
@@ -67,8 +85,7 @@ class UserEntity
 
 	public function setLogin(?string $login): self
 	{
-
-		if(is_string($login) && !empty($login)) {
+		if(filter_var($login, FILTER_VALIDATE_EMAIL)) {
 			$this->login = $login;
 		} else {
 			throw new Exception(self::ERROR_LOGIN);
@@ -84,7 +101,7 @@ class UserEntity
 	public function setPassword(?string $password): self
 	{
 		if(is_string($password) && !empty($password)) {
-			$this->password = $password;
+			$this->password = sha1($password);
 		} else {
 			throw new Exception(self::ERROR_PASSWORD);
 		}
@@ -96,9 +113,9 @@ class UserEntity
 		return $this->validationToken;
 	}
 
-	public function setValidationToken(?string $validationToken): self
+	public function setValidationToken(): self
 	{
-		$this->validationToken = $validationToken;
+		$this->validationToken = uniqid(rand(), true);
 		return $this;
 	}
 
@@ -150,7 +167,11 @@ class UserEntity
 
 	public function setRole(?string $role): self
 	{
-		$this->role = $role;
+		if(is_null($role)) {
+			$this->role = self::ROLE_USER;
+		} else {
+			$this->role = $role;
+		}
 		return $this;
 	}
 

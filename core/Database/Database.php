@@ -63,11 +63,16 @@ class Database {
     }
 
     // Récupère les résultats de la requête SQL sous forme d'objet spécifique
-    public function execute($statement, $attributs) {
+    public function execute($statement, $attributs, $insert = false) {
         $req = $this->getPDO()->prepare($statement);
         $req->execute($attributs);
-        return $req->rowCount();
+        if($insert) {
+            return $this->getPDO()->lastInsertId();
+        } else {
+            return $req->rowCount();
+        }
     }
+
 }
 
 ?>
