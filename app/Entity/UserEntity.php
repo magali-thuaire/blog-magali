@@ -6,6 +6,7 @@ use Core\Model\HydrateTrait;
 use Core\Model\MagicTrait;
 use DateTime;
 use Exception;
+use function Couchbase\passthruDecoder;
 
 class UserEntity
 {
@@ -101,7 +102,7 @@ class UserEntity
 	public function setPassword(?string $password): self
 	{
 		if(is_string($password) && !empty($password)) {
-			$this->password = sha1($password);
+			$this->password = password_hash($password, PASSWORD_BCRYPT);
 		} else {
 			throw new Exception(self::ERROR_PASSWORD);
 		}
