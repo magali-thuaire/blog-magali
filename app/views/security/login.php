@@ -2,8 +2,12 @@
     <div>
         <div class="login card col-10 col-md-6 col-lg-5 p-5 mt-5 mx-auto justify-content-center">
             <h1 class="login__title text-center mb-4" >Se connecter</h1>
-            <div class="alert alert-danger d-flex align-items-center mb-2 <?php if($form->error == true): echo '';  else: echo 'd-none'; endif; ?>" role="alert"><?= ($form->error == true) ? $form->error : '' ?></div>
-	        <form id="loginForm" action="<?= F_LOGIN ?>" method="POST">
+            <div class="alert alert-danger d-flex align-items-center mb-2 <?php if ($form->error == true) :
+                echo '';
+                                                                          else :
+                                                                              echo 'd-none';
+                                                                          endif; ?>" role="alert"><?= ($form->error == true) ? $form->error : '' ?></div>
+            <form id="loginForm" action="<?= F_LOGIN ?>" method="POST">
                 <div class="form-floating">
                     <input type="email" name="email" class="form-control" placeholder="email" value="<?= ($form->error == true) ? $form->email : '' ?>" required>
                     <label>Email</label>
@@ -24,7 +28,7 @@
                         Se connecter
                     </button>
                 </div>
-	        </form>
+            </form>
         </div>
     </div>
 </section>

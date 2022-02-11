@@ -8,7 +8,6 @@
         <link rel="icon" type="image/x-icon" href="<?= FAVICON ?>" />
         <link href="<?= CSS ?>" rel="stylesheet" type="text/css">
         <script type="text/javascript" src="<?= JS ?>" defer></script>
-        <script></script>
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">

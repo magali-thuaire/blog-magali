@@ -2,8 +2,16 @@
     <div>
         <div class="register card col-10 col-md-6 col-lg-5 p-5 mt-3 mx-auto justify-content-center">
             <h1 class="register__title text-center mb-4" >S'inscrire</h1>
-            <div class="alert alert-danger d-flex align-items-center mb-2 <?php if($form->error == true): echo '';  else: echo 'd-none'; endif; ?>" role="alert"><?= ($form->error == true) ? $form->error : '' ?></div>
-            <div class="alert alert-success d-flex align-items-center mb-2 <?php if($form->success == true): echo '';  else: echo 'd-none'; endif; ?>" role="alert"><?= ($form->success == true) ? $form->success : '' ?></div>
+            <div class="alert alert-danger d-flex align-items-center mb-2 <?php if ($form->error == true) :
+                echo '';
+                                                                          else :
+                                                                              echo 'd-none';
+                                                                          endif; ?>" role="alert"><?= ($form->error == true) ? $form->error : '' ?></div>
+            <div class="alert alert-success d-flex align-items-center mb-2 <?php if ($form->success == true) :
+                echo '';
+                                                                           else :
+                                                                               echo 'd-none';
+                                                                           endif; ?>" role="alert"><?= ($form->success == true) ? $form->success : '' ?></div>
             <form id="registerForm" action="<?= F_REGISTER ?>" method="POST">
                 <div class="form-floating">
                     <input type="text" name="username" class="form-control" placeholder="nom d'utilisateur" value="<?= ($form->error == true) ? $form->username : '' ?>" required>
@@ -27,7 +35,7 @@
                         S'inscrire
                     </button>
                 </div>
-	        </form>
+            </form>
         </div>
     </div>
 </section>

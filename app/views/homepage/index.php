@@ -36,7 +36,7 @@
             <div class="col-lg-6 mb-4 mb-lg-0">
                 <div class="card shadow border-0">
                     <div class="card-body p-4">
-                        <a class="text-decoration-none link-dark stretched-link d-flex justify-content-start" href="#!">
+                        <a class="text-decoration-none link-dark stretched-link d-flex justify-content-start" href="#">
                             <div class="icon-social">
                                 <i class="fab fa-linkedin-in"></i>
                             </div>

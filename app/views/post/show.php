@@ -13,7 +13,7 @@
                 <div class="col blog-post__body">
                     <h3 class="blog-post__title">
                         <a class="text-decoration-none" href="<?= R_POST . $post->id ?>">
-							<?= $post->title ?>
+                            <?= $post->title ?>
                         </a>
                     </h3>
                     <div class="p-3 blog-post__content">
@@ -23,11 +23,11 @@
                     </div>
                     <div class="text-end text-black-50 fst-italic mt-2">
                         <small>
-							<?php
-							if($post->updatedAtFormatted):
-								echo 'Dernière mise à jour : '. $post->updatedAtFormatted;
-							endif;
-							?>
+                            <?php
+                            if ($post->updatedAtFormatted) :
+                                echo 'Dernière mise à jour : ' . $post->updatedAtFormatted;
+                            endif;
+                            ?>
                         </small>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
     <div class="px-4 pb-4 d-md-flex justify-content-between align-items-center">
         <h2>
             Commentaires
-			<?= '(' . count($post->comments) . ')' ?>
+            <?= '(' . count($post->comments) . ')' ?>
         </h2>
         <a class="btn btn-primary-color mt-3 mt-md-0" data-bs-toggle="collapse" href="#collapseExample" role="button">Déposer un commentaire</a>
     </div>
@@ -64,9 +64,9 @@
     </div>
 
     <?php
-    if(count($post->comments)):
-        foreach ($post->comments as $comment):
-			require VIEWS . '/post/_comment.php';
+    if (count($post->comments)) :
+        foreach ($post->comments as $comment) :
+            require VIEWS . '/post/_comment.php';
         endforeach;
     endif;
     ?>
