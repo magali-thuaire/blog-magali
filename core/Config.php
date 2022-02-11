@@ -36,6 +36,8 @@ class Config
 
 	public static function define(array $const) {
 
+        define('ROOT', dirname(__DIR__));
+
 		array_map(function($key, $value) {
 			if($value instanceof stdClass) {
 				$value = (array) $value;
