@@ -47,7 +47,7 @@
     </div>
     <div class="collapse mb-5" id="collapseExample">
         <div class="d-flex justify-content-center">
-            <form id="commentForm" class="col-10 col-md-6 mt-4" data-href="<?= './index.php?p=post&id=' . $post->id?>" method="POST">
+            <form id="commentForm" class="col-10 col-md-6 mt-4" data-href="<?= F_COMMENT . $post->id?>" method="POST">
                 <div class="alert d-flex align-items-center js-form-message d-none" role="alert"></div>
                 <div class="form-group mb-4">
                     <input class="form-control mb-4" type="text" name="author" value="<?= ($form->error == true) ? $form->author : '' ?>" placeholder="Nom d'utilisateur*" required>

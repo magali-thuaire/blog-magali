@@ -16,10 +16,12 @@ $array = [
 	'token',
 	'contactConst',
 	'securityConst',
+	'userConst',
 	'emailConst',
 	'commentConst',
 	'assets',
-	'routes'
+	'routes',
+	'form'
 ];
 
 $const = [];

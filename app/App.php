@@ -55,7 +55,7 @@ class App
 		}
 	}
 
-	public static function not_found()
+	public static function notFound()
 	{
 		header('HTTP/1.0 404');
 		require_once VIEWS . '/security/404.html';

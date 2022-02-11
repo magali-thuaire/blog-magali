@@ -9,10 +9,6 @@ $contactConst = [
 	'CONTACT_SUCCESS_MESSAGE' 	=> 'Votre message a bien été envoyé',
 ];
 
-$securityConst = [
-	'INVALID_CSRF_TOKEN' 		=> 'CSRF token invalide',
-];
-
 $emailConst = [
 	'ERROR_SEND_SEMAIL' 		=> 'Problème lors de l\'envoi de l\'email',
 	'EMAIL_DEFAULT_SUBJECT' 	=> 'Message de votre blog',
