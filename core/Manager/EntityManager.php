@@ -21,8 +21,8 @@ class EntityManager
 		}
 	}
 
-	public function execute($statement, $attributs) {
-		return $this->db->execute($statement, $attributs);
+	public function execute($statement, $attributs, $insert = false) {
+		return $this->db->execute($statement, $attributs, $insert);
 	}
 
 	public function query($statement, $fetchClass = false) {

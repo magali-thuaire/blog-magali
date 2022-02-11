@@ -31,7 +31,7 @@
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i></a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
                                     <a class="nav-link dropdown-item" href="<?= R_LOGIN ?>">Se connecter</a>
-                                    <a class="nav-link dropdown-item" href="">S'inscrire</a>
+                                    <a class="nav-link dropdown-item" href="<?= R_REGISTER ?>">S'inscrire</a>
                                 </ul>
                             </li>
 

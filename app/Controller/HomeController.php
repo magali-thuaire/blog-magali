@@ -5,7 +5,7 @@ namespace App\Controller;
 use App;
 use App\Entity\ContactEntity;
 use App\Manager\ContactManager;
-use App\Model\AppMail;
+use App\Model\ContactMail;
 use Core\Model\FormModel;
 use Core\Security\CsrfToken;
 use Core\Security\Security;
@@ -63,7 +63,7 @@ class HomeController extends AppController
 			if(!$form->getError()) {
 
 				// Envoi du mail
-				$email = new AppMail();
+				$email = new ContactMail();
 				$send_email = $email->sendEmail($contact);
 
 				if ($send_email) {
