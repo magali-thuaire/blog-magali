@@ -7,8 +7,8 @@ use Core\Controller\CoreController;
 
 class AppController extends CoreController
 {
-    protected $template = TEMPLATE;
-    protected $viewPath = VIEWS;
+    protected string $template = TEMPLATE;
+    protected string $viewPath = VIEWS;
 
     protected function getManager($entity)
     {

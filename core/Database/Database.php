@@ -1,17 +1,19 @@
 <?php
+
 namespace Core\Database;
 
-use \PDO;
+use PDO;
 
-class Database {
-
-    private $db_name;
-    private $db_user;
-    private $db_pass;
-    private $db_host;
+class Database
+{
+    private string $db_name;
+    private string $db_user;
+    private string $db_pass;
+    private string $db_host;
     private $pdo;
 
-    public function __construct($db_name, $db_host, $db_user, $db_pass) {
+    public function __construct($db_name, $db_host, $db_user, $db_pass)
+    {
         $this->db_name = $db_name;
         $this->db_host = $db_host;
         $this->db_user = $db_user;
@@ -19,9 +21,10 @@ class Database {
     }
 
     // Récupère la connexion à la base de données
-    private function getPDO() {
+    private function getPDO(): PDO
+    {
         // Si la connexion à la base de données n'a jamais été demandée
-        if($this->pdo === null) {
+        if ($this->pdo === null) {
             // Initialisation d'une nouvelle connexion
             $pdo = new PDO('mysql:dbname=' . $this->db_name . ';charset=UTF8;host=' . $this->db_host, $this->db_user, $this->db_pass);
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -30,13 +33,13 @@ class Database {
 
         // Retour de la connexion
         return $this->pdo;
-
     }
 
     // Récupère les résultats de la requête SQL sous forme d'objet spécifique
-    public function query($statement, $class = '') {
+    public function query($statement, $class = ''): bool|array
+    {
         $req = $this->getPDO()->query($statement);
-        if(!empty($class)) {
+        if (!empty($class)) {
             return $req->fetchAll(PDO::FETCH_CLASS, $class);
         } else {
             return $req->fetchAll(PDO::FETCH_OBJ);
@@ -44,17 +47,18 @@ class Database {
     }
 
     // Récupère les résultats de la requête SQL sous forme d'objet spécifique
-    public function prepare($statement, $attributs, $one = false, $class = '') {
+    public function prepare($statement, $attributs, $one = false, $class = '')
+    {
         $req = $this->getPDO()->prepare($statement);
         $req->execute($attributs);
         // Mise en forme de la récupération : objet spécifique
-        if(!empty($class)) {
+        if (!empty($class)) {
             $req->setFetchMode(PDO::FETCH_CLASS, $class);
         } else {
             $req->setFetchMode(PDO::FETCH_OBJ);
         }
         // Si un seul élément est demandé : récupère un seul élément
-        if($one) {
+        if ($one) {
             return $req->fetch();
             // Sinon : récupère tous les éléments
         } else {
@@ -63,16 +67,14 @@ class Database {
     }
 
     // Récupère les résultats de la requête SQL sous forme d'objet spécifique
-    public function execute($statement, $attributs, $insert = false) {
+    public function execute($statement, $attributs, $insert = false): int|string
+    {
         $req = $this->getPDO()->prepare($statement);
         $req->execute($attributs);
-        if($insert) {
+        if ($insert) {
             return $this->getPDO()->lastInsertId();
         } else {
             return $req->rowCount();
         }
     }
-
 }
-
-?>
