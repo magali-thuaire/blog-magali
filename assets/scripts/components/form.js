@@ -1,7 +1,7 @@
 import $ from "jquery";
 import alert from "./alert";
 
-export default function(target, callbackForm = []) {
+export default function (target, callbackForm = []) {
     //Formulaire de contact : transmission des données
     $(target).submit(function (e) {
 
@@ -16,7 +16,8 @@ export default function(target, callbackForm = []) {
             alertCallback = alertCallback.concat(callbackForm);
         }
 
-        function buttonEnabled() {
+        function buttonEnabled()
+        {
             $(button).removeAttr('disabled');
         }
 
@@ -29,7 +30,7 @@ export default function(target, callbackForm = []) {
 
                 alert(messageTarget, true);
 
-                if(result.form.error) {
+                if (result.form.error) {
                     $(target)
                         .find(messageTarget)
                         .addClass('alert-danger')

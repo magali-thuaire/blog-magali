@@ -1,15 +1,14 @@
 import $ from "jquery";
 
-$(document).ready(function() {
+$(document).ready(function () {
 
     // Scroll top
-    // var target = $('#header').offset().top;
-    var target = 100;
+    let target = 100;
 
     $('#scroll-top').hide();
 
-    $(window).scroll(function() {
-        var scrollTop = $(window).scrollTop();
+    $(window).scroll(function () {
+        let scrollTop = $(window).scrollTop();
         if (scrollTop > target) {
             $('#scroll-top').fadeIn();
         } else {
