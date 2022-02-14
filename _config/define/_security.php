@@ -1,10 +1,5 @@
 <?php
 
-// Nom des token Csrf
-$token = [
-    'SESSION' => ['contact', 'comment', 'authenticate', 'register']
-];
-
 $securityConst = [
     'INVALID_CSRF_TOKEN'        => 'CSRF token invalide',
 ];

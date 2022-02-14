@@ -2,14 +2,16 @@
 
 namespace Core\Manager;
 
-use Core\Database\Database;
+use Core\Database\DatabaseInterface;
+use Core\Database\QueryBuilder;
+use JetBrains\PhpStorm\Pure;
 
 class EntityManager
 {
-    protected string|array|false $entity;
-    protected Database $db;
+    protected string $entity;
+    protected DatabaseInterface $db;
 
-    public function __construct(Database $db)
+    public function __construct(DatabaseInterface $db)
     {
         $this->db = $db;
 
@@ -18,12 +20,17 @@ class EntityManager
         $this->entity = str_replace('Manager', 'Entity', $class_name);
     }
 
-    public function execute($statement, $attributs, $insert = false): int|string
+    #[Pure] protected function createQueryBuilder(): QueryBuilder
+    {
+        return new QueryBuilder();
+    }
+
+    protected function execute($statement, $attributs, $insert = false): int|string
     {
         return $this->db->execute($statement, $attributs, $insert);
     }
 
-    public function query($statement, $fetchClass = false): bool|array
+    protected function query($statement, $fetchClass = false): bool|array
     {
 
         if ($fetchClass) {
@@ -35,7 +42,7 @@ class EntityManager
         return $this->db->query($statement, $fetchClass);
     }
 
-    public function prepare($statement, $attributs, $one = false, $fetchClass = false)
+    protected function prepare($statement, $attributs, $one = false, $fetchClass = false)
     {
 
         if ($fetchClass) {

@@ -52,7 +52,7 @@ class UserManager extends EntityManager
         }
 
         // Création de l'utilisateur
-        if (!($this->createUser($userData))) {
+        if (!($this->new($userData))) {
             throw new Exception(USER_ERROR_EXISTS);
         }
 
@@ -67,8 +67,7 @@ class UserManager extends EntityManager
 
     private function getUserByEmail(): QueryBuilder
     {
-        $qb = new QueryBuilder();
-        return $qb
+        return $this->createQueryBuilder()
                 ->select('u.id', 'u.username', 'u.email', 'u.password')
                 ->addSelect('u.user_confirmed as userConfirmed', 'u.admin_validated as adminValidated')
                 ->from('user', 'u')
@@ -116,16 +115,15 @@ class UserManager extends EntityManager
     /**
      * @throws Exception
      */
-    private function createUser(UserEntity $user): bool
+    private function new(UserEntity $user): bool
     {
-
         $user
             ->setPassword($user->plainPassword)
             ->setValidationToken()
             ->setRole(null)
         ;
 
-        $statement = $this->newUser()->getQuery();
+        $statement = $this->createUser()->getQuery();
         $attributs = [
             ':username'         => $user->getUsername(),
             ':email'            => $user->getEmail(),
@@ -137,10 +135,9 @@ class UserManager extends EntityManager
         return $this->execute($statement, $attributs);
     }
 
-    private function newUser(): QueryBuilder
+    private function createUser(): QueryBuilder
     {
-        $qb = new QueryBuilder();
-        return $qb
+        return $this->createQueryBuilder()
                 ->insert('user')
                 ->values('username', 'email', 'password', 'validation_token', 'role')
         ;

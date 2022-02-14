@@ -3,29 +3,61 @@
 namespace App\Controller;
 
 use App\App;
+use Core\Manager\EntityManager;
+use Core\Model\FormModel;
+use Exception;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
 class AppController
 {
-    public function __construct()
-    {
-        $this->renderer =  App::getInstance()->getRenderer();
-    }
-
-    protected function getManager($entity)
+    /**
+     * Retourne le manager de l'entité demandée
+     * @param string $entity
+     *
+     * @return EntityManager
+     */
+    protected function getManager(string $entity): EntityManager
     {
         return App::getInstance()->getManager($entity);
     }
 
     /**
+     * Retourne la vue twig demandée
      * @throws SyntaxError
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function render($view, $variables = [])
+    protected function render($view, $variables = [])
     {
-        return $this->renderer->render($view, $variables);
+        return App::getInstance()->getRenderer()->render($view, $variables);
+    }
+
+    /**
+     * Retourne un nouveau formulaire avec l'initialisation d'un token
+     * @throws Exception
+     */
+    protected function createForm(string $tokenKey, bool $tokenInitialize = true): FormModel
+    {
+        if ($tokenInitialize) {
+            $_SESSION[$tokenKey] = uniqid(rand(), true);
+        }
+        return new FormModel($tokenKey);
+    }
+
+    /**
+     * Retourne le manager demandé
+     * @param string $key
+     *
+     * @return EntityManager|null
+     */
+    public function __get(string $key): ?EntityManager
+    {
+        if (!str_contains($key, 'Manager')) {
+            return null;
+        }
+        $entity = str_replace('Manager', '', $key);
+        return $this->getManager($entity);
     }
 }

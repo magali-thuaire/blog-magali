@@ -4,7 +4,7 @@ namespace Core\Database;
 
 use PDO;
 
-class Database
+class MysqlDatabase implements DatabaseInterface
 {
     private string $db_name;
     private string $db_user;
@@ -21,12 +21,16 @@ class Database
     }
 
     // Récupère la connexion à la base de données
-    private function getPDO(): PDO
+    public function getPDO(): PDO
     {
         // Si la connexion à la base de données n'a jamais été demandée
         if ($this->pdo === null) {
             // Initialisation d'une nouvelle connexion
-            $pdo = new PDO('mysql:dbname=' . $this->db_name . ';charset=UTF8;host=' . $this->db_host, $this->db_user, $this->db_pass);
+            $pdo = new PDO(
+                'mysql:dbname=' . $this->db_name . ';charset=UTF8;host=' . $this->db_host,
+                $this->db_user,
+                $this->db_pass
+            );
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->pdo = $pdo;
         }

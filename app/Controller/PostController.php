@@ -5,25 +5,21 @@ namespace App\Controller;
 use App\App;
 use App\Entity\CommentEntity;
 use App\Entity\PostEntity;
-use App\Manager\CommentManager;
-use App\Manager\PostManager;
-use Core\Model\FormModel;
 use Core\Security\CsrfToken;
 use Core\Security\Security;
 use Exception;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class PostController extends AppController
 {
-    private PostManager $postManager;
-    private CommentManager $commentManager;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->postManager = $this->getManager('post');
-        $this->commentManager = $this->getManager('comment');
-    }
-
+    /**
+     * Demande la page des articles publiés du plus récent au plus ancien
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function index()
     {
         /** @var PostEntity[]|null $posts */
@@ -34,16 +30,23 @@ class PostController extends AppController
         ]);
     }
 
+    /**
+     * Demande un article identifié par son id
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     * @throws Exception
+     */
     public function show(int $id)
     {
         /** @var PostEntity|null $posts */
         $post = $this->postManager->findOneByIdWithCommentsApproved($id);
 
         if (!$post) {
-            return App::notFound();
+            return App::getInstance()->notFound();
         }
 
-        $form = $this->initCommentForm();
+        $form = $this->createForm('comment');
 
         $this->render('post/show.twig', [
             'post' => $post,
@@ -52,6 +55,7 @@ class PostController extends AppController
     }
 
     /**
+     * Demande l'ajout d'un commentaire
      * @throws Exception
      */
     public function newComment(int $id)
@@ -64,7 +68,7 @@ class PostController extends AppController
         unset($formData['csrfToken']);
         // Initialisation du formulaire avec données nettoyées
         $form = $this
-            ->initCommentForm()
+            ->createForm('comment', false)
             ->hydrate($formData);
 
         if ($form->isTokenValid($token)) {
@@ -88,7 +92,7 @@ class PostController extends AppController
         }
 
         if (!$form->getError()) {
-             $isSuccess = $this->commentManager->newComment($comment);
+             $isSuccess = $this->commentManager->new($comment);
 
             if ($isSuccess) {
                 $form->setSuccess(COMMENT_SUCCESS_MESSAGE);
@@ -97,10 +101,5 @@ class PostController extends AppController
 
         // Données du formulaire en json
         echo json_encode(['form' => $form]);
-    }
-
-    private function initCommentForm(): FormModel
-    {
-        return new FormModel('comment');
     }
 }

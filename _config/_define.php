@@ -11,7 +11,6 @@ require '../_config/define/_route.php';
 
 $array = [
     'directory',
-    'token',
     'contactConst',
     'securityConst',
     'userConst',
@@ -21,10 +20,3 @@ $array = [
     'routes',
     'form'
 ];
-
-$const = [];
-foreach ($array as $v) {
-    $const = array_merge($const, ${$v});
-}
-
-Config::define($const);

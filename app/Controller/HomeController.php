@@ -4,28 +4,27 @@ namespace App\Controller;
 
 use App;
 use App\Entity\ContactEntity;
-use App\Manager\ContactManager;
 use App\Model\ContactMail;
-use Core\Model\FormModel;
 use Core\Security\CsrfToken;
 use Core\Security\Security;
 use Exception;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class HomeController extends AppController
 {
-    private ContactManager $contactManager;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->contactManager = $this->getManager('contact');
-    }
-
-    // Demande de la page d'accueil
+    /**
+     * Demande de la page d'accueil
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     * @throws Exception
+     */
     public function index()
     {
         // Initialisation du formulaire
-        $form = $this->initContactForm();
+        $form = $this->createForm('contact');
 
         // Affichage de la vue
         return $this->render('homepage/index.twig', [
@@ -33,9 +32,8 @@ class HomeController extends AppController
         ]);
     }
 
-    // Validation du formulaire depuis appel AJAX
-
     /**
+     * Validation du formulaire depuis appel AJAX
      * @throws Exception
      */
     public function newContact()
@@ -49,7 +47,7 @@ class HomeController extends AppController
 
         // Initialisation du formulaire avec données nettoyées
         $form = $this
-            ->initContactForm()
+            ->createForm('contact', false)
             ->hydrate($formData);
 
         if ($form->isTokenValid($token)) {
@@ -82,10 +80,5 @@ class HomeController extends AppController
 
         // Données du formulaire en json
         echo json_encode(['form' => $form]);
-    }
-
-    private function initContactForm(): FormModel
-    {
-        return new FormModel('contact');
     }
 }
