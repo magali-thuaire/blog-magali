@@ -1,11 +1,17 @@
 <?php
 
-namespace Core\Controller;
+namespace Core\Renderer;
 
-class CoreController
+class PhpRenderer
 {
     protected string $viewPath;
     protected string $template;
+
+    public function __construct(string $viewPath, string $template)
+    {
+        $this->viewPath = $viewPath;
+        $this->template = $template;
+    }
 
     public function render($view, $variables = [])
     {

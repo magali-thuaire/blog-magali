@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App;
+use App\App;
 use App\Entity\CommentEntity;
 use App\Entity\PostEntity;
 use App\Manager\CommentManager;
@@ -19,6 +19,7 @@ class PostController extends AppController
 
     public function __construct()
     {
+        parent::__construct();
         $this->postManager = $this->getManager('post');
         $this->commentManager = $this->getManager('comment');
     }
@@ -28,7 +29,7 @@ class PostController extends AppController
         /** @var PostEntity[]|null $posts */
         $posts = $this->postManager->findAllPublishedWithCommentsOrdereByNewest();
 
-        $this->render('post.index', [
+        return $this->render('post/index.twig', [
             'posts' => $posts
         ]);
     }
@@ -44,7 +45,7 @@ class PostController extends AppController
 
         $form = $this->initCommentForm();
 
-        $this->render('post.show', [
+        $this->render('post/show.twig', [
             'post' => $post,
             'form' => $form
         ]);

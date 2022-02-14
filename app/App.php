@@ -6,11 +6,13 @@ use App\Autoloader as Autoloader;
 use Core\Config;
 use Core\Autoloader as CoreAutoloader;
 use Core\Database\Database;
+use Core\Renderer\TwigRenderer;
 
 class App
 {
     private static $instance;
     private $db_instance;
+    private $renderer;
 
     public static function getInstance(): App
     {
@@ -26,7 +28,12 @@ class App
         $db_config = Config::getInstance(CONFIG_DB);
 
         if (is_null($this->db_instance)) {
-            $this->db_instance = new Database($db_config->get('db_name'), $db_config->get('db_host'), $db_config->get('db_user'), $db_config->get('db_pass'));
+            $this->db_instance = new Database(
+                $db_config->get('db_name'),
+                $db_config->get('db_host'),
+                $db_config->get('db_user'),
+                $db_config->get('db_pass')
+            );
         }
 
         return $this->db_instance;
@@ -38,6 +45,14 @@ class App
         return new $manager_class($this->getDb());
     }
 
+    public function getRenderer(): TwigRenderer
+    {
+        if (is_null($this->renderer)) {
+            $this->renderer = new TwigRenderer(VIEWS);
+        }
+        return $this->renderer;
+    }
+
     public static function load()
     {
         session_start();
@@ -46,6 +61,7 @@ class App
         Autoloader::register();
         require_once CORE . '/Autoloader.php';
         CoreAutoloader::register();
+        require_once ROOT . '/vendor/autoload.php';
     }
 
     public static function loadSession()

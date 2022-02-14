@@ -4,35 +4,33 @@
             <div class="col-4 col-md-2 text-center blog-post__aside">
                 <div class="mt-3">
                     <p class="mb-0">Publié le</p>
-                    <p><?= $post->publishedAtFormatted ?></p>
-                    <p class="pt-2 text-capitalize"><strong>--<?= $post->author ?></strong></p>
+                    <p>{{ post.publishedAt|format_datetime('long', 'none', locale='fr') }}</p>
+                    <p class="pt-2 text-capitalize"><strong>--{{ post.author }}</strong></p>
                 </div>
             </div>
             <div class="col blog-post__body">
                 <h3 class="blog-post__title">
-                    <a class="text-decoration-none" href="<?= R_POST . $post->id ?>">
-                        <?= $post->title ?>
+                    <a class="text-decoration-none" href="{{ constant('R_POST') ~ post.id }}">
+                        {{ post.title }}
                     </a>
                 </h3>
                 <div class="p-3 blog-post__header">
                     <i class="fa fa-quote-left mr-5"></i>
-                    <p><?= $post->header ?></p>
+                    <p>{{ post.header }}</p>
                 </div>
                 <div class="text-end text-muted text fst-italic mt-2">
                     <small>
-                        <?php
-                        if ($post->updatedAtFormatted) :
-                            echo 'Dernière mise à jour : ' . $post->updatedAtFormatted;
-                        endif;
-                        ?>
+                        {% if post.updatedAt is not null %}
+                            Dernière mise à jour : {{ post.updatedAt|format_datetime('long', 'none', locale='fr') }}
+                        {% endif %}
                     </small>
                 </div>
             </div>
         </div>
     </div>
-    <a class="text-decoration-none" href="<?= R_POST . $post->id ?>">
+    <a class="text-decoration-none" href="{{ constant('R_POST') ~ post.id }}">
         <p class="blog-post__comment text-center p-3">
-            <i class="fa fa-comments blog-post__comment-icon"></i> <?= count($post->comments) ?> commentaires
+            <i class="fa fa-comments blog-post__comment-icon"></i> {{ post.comments|length }} commentaires
         </p>
     </a>
 </article>

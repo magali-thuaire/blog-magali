@@ -16,6 +16,7 @@ class SecurityController extends AppController
 
     public function __construct()
     {
+        parent::__construct();
         $this->userManager = $this->getManager('user');
     }
 
@@ -25,7 +26,7 @@ class SecurityController extends AppController
         $form = $this->initLoginForm();
 
         // Affichage de la vue
-        $this->render('security.login', [
+        $this->render('security/login.twig', [
             'form' => $form
         ]);
     }
@@ -65,7 +66,7 @@ class SecurityController extends AppController
         }
 
         // Affichage de la vue
-        $this->render('security.login', [
+        $this->render('security/login.twig', [
             'form' => $form
         ]);
     }
@@ -76,7 +77,7 @@ class SecurityController extends AppController
         $form = $this->initRegisterForm();
 
         // Affichage de la vue
-        $this->render('security.register', [
+        $this->render('security/register.twig', [
             'form' => $form
         ]);
     }
@@ -126,7 +127,7 @@ class SecurityController extends AppController
         }
 
         // Affichage de la vue
-        $this->render('security.register', [
+        $this->render('security/register.twig', [
             'form' => $form
         ]);
     }

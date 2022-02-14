@@ -3,15 +3,29 @@
 namespace App\Controller;
 
 use App\App;
-use Core\Controller\CoreController;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-class AppController extends CoreController
+class AppController
 {
-    protected string $template = TEMPLATE;
-    protected string $viewPath = VIEWS;
+    public function __construct()
+    {
+        $this->renderer =  App::getInstance()->getRenderer();
+    }
 
     protected function getManager($entity)
     {
         return App::getInstance()->getManager($entity);
+    }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function render($view, $variables = [])
+    {
+        return $this->renderer->render($view, $variables);
     }
 }

@@ -17,6 +17,7 @@ class HomeController extends AppController
 
     public function __construct()
     {
+        parent::__construct();
         $this->contactManager = $this->getManager('contact');
     }
 
@@ -27,7 +28,7 @@ class HomeController extends AppController
         $form = $this->initContactForm();
 
         // Affichage de la vue
-        $this->render('homepage.index', [
+        return $this->render('homepage/index.twig', [
             'form' => $form
         ]);
     }

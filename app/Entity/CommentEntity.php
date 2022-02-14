@@ -12,7 +12,6 @@ class CommentEntity
 {
     use HydrateTrait;
     use MagicTrait;
-    use DateTrait;
 
     private int $id;
     private string $content;
@@ -20,8 +19,6 @@ class CommentEntity
     private string $author;
     private DateTime $createdAt;
     private bool $approved;
-
-    private const DATEFORMAT = 'd F Y';
 
     private const ERROR_CONTENT = COMMENT_ERROR_CONTENT;
     private const ERROR_AUTHOR = COMMENT_ERROR_AUTHOR;
@@ -96,15 +93,6 @@ class CommentEntity
     public function getCreatedAt(): ?DateTime
     {
         return $this -> createdAt;
-    }
-
-    public function getCreatedAtFormatted(): ?string
-    {
-        if (($date = $this->getCreatedAt()) instanceof DateTime) {
-            return $this->dateFormatted($date, self::DATEFORMAT);
-        }
-
-        return null;
     }
 
     /**
