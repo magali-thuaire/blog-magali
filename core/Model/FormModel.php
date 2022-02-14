@@ -64,6 +64,6 @@ class FormModel
 
     public function isTokenValid(CsrfToken $csrfToken): bool
     {
-        return $csrfToken === $this->csrfToken;
+        return $csrfToken->getValue() === $this->csrfToken->getValue();
     }
 }
