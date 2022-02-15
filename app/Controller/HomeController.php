@@ -71,7 +71,7 @@ class HomeController extends AppController
                     $form->setSuccess(CONTACT_SUCCESS_MESSAGE);
                 } else {
                     // Message d'erreur
-                    $form->setError(ERROR_SEND_SEMAIL);
+                    $form->setError(ERROR_SEND_EMAIL);
                 }
             }
         } else {

@@ -6,17 +6,18 @@ use App\Entity\UserEntity;
 use App\Manager\SecurityManager;
 use Core\Model\Mail;
 
-class UserMail extends Mail
+class PasswordMail extends Mail
 {
-    private const SUBJECT = 'Blog de Magali - Activation de votre compte';
+    private const SUBJECT = 'Blog de Magali - Confirmation de demande de mot de passe';
 
     public function sendEmail(UserEntity $user, $from = EMAIL_DEFAULT_FROM, $subject = self::SUBJECT): bool
     {
-        $validationLink = SecurityManager::generateValidationLink($user);
+        $validationLink = SecurityManager::generateResetPasswordLink($user);
         $message  = 'Bonjour ' . $user->getUsername() . '</br></br>';
-        $message .= 'Afin d\'activer votre compte, merci de <b>cliquer sur le lien suivant</b> :' . '</br>';
+        $message .= 'Vous avez oublie votre mot de passe ou vous souhaitez le modifier ?'. '</br>';
+        $message .= 'Pas d\'inquietude, vous pouvez le reinitialiser en cliquant sur le lien suivant :' . '</br>';
         $message .= '<a style="color: #1eb1de; font-weight: bold;" href="' . $validationLink . '">
-                        Je confirme mon inscription
+                        Reinitialiser mon mot de passe
                     </a>';
 
         $headers = [];
@@ -30,7 +31,6 @@ class UserMail extends Mail
             ->setMessage($message)
             ->setHeader(implode(PHP_EOL, $headers))
         ;
-
         return mail($this->to, $this->subject, $this->message, $this->header);
     }
 }

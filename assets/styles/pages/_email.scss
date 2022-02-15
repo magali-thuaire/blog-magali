@@ -1,17 +1,18 @@
-#login {
+#email {
 
-  .login {
+  .email {
     box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);
     &__title {
       color: $primary-color !important;
     }
-    &__forgot-password {
-      font-style: italic;
+    &__login-return {
       &:hover {
         color: $primary-color !important;
       }
+      &-icon {
+        margin-right: 10px;
+      }
     }
-
   }
 
 }
