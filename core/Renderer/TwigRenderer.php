@@ -21,6 +21,7 @@ class TwigRenderer
 
         $loader = new FilesystemLoader($this->viewPath);
         $this->twig = new Environment($loader, ['debug' => true]);
+        $this->twig->addGlobal('session', $_SESSION);
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addExtension(new IntlExtension());
     }

@@ -30,7 +30,6 @@ class UserManager extends EntityManager
         if (!$this->isPasswordValid($user, $userData->plainPassword)) {
             throw new Exception(INVALID_CREDENTIALS);
         }
-
         $this->createUserSession($user);
 
         return true;
@@ -68,7 +67,7 @@ class UserManager extends EntityManager
     private function getUserByEmail(): QueryBuilder
     {
         return $this->createQueryBuilder()
-                ->select('u.id', 'u.username', 'u.email', 'u.password')
+                ->select('u.id', 'u.username', 'u.email', 'u.password', 'u.role')
                 ->addSelect('u.user_confirmed as userConfirmed', 'u.admin_validated as adminValidated')
                 ->from('user', 'u')
                 ->where('u.email = :email')
@@ -80,9 +79,14 @@ class UserManager extends EntityManager
         return password_verify($plainPassword, $user->getPassword());
     }
 
-    private function createUserSession(UserEntity $user)
+    private function createUserSession(UserEntity $user): void
     {
         $_SESSION['user'] = $user;
+    }
+
+    public function destroyUserSession(): void
+    {
+        unset($_SESSION['user']);
     }
 
     // TODO: nombre de caractère dans le mot de passe
