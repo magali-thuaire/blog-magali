@@ -38,12 +38,12 @@ class AppController
      * Retourne un nouveau formulaire avec l'initialisation d'un token
      * @throws Exception
      */
-    protected function createForm(string $tokenKey, bool $tokenInitialize = true): FormModel
+    protected function createForm(string $tokenKey, bool $tokenInitialize = true, array $messages = []): FormModel
     {
         if ($tokenInitialize) {
             $_SESSION[$tokenKey] = uniqid(rand(), true);
         }
-        return new FormModel($tokenKey);
+        return new FormModel($tokenKey, $messages);
     }
 
     /**

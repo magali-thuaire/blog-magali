@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\App;
 use App\Entity\UserEntity;
+use App\Manager\SecurityManager;
 use App\Model\UserMail;
 use Core\Security\CsrfToken;
 use Core\Security\Security;
@@ -20,10 +22,10 @@ class SecurityController extends AppController
      * @throws LoaderError
      * @throws Exception
      */
-    public function login()
+    public function login($messages = [])
     {
         // Initialisation du formulaire
-        $form = $this->createForm('authenticate');
+        $form = $this->createForm('authenticate', true, $messages);
 
         // Affichage de la vue
         $this->render('security/login.twig', [
@@ -146,5 +148,24 @@ class SecurityController extends AppController
     {
         $this->userManager->destroyUserSession();
         header('Location: ' . R_HOMEPAGE);
+    }
+
+    public function validate($email, $tokenValidation)
+    {
+        $user = $this->userManager->findUserByEmail($email);
+
+        if ($isTokenValid = SecurityManager::isTokenValid($user, $tokenValidation)) {
+            $isUserConfirm = $this->userManager->confirmUser($user);
+        }
+
+        if (!$isTokenValid) {
+            $message = ['error' => USER_TOKEN_INVALID];
+        } elseif (!$isUserConfirm) {
+            $message = ['error' => USER_LINK_INVALID];
+        } else {
+            $message = ['success' => USER_ACCOUNT_ACTIVATED];
+        }
+
+        $this->login($message);
     }
 }
