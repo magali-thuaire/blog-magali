@@ -70,8 +70,6 @@ class App
 
     public static function load()
     {
-        session_start();
-
         /**
          * Chargement des contantes
          */
@@ -85,6 +83,8 @@ class App
         require_once CORE . '/Autoloader.php';
         CoreAutoloader::register();
         require_once ROOT . '/vendor/autoload.php';
+
+        session_start();
     }
 
     /**

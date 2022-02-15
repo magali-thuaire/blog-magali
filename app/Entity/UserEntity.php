@@ -6,6 +6,7 @@ use Core\Model\HydrateTrait;
 use Core\Model\MagicTrait;
 use DateTime;
 use Exception;
+use JetBrains\PhpStorm\Pure;
 
 class UserEntity
 {
@@ -15,7 +16,6 @@ class UserEntity
     private int $id;
     private string $username;
     private string $email;
-    private string $login;
     private string $password;
     private string $validationToken;
     private bool $userConfirmed;
@@ -26,7 +26,6 @@ class UserEntity
     private const ROLE_USER = 'ROLE_USER';
     private const ROLE_ADMIN = 'ROLE_ADMIN';
     private const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
-    private const ERROR_LOGIN = USER_ERROR_LOGIN;
     private const ERROR_EMAIL = USER_ERROR_EMAIL;
     private const ERROR_PASSWORD = USER_ERROR_PASSWORD;
     private const ERROR_USERNAME_LENGTH = USER_ERROR_AUTHOR_LENGTH;
@@ -79,24 +78,6 @@ class UserEntity
             $this->email = $email;
         } else {
             throw new Exception(self::ERROR_EMAIL);
-        }
-        return $this;
-    }
-
-    public function getLogin(): ?string
-    {
-        return $this->login;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function setLogin(?string $login): self
-    {
-        if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
-            $this->login = $login;
-        } else {
-            throw new Exception(self::ERROR_LOGIN);
         }
         return $this;
     }
@@ -192,12 +173,12 @@ class UserEntity
         return $this;
     }
 
-    public function isUserValidated(): bool
+    #[Pure] public function isUserValidated(): bool
     {
         return $this->isUserConfirmed() && $this->isAdminValidated();
     }
 
-    public function __toString(): string
+    #[Pure] public function __toString(): string
     {
         return $this->getUsername();
     }

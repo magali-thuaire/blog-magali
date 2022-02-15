@@ -59,6 +59,7 @@ class SecurityController extends AppController
                 $form->setError($e->getMessage());
             }
 
+            // TODO : vers l'espace d'administration
             if (!$form->getError()) {
                 header('Location: ' . R_BLOG);
             }
@@ -139,5 +140,11 @@ class SecurityController extends AppController
         $this->render('security/register.twig', [
             'form' => $form
         ]);
+    }
+
+    public function logout()
+    {
+        $this->userManager->destroyUserSession();
+        header('Location: ' . R_HOMEPAGE);
     }
 }

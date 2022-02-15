@@ -68,6 +68,10 @@ switch (true) {
                 $controller->signin();
         }
         break;
+    case $p === 'logout':
+        $controller = new SecurityController();
+        $controller->logout();
+        break;
     default:
         App::getInstance()->notFound();
 }

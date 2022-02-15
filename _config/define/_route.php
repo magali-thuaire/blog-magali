@@ -7,6 +7,7 @@ $routes = [
     'R_POST'        => '../public/index.php?p=post&id=',
     'R_LOGIN'       => '../public/index.php?p=login',
     'R_REGISTER'    => '../public/index.php?p=register',
+    'R_LOGOUT'      => '../public/index.php?p=logout',
 ];
 
 $form = [
