@@ -231,21 +231,31 @@ class SecurityController extends AppController
         ]);
     }
 
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
     public function newPassword(string $email, string $tokenValidation)
     {
-        $user = $this->userManager->findUserByEmail($email);
-
-        if (!SecurityManager::isTokenValid($user, $tokenValidation)) {
-            $this->login(['error' => USER_PASSWORD_TOKEN_INVALID]);
-        }
-
         // Initialisation du formulaire
         $form = $this->createForm('reset-password');
+
+        try {
+            $user = $this->userManager->findUserByEmail($email);
+        } catch (Exception $e) {
+            $form->setError($e->getMessage());
+        }
+
+        if ($form->getError()) {
+            $this->login(['error' => $form->getError()]);
+        }
 
         // Affichage de la vue
         $this->render('security/password.twig', [
             'form' => $form,
-            'user' => $user
+            'user' => $user,
+            'tokenValidation' => $tokenValidation
         ]);
     }
 

@@ -61,7 +61,12 @@ class UserManager extends EntityManager
     public function findUserByEmail(string $email): bool|UserEntity
     {
         $statement = $this->getUserByEmail()->getQuery();
-        return $this->prepare($statement, [':email' => $email], true, true);
+        $user = $this->prepare($statement, [':email' => $email], true, true);
+        
+        if(!$user) {
+            throw new Exception(USER_ERROR_NOT_EXISTS);
+        }
+        return $user;
     }
 
     /**
