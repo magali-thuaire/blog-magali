@@ -6,6 +6,7 @@
         <div class="login card col-10 col-md-6 col-lg-5 p-5 mt-5 mx-auto justify-content-center">
             <h1 class="login__title text-center mb-4" >Se connecter</h1>
             <div class="alert alert-danger d-flex align-items-center mb-2 {{ form.error ? '' : 'd-none' }}" role="alert">{{ form.error ?: '' }}</div>
+            <div class="alert alert-success d-flex align-items-center mb-2 {{ form.success ? '' : 'd-none' }}" role="alert">{{ form.success ?: '' }}</div>
             <form id="loginForm" action="{{ constant('F_LOGIN') }}" method="POST">
                 <div class="form-floating">
                     <input type="email" name="email" class="form-control" placeholder="email" value="{{ form.email ?: '' }}" required>

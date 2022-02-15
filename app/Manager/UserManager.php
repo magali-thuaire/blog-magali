@@ -14,7 +14,7 @@ class UserManager extends EntityManager
      */
     public function login(UserEntity $userData): bool
     {
-        $user = $this->findUserByLogin($userData);
+        $user = $this->findUserByEmail($userData->getEmail());
 
         // Vérification utilisateur existant
         if (!$user) {
@@ -58,20 +58,36 @@ class UserManager extends EntityManager
         return true;
     }
 
-    private function findUserByLogin(UserEntity $user): bool|UserEntity
+    public function findUserByEmail(string $email): bool|UserEntity
     {
         $statement = $this->getUserByEmail()->getQuery();
-        return $this->prepare($statement, [':email' => $user ->getEmail()], true, true);
+        return $this->prepare($statement, [':email' => $email], true, true);
     }
 
     private function getUserByEmail(): QueryBuilder
     {
         return $this->createQueryBuilder()
                 ->select('u.id', 'u.username', 'u.email', 'u.password', 'u.role')
+                ->addSelect('u.validation_token as validationToken')
                 ->addSelect('u.user_confirmed as userConfirmed', 'u.admin_validated as adminValidated')
                 ->from('user', 'u')
                 ->where('u.email = :email')
         ;
+    }
+
+    public function confirmUser(UserEntity $user): bool
+    {
+        $qb = $this->createQueryBuilder()
+            ->update('user', 'u')
+            ->set('u.user_confirmed = true')
+            ->where('u.id = :id', 'user_confirmed IS false')
+        ;
+
+        $statement = $qb->getQuery();
+        $attributs = [
+            ':id' => $user->getId()
+        ];
+        return $this->execute($statement, $attributs);
     }
 
     private function isPasswordValid($user, $plainPassword): bool

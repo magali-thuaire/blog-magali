@@ -18,10 +18,18 @@ class FormModel
     /**
      * @throws Exception
      */
-    public function __construct(string $keyToken = null)
+    public function __construct(string $keyToken = null, array $messages = [])
     {
         $csrfToken = new CsrfToken($keyToken, $_SESSION[$keyToken]);
         $this->setCsrfToken($csrfToken);
+
+        if (!empty($messages)) {
+            if (array_key_exists('success', $messages)) {
+                $this->setSuccess($messages['success']);
+            } elseif (array_key_exists('error', $messages)) {
+                $this->setError($messages['error']);
+            }
+        }
     }
 
     public function getError(): ?string

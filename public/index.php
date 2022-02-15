@@ -31,12 +31,12 @@ switch (true) {
         $controller = new PostController();
         switch (true) {
             // Demande de la page d'un article
-            case isset($_GET['id']) && !empty($_GET['id'] && is_numeric($_GET['id'])):
+            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
                 $id = Security::checkInput($_GET['id']);
                 switch ($_POST) {
                     // Demande d'ajout d'un commentaire
                     case true:
-                        $controller -> newComment($id);
+                        $controller->newComment($id);
                         break;
                     // Visualisation d'un article
                     default:
@@ -71,6 +71,20 @@ switch (true) {
     case $p === 'logout':
         $controller = new SecurityController();
         $controller->logout();
+        break;
+    case $p === 'validate':
+        switch (true) {
+            // Demande de la page d'un article
+            case isset($_GET['email']) && !empty($_GET['email'])
+                 && isset($_GET['tokenValidation']) && !empty($_GET['tokenValidation']):
+                $email = Security::checkInput($_GET['email']);
+                $tokenValidation = Security::checkInput($_GET['tokenValidation']);
+                $controller = new SecurityController();
+                $controller->validate($email, $tokenValidation);
+                break;
+            default:
+                App::getInstance()->notFound();
+        }
         break;
     default:
         App::getInstance()->notFound();

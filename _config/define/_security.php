@@ -16,4 +16,9 @@ $userConst = [
     'USER_ERROR_VALIDATION'         => 'Connexion impossible pour le moment',
     'USER_ERROR_EXISTS'             => 'Cet utilisateur existe déjà',
     'USER_SUCCESS_REGISTRATION'     => 'Un email d\'activation de compte vient d\'être envoyé à votre adresse email',
+    'URL_SITE'                      => 'localhost:8888/blog-magali/public',
+    'USER_ACCOUNT_ACTIVATED'        => 'Votre compte a été activé avec succès
+                                        Merci d\'attendre la validation de l\'administrateur',
+    'USER_TOKEN_INVALID'            => 'Activation de votre compte impossible',
+    'USER_LINK_INVALID'             => 'Votre lien d\'activation a déjà été utilisé',
 ];

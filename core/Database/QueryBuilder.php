@@ -13,6 +13,8 @@ class QueryBuilder
     private array $groupBy = [];
     private string $insert = '';
     private array $columns = [];
+    private string $update = '';
+    private array $set = [];
 
     public function select(): static
     {
@@ -90,6 +92,20 @@ class QueryBuilder
         return $this;
     }
 
+    public function update($table, $alias): static
+    {
+
+        $this->update = $table . ' ' . $alias;
+
+        return $this;
+    }
+
+    public function set(): static
+    {
+        $this->set = func_get_args();
+        return $this;
+    }
+
     public function getQuery(): string
     {
 
@@ -117,7 +133,20 @@ class QueryBuilder
 
         // values
         if (!empty($this->columns)) {
-            $statement .= ' (' . implode(', ', $this->columns) . ')' . ' VALUES (' . ':' . implode(', :', $this->columns) . ')';
+            $statement .= ' ('
+                          . implode(', ', $this->columns) . ')'
+                          . ' VALUES (' . ':'
+                          . implode(', :', $this->columns) . ')';
+        }
+
+        // update
+        if (!empty($this->update)) {
+            $statement =  'UPDATE ' . $this->update;
+        }
+
+        // set
+        if (!empty($this->set)) {
+            $statement .=  ' SET ' . implode(', ', $this->set);
         }
 
         // where
