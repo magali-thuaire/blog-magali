@@ -73,17 +73,45 @@ switch (true) {
         $controller->logout();
         break;
     case $p === 'validate':
+        $controller = new SecurityController();
         switch (true) {
-            // Demande de la page d'un article
             case isset($_GET['email']) && !empty($_GET['email'])
                  && isset($_GET['tokenValidation']) && !empty($_GET['tokenValidation']):
                 $email = Security::checkInput($_GET['email']);
                 $tokenValidation = Security::checkInput($_GET['tokenValidation']);
-                $controller = new SecurityController();
                 $controller->validate($email, $tokenValidation);
                 break;
             default:
                 App::getInstance()->notFound();
+        }
+        break;
+    case $p === 'forgot-password':
+        $controller = new SecurityController();
+        switch ($_POST) {
+            case true:
+                $controller->emailPassword();
+                break;
+            default:
+                $controller->forgotPassword();
+        }
+        break;
+    case $p === 'reset-password':
+        $controller = new SecurityController();
+        switch ($_POST) {
+            case true:
+                $controller->resetPassword();
+                break;
+            default:
+                switch (true) {
+                    case isset($_GET['email']) && !empty($_GET['email'])
+                         && isset($_GET['tokenValidation']) && !empty($_GET['tokenValidation']):
+                        $email = Security::checkInput($_GET['email']);
+                        $tokenValidation = Security::checkInput($_GET['tokenValidation']);
+                        $controller->newPassword($email, $tokenValidation);
+                        break;
+                    default:
+                        App::getInstance()->notFound();
+                }
         }
         break;
     default:

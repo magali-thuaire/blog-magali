@@ -64,15 +64,32 @@ class UserManager extends EntityManager
         return $this->prepare($statement, [':email' => $email], true, true);
     }
 
-    private function getUserByEmail(): QueryBuilder
+    /**
+     * @throws Exception
+     */
+    public function resetPassword(UserEntity $userData, string $validationToken): bool
     {
-        return $this->createQueryBuilder()
-                ->select('u.id', 'u.username', 'u.email', 'u.password', 'u.role')
-                ->addSelect('u.validation_token as validationToken')
-                ->addSelect('u.user_confirmed as userConfirmed', 'u.admin_validated as adminValidated')
-                ->from('user', 'u')
-                ->where('u.email = :email')
-        ;
+        // Vérification si l'utilisateur existe
+        if (!$this->isUserExists($userData)) {
+            throw new Exception(USER_ERROR_NOT_EXISTS);
+        }
+
+        // Vérification du mot de passe et de sa confirmation
+        if (!$this->isPasswordConfirm($userData)) {
+            throw new Exception(USER_ERROR_PASSWORD_CONFIRM);
+        }
+
+        $user = $this->findUserByEmail($userData->getEmail());
+
+        if (!SecurityManager::isTokenValid($user, $validationToken)) {
+            throw new Exception(USER_PASSWORD_TOKEN_INVALID);
+        }
+        // Modification du mot de passe
+        if (!($this->updatePassword($user, $userData->plainPassword))) {
+            throw new Exception(USER_PASSWORD_MODIF_INVALID);
+        }
+
+        return true;
     }
 
     public function confirmUser(UserEntity $user): bool
@@ -88,6 +105,17 @@ class UserManager extends EntityManager
             ':id' => $user->getId()
         ];
         return $this->execute($statement, $attributs);
+    }
+
+    private function getUserByEmail(): QueryBuilder
+    {
+        return $this->createQueryBuilder()
+                    ->select('u.id', 'u.username', 'u.email', 'u.password', 'u.role')
+                    ->addSelect('u.validation_token as validationToken')
+                    ->addSelect('u.user_confirmed as userConfirmed', 'u.admin_validated as adminValidated')
+                    ->from('user', 'u')
+                    ->where('u.email = :email')
+            ;
     }
 
     private function isPasswordValid($user, $plainPassword): bool
@@ -126,7 +154,7 @@ class UserManager extends EntityManager
         return $user->plainPassword === $user->plainPasswordConfirm;
     }
 
-    private function isUserExists(UserEntity $user): int|string
+    public function isUserExists(UserEntity $user): int|string
     {
         $statement = $this->getUserByEmail()->getQuery();
         return $this->execute($statement, [':email' => $user->getEmail()]);
@@ -162,4 +190,20 @@ class UserManager extends EntityManager
                 ->values('username', 'email', 'password', 'validation_token', 'role')
         ;
     }
+
+    private function updatePassword(UserEntity $user, string $password) {
+        $qb = $this->createQueryBuilder()
+            ->update('user', 'u')
+            ->set('u.password = :password')
+            ->where('u.id = :id')
+        ;
+
+        $statement = $qb->getQuery();
+        $attributs = [
+            ':id'       => $user->getId(),
+            ':password' => $user->setPassword($password)->getPassword()
+        ];
+        return $this->execute($statement, $attributs);
+    }
+
 }

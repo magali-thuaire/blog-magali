@@ -10,7 +10,7 @@ $contactConst = [
 ];
 
 $emailConst = [
-    'ERROR_SEND_SEMAIL'         => 'Problème lors de l\'envoi de l\'email',
+    'ERROR_SEND_EMAIL'          => 'Problème lors de l\'envoi de l\'email',
     'EMAIL_DEFAULT_SUBJECT'     => 'Message de votre blog',
     'EMAIL_DEFAULT_TO'          => 'magali.thuaire@gmail.com',
     'EMAIL_DEFAULT_FROM'        => 'magali.thuaire@gmail.com'
