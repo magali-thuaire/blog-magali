@@ -12,9 +12,6 @@ class PostEntity
 {
     use HydrateTrait;
     use MagicTrait;
-    use DateTrait;
-
-    private const DATEFORMAT = 'd F Y';
 
     private int $id;
     private string $title;
@@ -170,42 +167,6 @@ class PostEntity
 
         $this->updatedAt = $updatedAt;
         return $this;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getCreatedAtFormatted(): ?string
-    {
-        if (($date = $this->getCreatedAt()) instanceof DateTime) {
-            return $this->dateFormatted($date, self::DATEFORMAT);
-        }
-
-        return null;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getPublishedAtFormatted(): ?string
-    {
-        if (($date = $this->getPublishedAt()) instanceof DateTime) {
-            return $this->dateFormatted($date, self::DATEFORMAT);
-        }
-
-        return null;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function getUpdatedAtFormatted(): ?string
-    {
-        if (($date = $this->getUpdatedAt()) instanceof DateTime) {
-            return $this->dateFormatted($date, self::DATEFORMAT);
-        }
-
-        return null;
     }
 
     /**

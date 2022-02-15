@@ -3,34 +3,36 @@
 namespace App\Controller;
 
 use App\Entity\UserEntity;
-use App\Manager\UserManager;
 use App\Model\UserMail;
-use Core\Model\FormModel;
 use Core\Security\CsrfToken;
 use Core\Security\Security;
 use Exception;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class SecurityController extends AppController
 {
-    private UserManager $userManager;
-
-    public function __construct()
-    {
-        $this->userManager = $this->getManager('user');
-    }
-
+    /**
+     * Demande la page de connexion
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     * @throws Exception
+     */
     public function login()
     {
         // Initialisation du formulaire
-        $form = $this->initLoginForm();
+        $form = $this->createForm('authenticate');
 
         // Affichage de la vue
-        $this->render('security.login', [
+        $this->render('security/login.twig', [
             'form' => $form
         ]);
     }
 
     /**
+     * Demande de connexion
      * @throws Exception
      */
     public function authenticate()
@@ -44,7 +46,7 @@ class SecurityController extends AppController
 
         // Initialisation du formulaire avec données nettoyées
         $form = $this
-            ->initLoginForm()
+            ->createForm('authenticate', false)
             ->hydrate($formData);
 
         if ($form->isTokenValid($token)) {
@@ -65,23 +67,31 @@ class SecurityController extends AppController
         }
 
         // Affichage de la vue
-        $this->render('security.login', [
-            'form' => $form
-        ]);
-    }
-
-    public function signin()
-    {
-        // Initialisation du formulaire
-        $form = $this->initRegisterForm();
-
-        // Affichage de la vue
-        $this->render('security.register', [
+        $this->render('security/login.twig', [
             'form' => $form
         ]);
     }
 
     /**
+     * Demande la page d'inscription
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     * @throws Exception
+     */
+    public function signin()
+    {
+        // Initialisation du formulaire
+        $form = $this->createForm('register');
+
+        // Affichage de la vue
+        $this->render('security/register.twig', [
+            'form' => $form
+        ]);
+    }
+
+    /**
+     * Demande d'inscription
      * @throws Exception
      */
     public function register()
@@ -95,7 +105,7 @@ class SecurityController extends AppController
 
         // Initialisation du formulaire avec données nettoyées
         $form = $this
-            ->initRegisterForm()
+            ->createForm('register', false)
             ->hydrate($formData);
 
         if ($form->isTokenValid($token)) {
@@ -126,18 +136,8 @@ class SecurityController extends AppController
         }
 
         // Affichage de la vue
-        $this->render('security.register', [
+        $this->render('security/register.twig', [
             'form' => $form
         ]);
-    }
-
-    private function initLoginForm(): FormModel
-    {
-        return new FormModel('authenticate');
-    }
-
-    private function initRegisterForm(): FormModel
-    {
-        return new FormModel('register');
     }
 }

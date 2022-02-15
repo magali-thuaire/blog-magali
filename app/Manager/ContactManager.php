@@ -5,13 +5,12 @@ namespace App\Manager;
 use App\Entity\ContactEntity;
 use Core\Database\QueryBuilder;
 use Core\Manager\EntityManager;
-use DateTime;
 
 class ContactManager extends EntityManager
 {
-    public function new(ContactEntity $contact)
+    public function new(ContactEntity $contact): int|string
     {
-        $statement = $this->newContact()->getQuery();
+        $statement = $this->createContact()->getQuery();
         $attributs = [
             ':name' => $contact->getName(),
             'email' => $contact->getEmail(),
@@ -20,14 +19,11 @@ class ContactManager extends EntityManager
         return $this->execute($statement, $attributs);
     }
 
-    private function newContact(): QueryBuilder
+    private function createContact(): QueryBuilder
     {
-        $qb = new QueryBuilder();
-        $qb
+        return $this->createQueryBuilder()
             ->insert('contact')
             ->values('name', 'email', 'message')
         ;
-
-        return $qb;
     }
 }

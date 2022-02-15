@@ -16,7 +16,7 @@ class Config
 
     public static function getInstance($db_file): Config
     {
-        if (is_null(self::$instance)) {
+        if (self::$instance === null) {
             self::$instance = new Config($db_file);
         }
 

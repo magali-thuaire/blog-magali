@@ -7,7 +7,7 @@ class Mail
     protected string $to;
     protected string $subject;
     protected string $message;
-    protected array $header = [];
+    protected string $header;
 
     public function setTo($to): self
     {

@@ -4,6 +4,7 @@ namespace Core\Model;
 
 use Core\Security\CsrfToken;
 use Exception;
+use JetBrains\PhpStorm\Pure;
 
 class FormModel
 {
@@ -14,19 +15,13 @@ class FormModel
     public $success;
     public CsrfToken $csrfToken;
 
-    private const INVALID_SESSION_TOKEN = 'Invalid Session token';
-
     /**
      * @throws Exception
      */
     public function __construct(string $keyToken = null)
     {
-        if ($keyToken && in_array($keyToken, SESSION)) {
-            $csrfToken = new CsrfToken($keyToken, $_SESSION[$keyToken]);
-            $this->setCsrfToken($csrfToken);
-        } else {
-            throw new Exception(self::INVALID_SESSION_TOKEN);
-        }
+        $csrfToken = new CsrfToken($keyToken, $_SESSION[$keyToken]);
+        $this->setCsrfToken($csrfToken);
     }
 
     public function getError(): ?string
@@ -62,8 +57,8 @@ class FormModel
         return $this;
     }
 
-    public function isTokenValid(CsrfToken $csrfToken): bool
+    #[Pure] public function isTokenValid(CsrfToken $csrfToken): bool
     {
-        return $csrfToken === $this->csrfToken;
+        return $csrfToken->getValue() === $this->csrfToken->getValue();
     }
 }

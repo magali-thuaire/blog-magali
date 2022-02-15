@@ -6,12 +6,12 @@ class QueryBuilder
 {
     private array $select = [];
     private array $where = [];
-    private string $from;
+    private string $from = '';
     private array $innerJoin = [];
     private array $leftJoin = [];
     private array $orderBy = [];
     private array $groupBy = [];
-    private string $insert;
+    private string $insert = '';
     private array $columns = [];
 
     public function select(): static

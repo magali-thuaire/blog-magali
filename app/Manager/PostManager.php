@@ -51,8 +51,7 @@ class PostManager extends EntityManager
      */
     private function getAll(): QueryBuilder
     {
-        $qb = new QueryBuilder();
-        return $qb
+        return $this->createQueryBuilder()
             ->select('p.id', 'p.title', 'p.header', 'p.content', 'p.author', 'p.published')
             ->addSelect('p.published_at as publishedAt', 'p.created_at as createdAt', 'p.updated_at as updatedAt')
             ->addSelect('a.username')
@@ -87,6 +86,7 @@ class PostManager extends EntityManager
      */
     private function getAllPublishedWithCommentsOrderByNewest(): QueryBuilder
     {
+
         return $this->getAllPublishedWithComments()
             ->orderBy('p.published_at', 'DESC')
         ;

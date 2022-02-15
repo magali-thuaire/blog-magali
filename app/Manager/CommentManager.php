@@ -8,9 +8,9 @@ use Core\Manager\EntityManager;
 
 class CommentManager extends EntityManager
 {
-    public function newComment(CommentEntity $comment): bool
+    public function new(CommentEntity $comment): bool
     {
-        $statement = $this->newCommentQuery()->getQuery();
+        $statement = $this->createComment()->getQuery();
         $attributs = [
                 ':content' => $comment->getContent(),
                 ':post' => $comment->getPost()->getId(),
@@ -19,14 +19,11 @@ class CommentManager extends EntityManager
         return $this->execute($statement, $attributs);
     }
 
-    private function newCommentQuery(): QueryBuilder
+    private function createComment(): QueryBuilder
     {
-        $qb = new QueryBuilder();
-        $qb
+        return $this->createQueryBuilder()
             ->insert('comment')
             ->values('content', 'post', 'author')
         ;
-
-        return $qb;
     }
 }
