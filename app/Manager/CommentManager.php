@@ -8,6 +8,16 @@ use Core\Manager\EntityManager;
 
 class CommentManager extends EntityManager
 {
+    //--------------------------------------------------------------
+    //------- Requêtes SQL
+    //--------------------------------------------------------------
+
+    /**
+     * Création d'un nouveau commentaire
+     * @param CommentEntity $comment
+     *
+     * @return bool
+     */
     public function new(CommentEntity $comment): bool
     {
         $statement = $this->createComment()->getQuery();
@@ -19,6 +29,14 @@ class CommentManager extends EntityManager
         return $this->execute($statement, $attributs);
     }
 
+    //--------------------------------------------------------------
+    //------- Query Builder
+    //--------------------------------------------------------------
+
+    /**
+     * Retourne le QB de la création d'un nouveau commentaire
+     * @return QueryBuilder
+     */
     private function createComment(): QueryBuilder
     {
         return $this->createQueryBuilder()

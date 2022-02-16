@@ -9,7 +9,37 @@ use App\Entity\UserEntity;
 trait PostTrait
 {
     /**
-     * Retourne un object Post dont son author est un object User
+     * Retourne un tableau de Post dont les auteurs sont des objets User
+     */
+    private function createPostsWithAuthor($postsData): ?array
+    {
+        $posts = [];
+        if ($postsData) {
+            /** @var PostEntity $post */
+            foreach ($postsData as $postData) {
+                $posts[] = $this->createPostWithAuthor($postData);
+            }
+        }
+
+        return $posts;
+    }
+
+    /**
+     * Retourne un objet Post dont les commentaires sont des objets Comment et dont l'auteur est un objet User
+     */
+    public function createPostWithAuthorAndComments($postData): ?PostEntity
+    {
+        if ($postData) {
+            $post = $this->createPostWithAuthor(current($postData));
+            $this->addComments($post, $postData);
+            return $post;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Retourne un objet Post dont l'auteur est un object User
      */
     private function createPostWithAuthor($data): PostEntity
     {
@@ -70,7 +100,7 @@ trait PostTrait
     }
 
     /**
-     * Retourne un object Post dont ses commentaires sont des objets Comment
+     * Retourne un objet Post dont ses commentaires sont des objets Comment
      */
     private function addComments(PostEntity $post, $postData): void
     {

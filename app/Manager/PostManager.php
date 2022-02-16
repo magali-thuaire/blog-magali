@@ -19,15 +19,7 @@ class PostManager extends EntityManager
         $statement = $this->getAllPublishedOrderByNewest()->getQuery();
         $postsData = $this->query($statement);
 
-        $posts = [];
-        if ($postsData) {
-            /** @var PostEntity $post */
-            foreach ($postsData as $postData) {
-                $posts[] = $this->createPostWithAuthor($postData);
-            }
-        }
-
-        return $posts;
+        return $this->createPostsWithAuthor($postsData);
     }
 
     /**
@@ -36,15 +28,9 @@ class PostManager extends EntityManager
     public function findOneByIdWithCommentsApproved(int $id): ?PostEntity
     {
         $statement = $this->getOneByIdWithCommentsApproved()->getQuery();
-        $postsData = $this->prepare($statement, [':id' => $id], false, false);
+        $postData = $this->prepare($statement, [':id' => $id], false, false);
 
-        if ($postsData) {
-            $post = $this->createPostWithAuthor(current($postsData));
-            $this->addComments($post, $postsData);
-            return $post;
-        } else {
-            return null;
-        }
+        return $this->createPostWithAuthorAndComments($postData);
     }
 
     /**
@@ -55,19 +41,15 @@ class PostManager extends EntityManager
         $statement = $this->getOneById()->getQuery();
         $postData = $this->prepare($statement, [':id' => $id], true, false);
 
-        if ($postData) {
-            return $this->createPostWithAuthor($postData);
-        } else {
-            return null;
-        }
+        return $this->createPostWithAuthor($postData);
     }
 
     //--------------------------------------------------------------
-    //------- Requêtes SQL
+    //------- Query Builder
     //--------------------------------------------------------------
 
     /**
-     * Retourne la requête SQL de tous les articles publiés
+     * Retourne le QB de tous les articles publiés
      */
     private function getAllPublished(): QueryBuilder
     {
@@ -82,7 +64,7 @@ class PostManager extends EntityManager
     }
 
     /**
-     * Retourne la requête SQL de tous les article publiés, ordonnés du plus récent au plus ancien
+     * Retourne le QB de tous les article publiés, ordonnés du plus récent au plus ancien
      */
     private function getAllPublishedOrderByNewest(): QueryBuilder
     {
@@ -94,7 +76,7 @@ class PostManager extends EntityManager
     }
 
     /**
-     * Retourne la requête SQL d'un unique article identifié à partir de son id
+     * Retourne le QB d'un unique article identifié à partir de son id
      */
     private function getOneById(): QueryBuilder
     {
@@ -104,7 +86,7 @@ class PostManager extends EntityManager
     }
 
     /**
-     * Retourne la requête SQL d'un unique article identifié à partir de son id
+     * Retourne le QB d'un unique article identifié à partir de son id
      */
     private function getOneByIdWithCommentsApproved(): QueryBuilder
     {

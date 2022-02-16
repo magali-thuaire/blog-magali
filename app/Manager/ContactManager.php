@@ -7,6 +7,16 @@ use Core\Manager\EntityManager;
 
 class ContactManager extends EntityManager
 {
+    //--------------------------------------------------------------
+    //------- Requêtes SQL
+    //--------------------------------------------------------------
+
+    /**
+     * Création d'un nouveau contact
+     * @param ContactEntity $contact
+     *
+     * @return bool
+     */
     public function new(ContactEntity $contact): bool
     {
         $qb = $this->createQueryBuilder()
