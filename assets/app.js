@@ -9,3 +9,5 @@ import './scripts/components/nav';
 import './scripts/components/scrolltop';
 import './scripts/pages/homepage';
 import './scripts/pages/blog';
+import './scripts/pages/admin/admin';
+import './scripts/pages/admin/post';

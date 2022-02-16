@@ -9,6 +9,7 @@ $routes = [
     'R_REGISTER'        => '../public/index.php?p=register',
     'R_LOGOUT'          => '../public/index.php?p=logout',
     'R_FORGOT_PASSWORD' => '../public/index.php?p=forgot-password',
+    'R_ADMIN'           => '../public/admin.php?p=dashboard',
 ];
 
 $form = [

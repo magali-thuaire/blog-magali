@@ -80,6 +80,12 @@ class QueryBuilder
         return $this;
     }
 
+    public function groupBy(): static
+    {
+        $this->groupBy = func_get_args();
+        return $this;
+    }
+
     public function insert($table): static
     {
         $this->insert = $table;

@@ -1,0 +1,42 @@
+{% extends 'admin/base.twig' %}
+{% block body %}
+    <div class="px-3 mt-2">
+        <h2>Mes articles</h2>
+        <div class="card p-3">
+            <table id="post-table" class="table table-hover" style="width:100%">
+                <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Date de publication</th>
+                    <th>Statut</th>
+                    <th class="d-none d-md-block">Commentaires</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td class="text-capitalize">{{ post.title|truncate(30, ' ...') }}</td>
+                        <td>{{ post.createdAt|format_datetime('short', 'none', locale='fr') }}</td>
+                        <td>
+                            {% if post.published == true %}
+                                <span class="badge bg-success">publié</span>
+                            {% else %}
+                                <span class="badge bg-warning">non publié</span>
+                            {% endif %}
+                        </td>
+                        <td class="d-none d-md-block">
+                            <span class="indicator-container">
+                                {{ post.commentsApproved ?? 0 }}
+                                {% set not_approved = post.comments|length - post.commentsApproved %}
+                                {% if not_approved != 0 %}
+                                    <span class="indicator">{{ not_approved }}</span>
+                                {% endif %}
+                            </span>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
