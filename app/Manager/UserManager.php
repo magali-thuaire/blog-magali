@@ -3,24 +3,43 @@
 namespace App\Manager;
 
 use App\Entity\UserEntity;
-use App\Security\Security;
 use Core\Database\QueryBuilder;
 use Core\Manager\EntityManager;
 use Exception;
+use App\Trait\UserTrait;
 
 class UserManager extends EntityManager
 {
+    use UserTrait;
+
     /**
+     * Connecte l'utilisateur
      * @throws Exception
      */
-    public function login(UserEntity $userData): bool
+    public function login(UserEntity $userData): void
     {
-        $user = $this->findUserByEmail($userData->getEmail());
-
-        // Vérification utilisateur existant
-        if (!$user) {
+        // Vérification utilisateur validé et confirmé par admin
+        if (!($this->isUserExists($userData))) {
             throw new Exception(INVALID_CREDENTIALS);
         }
+        $user = $this->findUserByEmail($userData->getEmail());
+
+        if ($this->canLogin($user, $userData->plainPassword)) {
+            $this->createUserSession($user);
+        }
+    }
+
+    /**
+     * Vétifie que l'utilisateur peut se connecter
+     *
+     * @param UserEntity $user
+     * @param string     $plainPassword
+     *
+     * @return bool
+     * @throws Exception
+     */
+    private function canLogin(UserEntity $user, string $plainPassword): bool
+    {
 
         // Vérification utilisateur validé et confirmé par admin
         if (!($user->isUserValidated())) {
@@ -28,55 +47,72 @@ class UserManager extends EntityManager
         }
 
         // Vérification du mot de passe
-        if (!$this->isPasswordValid($user, $userData->plainPassword)) {
+        if (!$this->isPasswordValid($user, $plainPassword)) {
             throw new Exception(INVALID_CREDENTIALS);
         }
-        $this->createUserSession($user);
 
         return true;
     }
 
     /**
+     * Enregistre l'utilisateur
      * @throws Exception
      */
-    public function register(UserEntity $userData): bool
+    public function register(UserEntity $user): bool
     {
+
+        if ($this->canRegister($user)) {
+            $register = $this->new($user);
+        }
+
+        if (!$register) {
+            throw new Exception(USER_ERROR_EXISTS);
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Vérifie que l'utilisateur peut s'enregistrer
+     * @throws Exception
+     */
+    private function canRegister(UserEntity $user): bool
+    {
+
         // Vérification si l'utilisateur existe déjà
-        if ($this->isUserExists($userData)) {
+        if ($this->isUserExists($user)) {
             throw new Exception(USER_ERROR_EXISTS);
         }
 
         // Vérification du mot de passe et de sa confirmation
-        if (!$this->isPasswordConfirm($userData)) {
+        if (!$this->isPasswordConfirm($user)) {
             throw new Exception(USER_ERROR_PASSWORD_CONFIRM);
-        }
-
-        // Création de l'utilisateur
-        if (!($this->new($userData))) {
-            throw new Exception(USER_ERROR_EXISTS);
         }
 
         return true;
     }
 
     /**
+     * Modifie le mot de passe
      * @throws Exception
      */
-    public function findUserByEmail(string $email): bool|UserEntity
+    public function resetPassword(UserEntity $userData, string $token): void
     {
-        $statement = $this->getUserByEmail()->getQuery();
-        $user = $this->prepare($statement, [':email' => $email], true, true);
+        if ($this->canResetPassword($userData)) {
+            $user = $this->findUserByEmail($userData->getEmail());
 
-        if (!$user) {
-            throw new Exception(INVALID_CREDENTIALS);
+            if ($this->isTokenValid($user, $token)) {
+                // Modification du mot de passe
+                $this->updatePassword($user, $userData->plainPassword);
+            }
         }
-        return $user;
     }
 
     /**
+     * Vérifie que l'utilisateur peut modifier son mot de passe
      * @throws Exception
      */
-    public function resetPassword(UserEntity $userData, string $token): bool
+    private function canResetPassword(UserEntity $userData): bool
     {
         // Vérification si l'utilisateur existe
         if (!$this->isUserExists($userData)) {
@@ -88,88 +124,50 @@ class UserManager extends EntityManager
             throw new Exception(USER_ERROR_PASSWORD_CONFIRM);
         }
 
-        $user = $this->findUserByEmail($userData->getEmail());
-
-        if (!Security::isTokenValid($user, $token)) {
-            throw new Exception(USER_PASSWORD_TOKEN_INVALID);
-        }
-        // Modification du mot de passe
-        if (!($this->updatePassword($user, $userData->plainPassword))) {
-            throw new Exception(USER_PASSWORD_MODIF_INVALID);
-        }
-
         return true;
     }
 
-    public function confirmUser(UserEntity $user): bool
-    {
-        $qb = $this->createQueryBuilder()
-            ->update('user', 'u')
-            ->set('u.user_confirmed = true')
-            ->where('u.id = :id', 'user_confirmed IS false')
-        ;
 
-        $statement = $qb->getQuery();
-        $attributs = [
-            ':id' => $user->getId()
-        ];
-        return $this->execute($statement, $attributs);
-    }
-
-    private function getUserByEmail(): QueryBuilder
-    {
-        return $this->createQueryBuilder()
-                    ->select('u.id', 'u.username', 'u.email', 'u.password', 'u.role')
-                    ->addSelect('u.validation_token as validationToken')
-                    ->addSelect('u.user_confirmed as userConfirmed', 'u.admin_validated as adminValidated')
-                    ->from('user', 'u')
-                    ->where('u.email = :email')
-            ;
-    }
-
-    private function isPasswordValid($user, $plainPassword): bool
-    {
-        return password_verify($plainPassword, $user->getPassword());
-    }
-
-    private function createUserSession(UserEntity $user): void
-    {
-        $_SESSION['user'] = $user;
-    }
-
-    public function logout(): void
-    {
-        unset($_SESSION['user']);
-    }
-
-    // TODO: nombre de caractère dans le mot de passe
+    //--------------------------------------------------------------
+    //------- Requêtes SQL
+    //--------------------------------------------------------------
 
     /**
+     * Retourne un unique utilisateur en fonction de son email
      * @throws Exception
      */
-    private function isPasswordConfirm(UserEntity $user): bool
-    {
-
-        // Vérification du mot de passe
-        if (!is_string($user->plainPassword) || empty($user->plainPassword)) {
-            throw new Exception(USER_ERROR_PASSWORD);
-        }
-
-        // Vérification de la vérification du mot de passe
-        if (!is_string($user->plainPasswordConfirm) || empty($user->plainPasswordConfirm)) {
-            throw new Exception(USER_ERROR_PASSWORD);
-        }
-
-        return $user->plainPassword === $user->plainPasswordConfirm;
-    }
-
-    public function isUserExists(UserEntity $user): int|string
+    public function findUserByEmail(string $email): ?UserEntity
     {
         $statement = $this->getUserByEmail()->getQuery();
-        return $this->execute($statement, [':email' => $user->getEmail()]);
+        $user = $this->prepare($statement, [':email' => $email], true, true);
+
+        if ($user) {
+            return $user;
+        } else {
+            return null;
+        }
     }
 
     /**
+     * Vérifie que l'utilisateur identifié par son email existe en base de données
+     * @param UserEntity $user
+     *
+     * @return bool
+     */
+    private function isUserExists(UserEntity $user): bool
+    {
+        $statement = $this->getUserByEmail()->getQuery();
+        $user = $this->execute($statement, [':email' => $user->getEmail()]);
+
+        if ($user) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Création d'un nouvel utilisateur
      * @throws Exception
      */
     private function new(UserEntity $user): bool
@@ -192,23 +190,37 @@ class UserManager extends EntityManager
         return $this->execute($statement, $attributs);
     }
 
-    private function createUser(): QueryBuilder
-    {
-        return $this->createQueryBuilder()
-                ->insert('user')
-                ->values('username', 'email', 'password', 'validation_token', 'role')
-        ;
-    }
-
     /**
-     * @throws Exception
+     * Met à jour le champ permettant de vérifier que l'utilisateur a confirmé son email
+     * @param UserEntity $user
+     *
+     * @return bool
      */
-    private function updatePassword(UserEntity $user, string $password): int|string
+    public function confirmUser(UserEntity $user): bool
     {
         $qb = $this->createQueryBuilder()
             ->update('user', 'u')
-            ->set('u.password = :password')
-            ->where('u.id = :id')
+            ->set('u.user_confirmed = true')
+            ->where('u.id = :id', 'user_confirmed IS false')
+        ;
+
+        $statement = $qb->getQuery();
+        $attributs = [
+            ':id' => $user->getId()
+        ];
+        return $this->execute($statement, $attributs);
+    }
+
+    /**
+     * Met à jour le champ mot de passe
+     * @throws Exception
+     */
+    private function updatePassword(UserEntity $user, string $password): bool
+    {
+        $qb = $this->createQueryBuilder()
+                   ->update('user', 'u')
+                   ->set('u.password = :password')
+                   ->where('u.id = :id')
         ;
 
         $statement = $qb->getQuery();
@@ -216,6 +228,44 @@ class UserManager extends EntityManager
             ':id'       => $user->getId(),
             ':password' => $user->setPassword($password)->getPassword()
         ];
-        return $this->execute($statement, $attributs);
+
+        $isUpdatedPassword = $this->execute($statement, $attributs);
+
+        if (!$isUpdatedPassword) {
+            throw new Exception(USER_PASSWORD_MODIF_INVALID);
+        } else {
+            return true;
+        }
+    }
+
+    //--------------------------------------------------------------
+    //------- Query Builder
+    //--------------------------------------------------------------
+
+    /**
+     * Retourne le QB d'un utilisateur identifié par son email
+     * @return QueryBuilder
+     */
+    private function getUserByEmail(): QueryBuilder
+    {
+        return $this->createQueryBuilder()
+                    ->select('u.id', 'u.username', 'u.email', 'u.password', 'u.role')
+                    ->addSelect('u.validation_token as validationToken')
+                    ->addSelect('u.user_confirmed as userConfirmed', 'u.admin_validated as adminValidated')
+                    ->from('user', 'u')
+                    ->where('u.email = :email')
+            ;
+    }
+
+    /**
+     * Retourne le QB permettant de créer un utilisateur en base de données
+     * @return QueryBuilder
+     */
+    private function createUser(): QueryBuilder
+    {
+        return $this->createQueryBuilder()
+                ->insert('user')
+                ->values('username', 'email', 'password', 'validation_token', 'role')
+        ;
     }
 }
