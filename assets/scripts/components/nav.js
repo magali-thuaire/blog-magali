@@ -12,7 +12,8 @@ $(document).ready(function () {
     let excludedPages =  [
         'p=post',
         'p=login',
-        'p=forgot-password'
+        'p=forgot-password',
+        'admin'
     ];
 
     // Find all anchors
@@ -55,7 +56,7 @@ $(document).ready(function () {
         element.attr('href', deleteAnchor);
     })
 
-    if (url.href.includes('login') || url.href.includes('register') || url.href.includes('forgot-password')) {
+    if (url.href.includes('login') || url.href.includes('register') || url.href.includes('forgot-password') || url.href.includes('admin')) {
         $dropdown.addClass('active');
     }
 });

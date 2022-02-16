@@ -24,3 +24,7 @@ $commentConst = [
     'COMMENT_ERROR_AUTHOR_LENGTH'   => 'Veuillez renseigner un nom d\'utilisateur de moins de 50 caractères',
     'COMMENT_SUCCESS_MESSAGE'       => 'Votre commentaire a bien été enregistré, il sera visible après validation'
 ];
+$postConst = [
+    'POST_ERROR'                            => 'Cet article n\'existe pas',
+    'ADMIN_POST_DELETED_SUCCESS_MESSAGE'    => 'L\'article a été supprimé avec succès'
+];

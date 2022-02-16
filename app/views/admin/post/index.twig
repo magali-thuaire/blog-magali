@@ -1,0 +1,61 @@
+{% extends 'admin/base.twig' %}
+{% block body %}
+    <div class="px-3 mt-2">
+        <h2>Mes articles</h2>
+        <div class="alert js-alert alert-danger d-flex align-items-center mb-2 {{ app.error ?: 'd-none' }}" role="alert">{{ app.error ?? '' }}</div>
+        <div class="alert js-alert alert-success d-flex align-items-center mb-2 {{ app.success ?: 'd-none' }}" role="alert">{{ app.success ?? '' }}</div>
+        <div class="card p-3">
+            <table id="post-table" class="table__post table table-hover" style="width:100%">
+                <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Date de publication</th>
+                    <th>Statut</th>
+                    <th class="d-none d-md-block">Commentaires</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td class="text-capitalize">{{ post.title|truncate(30, ' ...') }}</td>
+                        <td>{{ post.createdAt|format_datetime('short', 'none', locale='fr') }}</td>
+                        <td>
+                            {% if post.published == true %}
+                                <span class="badge bg-success">publié</span>
+                            {% else %}
+                                <span class="badge bg-warning">non publié</span>
+                            {% endif %}
+                        </td>
+                        <td class="d-none d-md-block p-3">
+                            <span class="indicator-container">
+                                {{ post.commentsApproved ?? 0 }}
+                                {% set not_approved = post.comments|length - post.commentsApproved %}
+                                {% if not_approved != 0 %}
+                                    <span class="indicator">{{ not_approved }}</span>
+                                {% endif %}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ constant('R_POST') ~ post.id }}" class="btn btn-sm btn-show {{ post.published ?: 'disabled' }}" data-bs-toggle="tooltip" data-placement="top" title="Voir">
+                                {% if post.published %}
+                                    <i class="table-post__icon fas fa-eye"></i>
+                                {% else %}
+                                    <i class="table-post__icon fas fa-eye-slash"></i>
+                                {% endif %}
+                            </a>
+                            <a href="" class="btn btn-sm btn-update" data-bs-toggle="tooltip" data-placement="top" title="Modifier">
+                                <i class="table-post__icon fas fa-pencil"></i>
+                            </a>
+                            <a class="btn btn-sm btn-delete js-post-delete" data-bs-toggle="tooltip" data-placement="top" title="Supprimer" data-href="{{ constant('R_ADMIN_POST_CONFIRM_DELETE') ~ post.id }}">
+                                <i class="table-post__icon fas fa-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="post-modal"></div>
+{% endblock %}

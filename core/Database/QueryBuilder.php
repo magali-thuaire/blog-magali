@@ -12,6 +12,7 @@ class QueryBuilder
     private array $orderBy = [];
     private array $groupBy = [];
     private string $insert = '';
+    private string $delete = '';
     private array $columns = [];
     private string $update = '';
     private array $set = [];
@@ -80,9 +81,21 @@ class QueryBuilder
         return $this;
     }
 
+    public function groupBy(): static
+    {
+        $this->groupBy = func_get_args();
+        return $this;
+    }
+
     public function insert($table): static
     {
         $this->insert = $table;
+        return $this;
+    }
+
+    public function delete($table): static
+    {
+        $this->delete = $table;
         return $this;
     }
 
@@ -147,6 +160,11 @@ class QueryBuilder
         // set
         if (!empty($this->set)) {
             $statement .=  ' SET ' . implode(', ', $this->set);
+        }
+
+        // delete
+        if (!empty($this->delete)) {
+            $statement =  'DELETE FROM ' . $this->delete;
         }
 
         // where

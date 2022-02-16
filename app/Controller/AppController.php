@@ -8,6 +8,7 @@ use Core\Manager\EntityManager;
 use Core\Model\FormModel;
 use Core\Security\CsrfToken;
 use Exception;
+use stdClass;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -90,5 +91,32 @@ class AppController
         }
         $entity = str_replace('Manager', '', $key);
         return $this->getManager($entity);
+    }
+
+    protected function getUser()
+    {
+        return Security::getUser();
+    }
+
+    protected function addMessage(FormModel $form): void
+    {
+        $_SESSION['success'] = $form->getSuccess();
+        $_SESSION['error'] = $form->getError();
+    }
+
+    protected function getMessage(): stdClass
+    {
+        $app = new stdClass();
+
+        if (isset($_SESSION['success'])) {
+            $app->success = $_SESSION['success'];
+            unset($_SESSION['success']);
+        }
+        if (isset($_SESSION['error'])) {
+            $app->error = $_SESSION['error'];
+            unset($_SESSION['error']);
+        }
+
+        return $app;
     }
 }

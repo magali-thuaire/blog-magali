@@ -5,6 +5,7 @@ namespace App\Trait;
 use App\Entity\CommentEntity;
 use App\Entity\PostEntity;
 use App\Entity\UserEntity;
+use Exception;
 
 trait PostTrait
 {
@@ -44,6 +45,10 @@ trait PostTrait
     private function createPostWithAuthor($data): PostEntity
     {
 
+        if(!$data) {
+            throw new Exception(POST_ERROR);
+        }
+
         // Création de l'auteur
         $author = $this->createAuthor($data);
 
@@ -59,6 +64,9 @@ trait PostTrait
             }
         }
 
+        if(property_exists($data, 'commentsApproved')) {
+            $post->commentsApproved = $data->commentsApproved;
+        }
         return $post;
     }
 
@@ -118,5 +126,12 @@ trait PostTrait
                 $post->addComment($comment);
             }
         }
+    }
+
+    public function filterComments($posts)
+    {
+        array_filter($posts, function($post) {
+            die(var_dump($post));
+        });
     }
 }

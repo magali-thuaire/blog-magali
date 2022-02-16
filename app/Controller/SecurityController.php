@@ -48,9 +48,8 @@ class SecurityController extends AppController
             $form->setError($e->getMessage());
         }
 
-        // TODO : vers l'espace d'administration
         if (!$form->getError()) {
-            header('Location: ' . R_BLOG);
+            header('Location: ' . R_ADMIN);
         }
 
         // Affichage de la vue
