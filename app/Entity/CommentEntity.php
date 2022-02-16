@@ -2,9 +2,8 @@
 
 namespace App\Entity;
 
-use Core\Model\DateTrait;
-use Core\Model\HydrateTrait;
-use Core\Model\MagicTrait;
+use Core\Trait\HydrateTrait;
+use Core\Trait\MagicTrait;
 use DateTime;
 use Exception;
 

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use Core\Model\HydrateTrait;
+use Core\Trait\HydrateTrait;
 use DateTime;
 use Exception;
 

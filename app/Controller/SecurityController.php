@@ -3,11 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\UserEntity;
-use App\Manager\SecurityManager;
-use App\Model\PasswordMail;
-use App\Model\UserMail;
-use Core\Security\CsrfToken;
-use Core\Security\Security;
+use App\Service\PasswordMailService;
+use App\Service\UserMailService;
+use App\Security\Security;
 use Exception;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -25,7 +23,7 @@ class SecurityController extends AppController
     public function login($messages = [])
     {
         // Initialisation du formulaire
-        $form = $this->createForm('authenticate', true, $messages);
+        $form = $this->initForm('authenticate', true, $messages);
 
         // Affichage de la vue
         $this->render('security/login.twig', [
@@ -39,34 +37,20 @@ class SecurityController extends AppController
      */
     public function authenticate()
     {
-        // Nettoyage des données postées
-        $formData = Security::checkInputs($_POST);
+        $form = $this->createForm('authenticate');
 
-        // Récupération du token
-        $token = new CsrfToken('authenticate', $formData['csrfToken']);
-        unset($formData['csrfToken']);
+        try {
+            // Création de l'utilisateur
+            $user = new UserEntity();
+            $user->hydrate((array) $form);
+            $this->userManager->login($user);
+        } catch (Exception $e) {
+            $form->setError($e->getMessage());
+        }
 
-        // Initialisation du formulaire avec données nettoyées
-        $form = $this
-            ->createForm('authenticate', false)
-            ->hydrate($formData);
-
-        if ($form->isTokenValid($token)) {
-            try {
-                // Création de l'utilisateur
-                $user = new UserEntity();
-                $user->hydrate($formData);
-                $this->userManager->login($user);
-            } catch (Exception $e) {
-                $form->setError($e->getMessage());
-            }
-
-            // TODO : vers l'espace d'administration
-            if (!$form->getError()) {
-                header('Location: ' . R_BLOG);
-            }
-        } else {
-            throw new Exception('Invalid CSRF token');
+        // TODO : vers l'espace d'administration
+        if (!$form->getError()) {
+            header('Location: ' . R_BLOG);
         }
 
         // Affichage de la vue
@@ -85,7 +69,7 @@ class SecurityController extends AppController
     public function signin()
     {
         // Initialisation du formulaire
-        $form = $this->createForm('register');
+        $form = $this->initForm('register');
 
         // Affichage de la vue
         $this->render('security/register.twig', [
@@ -99,43 +83,25 @@ class SecurityController extends AppController
      */
     public function register()
     {
-        // Nettoyage des données postées
-        $formData = Security::checkInputs($_POST);
+        $form = $this->createForm('register');
 
-        // Récupération du token
-        $token = new CsrfToken('register', $formData['csrfToken']);
-        unset($formData['csrfToken']);
+        try {
+            // Création de l'utilisateur
+            $user = new UserEntity();
+            $user->hydrate((array) $form);
+            $this->userManager->register($user);
+        } catch (Exception $e) {
+            $form->setError($e->getMessage());
+        }
 
-        // Initialisation du formulaire avec données nettoyées
-        $form = $this
-            ->createForm('register', false)
-            ->hydrate($formData);
-
-        if ($form->isTokenValid($token)) {
-            try {
-                // Création de l'utilisateur
-                $user = new UserEntity();
-                $user->hydrate($formData);
-                $this->userManager->register($user);
-            } catch (Exception $e) {
-                $form->setError($e->getMessage());
+        if (!$form->getError()) {
+            if (UserMailService::send($user)) {
+                // Message de réussite
+                $form->setSuccess(USER_SUCCESS_REGISTRATION);
+            } else {
+                // Message d'erreur
+                $form->setError(ERROR_SEND_EMAIL);
             }
-
-            if (!$form->getError()) {
-                // Envoi du mail
-                $email = new UserMail();
-                $send_email = $email->sendEmail($user);
-
-                if ($send_email) {
-                    // Message de réussite
-                    $form->setSuccess(USER_SUCCESS_REGISTRATION);
-                } else {
-                    // Message d'erreur
-                    $form->setError(ERROR_SEND_EMAIL);
-                }
-            }
-        } else {
-            throw new Exception('Invalid CSRF token');
         }
 
         // Affichage de la vue
@@ -149,15 +115,22 @@ class SecurityController extends AppController
      */
     public function logout()
     {
-        $this->userManager->destroyUserSession();
+        $this->userManager->logout();
         header('Location: ' . R_HOMEPAGE);
     }
 
-    public function validate(string $email, string $tokenValidation)
+    /**
+     * Validation du compte par l'utilisateur
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     */
+    public function validate(string $email, string $token)
     {
         $user = $this->userManager->findUserByEmail($email);
 
-        if ($isTokenValid = SecurityManager::isTokenValid($user, $tokenValidation)) {
+        if ($isTokenValid = Security::isTokenValid($user, $token)) {
             $isUserConfirm = $this->userManager->confirmUser($user);
         }
 
@@ -172,10 +145,18 @@ class SecurityController extends AppController
         $this->login($message);
     }
 
+    /**
+     * Demande la page de réinitialisation de mot de passe
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws Exception
+     */
     public function forgotPassword()
     {
         // Initialisation du formulaire
-        $form = $this->createForm('forgot-password');
+        $form = $this->initForm('forgot-password');
 
         // Affichage de la vue
         $this->render('security/email.twig', [
@@ -183,46 +164,38 @@ class SecurityController extends AppController
         ]);
     }
 
+    /**
+     * Demande de réinitialisation de mot de passe
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws Exception
+     */
     public function emailPassword()
     {
-        // Nettoyage des données postées
-        $formData = Security::checkInputs($_POST);
+        $form = $this->createForm('forgot-password');
 
-        // Récupération du token
-        $token = new CsrfToken('forgot-password', $formData['csrfToken']);
-        unset($formData['csrfToken']);
-
-        // Initialisation du formulaire avec données nettoyées
-        $form = $this
-            ->createForm('forgot-password', false)
-            ->hydrate($formData);
-
-        if ($form->isTokenValid($token)) {
-            try {
-                // Création de l'utilisateur
-                $user = new UserEntity();
-                $user->hydrate($formData);
-                if (!($user = $this->userManager->findUserByEmail($user->getEmail()))) {
-                    $form->setError(USER_ERROR_NOT_EXISTS);
-                }
-            } catch (Exception $e) {
-                $form->setError($e->getMessage());
+        try {
+            // Création de l'utilisateur
+            $user = new UserEntity();
+            $user->hydrate((array) $form);
+            if (!($user = $this->userManager->findUserByEmail($user->getEmail()))) {
+                $form->setError(USER_ERROR_NOT_EXISTS);
             }
+        } catch (Exception $e) {
+            $form->setError($e->getMessage());
+        }
 
-            if (!$form->getError()) {
-                // Envoi du mail
-                $email = new PasswordMail();
-                $send_email = $email->sendEmail($user);
-                if ($send_email) {
-                    // Message de réussite
-                    $form->setSuccess(USER_SEND_PASSWORD_EMAIL . $user->getEmail());
-                } else {
-                    // Message d'erreur
-                    $form->setError(ERROR_SEND_EMAIL);
-                }
+        if (!$form->getError()) {
+            // Envoi du mail
+            if (PasswordMailService::send($user)) {
+                // Message de réussite
+                $form->setSuccess(USER_SEND_PASSWORD_EMAIL . $user->getEmail());
+            } else {
+                // Message d'erreur
+                $form->setError(ERROR_SEND_EMAIL);
             }
-        } else {
-            throw new Exception('Invalid CSRF token');
         }
 
         // Affichage de la vue
@@ -232,14 +205,17 @@ class SecurityController extends AppController
     }
 
     /**
+     * Demande la page de modification de mot de passe
+     *
      * @throws SyntaxError
      * @throws RuntimeError
      * @throws LoaderError
+     * @throws Exception
      */
-    public function newPassword(string $email, string $tokenValidation)
+    public function newPassword(string $email, string $token)
     {
         // Initialisation du formulaire
-        $form = $this->createForm('reset-password');
+        $form = $this->initForm('reset-password');
 
         try {
             $user = $this->userManager->findUserByEmail($email);
@@ -255,44 +231,40 @@ class SecurityController extends AppController
         $this->render('security/password.twig', [
             'form' => $form,
             'user' => $user,
-            'tokenValidation' => $tokenValidation
+            'token' => $token
         ]);
     }
 
+    /**
+     * Demande de modification de mot de passe
+     *
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws Exception
+     */
     public function resetPassword()
     {
-        // Nettoyage des données postées
-        $formData = Security::checkInputs($_POST);
+        $form = $this->createForm('reset-password');
 
-        // Récupération du token
-        $token = new CsrfToken('reset-password', $formData['csrfToken']);
-        unset($formData['csrfToken']);
+        try {
+            // Création de l'utilisateur
+            $user = new UserEntity();
+            $user->hydrate((array) $form);
+            $this->userManager->resetPassword($user, $form->token);
+        } catch (Exception $e) {
+            $form->setError($e->getMessage());
+        }
 
-        // Initialisation du formulaire avec données nettoyées
-        $form = $this
-            ->createForm('reset-password', false)
-            ->hydrate($formData);
-
-        if ($form->isTokenValid($token)) {
-            try {
-                // Création de l'utilisateur
-                $user = new UserEntity();
-                $user->hydrate($formData);
-                $this->userManager->resetPassword($user, $formData['validationToken']);
-            } catch (Exception $e) {
-                $form->setError($e->getMessage());
-            }
-
-            if (!$form->getError()) {
-                $this->login(['success' => 'Votre mot de passe a été réinitialisé. Vous pouvez désormais vous connecter avec votre nouveau mot de passe.']);
-            }
-        } else {
-            throw new Exception('Invalid CSRF token');
+        if (!$form->getError()) {
+            $this->login(['success' => USER_PASSWORD_CHANGED]);
         }
 
         // Affichage de la vue
         $this->render('security/password.twig', [
-            'form' => $form
+            'form' => $form,
+            'user' => $user,
+            'token' => $form->token
         ]);
     }
 }

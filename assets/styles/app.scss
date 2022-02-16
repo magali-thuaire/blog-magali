@@ -7,10 +7,10 @@
 @import 'components/scrolltop';
 @import 'layout/nav';
 @import 'layout/form';
-@import 'pages/404';
+@import 'pages/security/404';
 @import 'pages/homepage';
 @import 'pages/post';
-@import 'pages/login';
-@import 'pages/register';
-@import 'pages/email';
-@import 'pages/password';
+@import 'pages/security/login';
+@import 'pages/security/register';
+@import 'pages/security/email';
+@import 'pages/security/password';

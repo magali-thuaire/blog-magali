@@ -5,8 +5,6 @@ namespace App\Controller;
 use App\App;
 use App\Entity\CommentEntity;
 use App\Entity\PostEntity;
-use Core\Security\CsrfToken;
-use Core\Security\Security;
 use Exception;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -23,7 +21,7 @@ class PostController extends AppController
     public function index()
     {
         /** @var PostEntity[]|null $posts */
-        $posts = $this->postManager->findAllPublishedWithCommentsOrdereByNewest();
+        $posts = $this->postManager->findAllPublishedOrderedByNewest();
 
         return $this->render('post/index.twig', [
             'posts' => $posts
@@ -46,7 +44,7 @@ class PostController extends AppController
             return App::getInstance()->notFound();
         }
 
-        $form = $this->createForm('comment');
+        $form = $this->initForm('comment');
 
         $this->render('post/show.twig', [
             'post' => $post,
@@ -60,38 +58,25 @@ class PostController extends AppController
      */
     public function newComment(int $id)
     {
-        // Nettoyage des données postées
-        $formData = Security::checkInputs($_POST);
+        $form = $this->createForm('comment');
 
-        // Récupération du token
-        $token = new CsrfToken('comment', $formData['csrfToken']);
-        unset($formData['csrfToken']);
-        // Initialisation du formulaire avec données nettoyées
-        $form = $this
-            ->createForm('comment', false)
-            ->hydrate($formData);
-
-        if ($form->isTokenValid($token)) {
-            try {
-                // Création du commentaire
-                $comment = new CommentEntity();
-                $comment->hydrate($formData);
-                $post = $this->postManager->findOneByIdWithCommentsApproved($id);
-
-                // Si l'article existe bien
-                if ($post) {
-                    $comment->setPost($post);
-                } else {
-                    $form->setError(COMMENT_ERROR_ARTICLE);
-                }
-            } catch (Exception $e) {
-                $form->setError($e->getMessage());
-            }
-        } else {
-            throw new Exception('Invalid CSRF token');
+        try {
+            // Création du commentaire
+            $comment = new CommentEntity();
+            $comment->hydrate((array) $form);
+            $post = $this->postManager->findOneById($id);
+        } catch (Exception $e) {
+            $form->setError($e->getMessage());
         }
 
-        if (!$form->getError()) {
+        // Si l'article existe bien
+        if ($post) {
+            $comment->setPost($post);
+        } else {
+            $form->setError(COMMENT_ERROR_ARTICLE);
+        }
+
+        if (!$form->hasError()) {
              $isSuccess = $this->commentManager->new($comment);
 
             if ($isSuccess) {
