@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\App;
+use App\Security\Security;
 use Core\Manager\EntityManager;
 use Core\Model\FormModel;
+use Core\Security\CsrfToken;
 use Exception;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -35,15 +37,44 @@ class AppController
     }
 
     /**
-     * Retourne un nouveau formulaire avec l'initialisation d'un token
+     * Retourne un nouveau formulaire avec l'initialisation d'un token csrf
      * @throws Exception
      */
-    protected function createForm(string $tokenKey, bool $tokenInitialize = true, array $messages = []): FormModel
+    protected function initForm(string $tokenKey, bool $tokenInitialize = true, array $messages = []): FormModel
     {
         if ($tokenInitialize) {
             $_SESSION[$tokenKey] = uniqid(rand(), true);
         }
         return new FormModel($tokenKey, $messages);
+    }
+
+    /**
+     * Retourne une nouveau formulaire posté avec vérification du token csrf
+     *
+     * @param string $tokenKey
+     *
+     * @return FormModel
+     * @throws Exception
+     */
+    protected function createForm(string $tokenKey): FormModel
+    {
+        // Nettoyage des données postées
+        $formData = Security::checkInputs($_POST);
+
+        // Récupération du token
+        $token = new CsrfToken($tokenKey, $formData['csrfToken']);
+        unset($formData['csrfToken']);
+
+        // Initialisation du formulaire avec données nettoyées
+        $form = $this
+            ->initForm($tokenKey, false)
+            ->hydrate($formData);
+
+        if (!$form->isTokenValid($token)) {
+            throw new Exception(INVALID_CSRF_TOKEN);
+        }
+
+        return $form;
     }
 
     /**

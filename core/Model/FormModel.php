@@ -3,6 +3,8 @@
 namespace Core\Model;
 
 use Core\Security\CsrfToken;
+use Core\Trait\HydrateTrait;
+use Core\Trait\MagicTrait;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 
@@ -68,5 +70,10 @@ class FormModel
     #[Pure] public function isTokenValid(CsrfToken $csrfToken): bool
     {
         return $csrfToken->getValue() === $this->csrfToken->getValue();
+    }
+
+    #[Pure] public function hasError(): bool
+    {
+        return $this->getError() !== null;
     }
 }

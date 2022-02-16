@@ -15,9 +15,10 @@
     background-color: $background-color-post;
   }
   &__title {
-    & > a {
-      color: $primary-color !important;
-      text-transform: uppercase;
+    color: white !important;
+    text-transform: uppercase;
+    a {
+      color: $primary-color;
     }
   }
   &__header {

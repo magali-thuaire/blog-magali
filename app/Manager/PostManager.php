@@ -2,20 +2,21 @@
 
 namespace App\Manager;
 
-use App\Entity\CommentEntity;
 use App\Entity\PostEntity;
-use App\Entity\UserEntity;
+use App\Trait\PostTrait;
 use Core\Database\QueryBuilder;
 use Core\Manager\EntityManager;
 
 class PostManager extends EntityManager
 {
+    use PostTrait;
+
     /**
      * Retourne tous les articles publiés, ordonné du plus récent au plus ancien
      */
-    public function findAllPublishedWithCommentsOrdereByNewest(): ?array
+    public function findAllPublishedOrderedByNewest(): ?array
     {
-        $statement = $this->getAllPublishedWithCommentsOrderByNewest()->getQuery();
+        $statement = $this->getAllPublishedOrderByNewest()->getQuery();
         $postsData = $this->query($statement);
 
         $posts = [];
@@ -30,7 +31,7 @@ class PostManager extends EntityManager
     }
 
     /**
-     * Retourne un unique article identifié à partir de son id
+     * Retourne un unique article identifié à partir de son id, avec ses commentaires approuvés
      */
     public function findOneByIdWithCommentsApproved(int $id): ?PostEntity
     {
@@ -47,9 +48,28 @@ class PostManager extends EntityManager
     }
 
     /**
-     * Retourne la requête SQL de tous les articles
+     * Retourne un unique article identifié à partir de son id
      */
-    private function getAll(): QueryBuilder
+    public function findOneById(int $id): ?PostEntity
+    {
+        $statement = $this->getOneById()->getQuery();
+        $postData = $this->prepare($statement, [':id' => $id], true, false);
+
+        if ($postData) {
+            return $this->createPostWithAuthor($postData);
+        } else {
+            return null;
+        }
+    }
+
+    //--------------------------------------------------------------
+    //------- Requêtes SQL
+    //--------------------------------------------------------------
+
+    /**
+     * Retourne la requête SQL de tous les articles publiés
+     */
+    private function getAllPublished(): QueryBuilder
     {
         return $this->createQueryBuilder()
             ->select('p.id', 'p.title', 'p.header', 'p.content', 'p.author', 'p.published')
@@ -57,37 +77,18 @@ class PostManager extends EntityManager
             ->addSelect('a.username')
             ->from('post', 'p')
             ->innerJoin('user', 'a', 'p.author = a.id')
-        ;
-    }
-
-    /**
-     * Retourne la requête SQL de tous les articles publiés
-     */
-    private function getAllPublished(): QueryBuilder
-    {
-        return $this->getAll()
             ->andWhere('p.published IS TRUE')
-            ;
-    }
-
-    /**
-     * Retourne la requête SQL de tous les articles
-     */
-    private function getAllPublishedWithComments(): QueryBuilder
-    {
-        return $this->getAllPublished()
-            ->addCount('c.id', 'comments', 'p.id')
-            ->leftJoin('comment', 'c', 'c.post = p.id', 'c.approved IS TRUE')
-            ;
+        ;
     }
 
     /**
      * Retourne la requête SQL de tous les article publiés, ordonnés du plus récent au plus ancien
      */
-    private function getAllPublishedWithCommentsOrderByNewest(): QueryBuilder
+    private function getAllPublishedOrderByNewest(): QueryBuilder
     {
-
-        return $this->getAllPublishedWithComments()
+        return $this->getAllPublished()
+            ->addCount('c.id', 'comments', 'p.id')
+            ->leftJoin('comment', 'c', 'c.post = p.id', 'c.approved IS TRUE')
             ->orderBy('p.published_at', 'DESC')
         ;
     }
@@ -112,87 +113,5 @@ class PostManager extends EntityManager
             ->leftJoin('comment', 'c', 'c.post = p.id', 'c.approved IS TRUE')
             ->orderBy('c.created_at', 'DESC')
         ;
-    }
-
-    /**
-     * Retourne un object Post dont son author est un object User
-     */
-    private function createPostWithAuthor($data): PostEntity
-    {
-
-        // Création de l'auteur
-        $author = $this->createAuthor($data);
-
-        // Création de l'article
-        $post = $this->createPost($data);
-        $post->setAuthor($author);
-
-        // Création des commentaires
-        if (property_exists($data, 'comments')) {
-            while ($data->comments-- > 0) {
-                $comment = new CommentEntity();
-                $post->addComment($comment);
-            }
-        }
-
-        return $post;
-    }
-
-    /** Retourne un objet Post
-     *
-     */
-    private function createPost($data): PostEntity
-    {
-        // Création de l'article
-        $postData = [
-            'id'                => $data->id,
-            'title'             => $data->title,
-            'header'            => $data->header,
-            'content'           => $data->content,
-            'published'         => $data->published,
-            'publishedAt'       => $data->publishedAt,
-            'createdAt'         => $data->createdAt,
-            'updatedAt'         => $data->updatedAt,
-        ];
-
-        $post = new PostEntity();
-        $post->hydrate($postData);
-
-        return $post;
-    }
-
-    /** Retourne un objet User qui est l'auteur de l'article
-     *
-     */
-    private function createAuthor($data): UserEntity
-    {
-        $authorData = [
-            'username'          => $data->username
-        ];
-        $author = new UserEntity();
-        $author->hydrate($authorData);
-
-        return $author;
-    }
-
-    /**
-     * Retourne un object Post dont ses commentaires sont des objets Comment
-     */
-    private function addComments(PostEntity $post, $postData): void
-    {
-        foreach ($postData as $data) {
-            // Si l'article dispose de commentaires
-            if ($data->commentAuthor) {
-                $commentData = [
-                    'content' => $data->commentContent,
-                    'createdAt' => $data->commentCreatedAt,
-                    'author' => $data->commentAuthor,
-                ];
-
-                $comment = new CommentEntity();
-                $comment->hydrate($commentData);
-                $post->addComment($comment);
-            }
-        }
     }
 }

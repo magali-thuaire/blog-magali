@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\UserEntity;
+use App\Security\Security;
 use Core\Database\QueryBuilder;
 use Core\Manager\EntityManager;
 use Exception;
@@ -58,16 +59,24 @@ class UserManager extends EntityManager
         return true;
     }
 
+    /**
+     * @throws Exception
+     */
     public function findUserByEmail(string $email): bool|UserEntity
     {
         $statement = $this->getUserByEmail()->getQuery();
-        return $this->prepare($statement, [':email' => $email], true, true);
+        $user = $this->prepare($statement, [':email' => $email], true, true);
+
+        if (!$user) {
+            throw new Exception(INVALID_CREDENTIALS);
+        }
+        return $user;
     }
 
     /**
      * @throws Exception
      */
-    public function resetPassword(UserEntity $userData, string $validationToken): bool
+    public function resetPassword(UserEntity $userData, string $token): bool
     {
         // Vérification si l'utilisateur existe
         if (!$this->isUserExists($userData)) {
@@ -81,7 +90,7 @@ class UserManager extends EntityManager
 
         $user = $this->findUserByEmail($userData->getEmail());
 
-        if (!SecurityManager::isTokenValid($user, $validationToken)) {
+        if (!Security::isTokenValid($user, $token)) {
             throw new Exception(USER_PASSWORD_TOKEN_INVALID);
         }
         // Modification du mot de passe
@@ -128,7 +137,7 @@ class UserManager extends EntityManager
         $_SESSION['user'] = $user;
     }
 
-    public function destroyUserSession(): void
+    public function logout(): void
     {
         unset($_SESSION['user']);
     }
@@ -191,7 +200,11 @@ class UserManager extends EntityManager
         ;
     }
 
-    private function updatePassword(UserEntity $user, string $password) {
+    /**
+     * @throws Exception
+     */
+    private function updatePassword(UserEntity $user, string $password): int|string
+    {
         $qb = $this->createQueryBuilder()
             ->update('user', 'u')
             ->set('u.password = :password')
@@ -205,5 +218,4 @@ class UserManager extends EntityManager
         ];
         return $this->execute($statement, $attributs);
     }
-
 }

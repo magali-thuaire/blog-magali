@@ -3,27 +3,23 @@
 namespace App\Manager;
 
 use App\Entity\ContactEntity;
-use Core\Database\QueryBuilder;
 use Core\Manager\EntityManager;
 
 class ContactManager extends EntityManager
 {
-    public function new(ContactEntity $contact): int|string
+    public function new(ContactEntity $contact): bool
     {
-        $statement = $this->createContact()->getQuery();
+        $qb = $this->createQueryBuilder()
+           ->insert('contact')
+           ->values('name', 'email', 'message')
+        ;
+        $statement = $qb->getQuery();
         $attributs = [
             ':name' => $contact->getName(),
             'email' => $contact->getEmail(),
             'message' => $contact->getMessage()
         ];
-        return $this->execute($statement, $attributs);
-    }
 
-    private function createContact(): QueryBuilder
-    {
-        return $this->createQueryBuilder()
-            ->insert('contact')
-            ->values('name', 'email', 'message')
-        ;
+        return $this->execute($statement, $attributs, true);
     }
 }

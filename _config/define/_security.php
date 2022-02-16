@@ -20,6 +20,7 @@ $userConst = [
     'URL_SITE'                      => 'localhost:8888/blog-magali/public',
     'USER_ACCOUNT_ACTIVATED'        => 'Votre compte a été activé avec succès
                                         Merci d\'attendre la validation de l\'administrateur',
+    'USER_PASSWORD_CHANGED'         => 'Votre mot de passe a été réinitialisé. Vous pouvez désormais vous connecter avec votre nouveau mot de passe',
     'USER_TOKEN_INVALID'            => 'Activation de votre compte impossible',
     'USER_PASSWORD_TOKEN_INVALID'   => 'Modification de votre mot de passe impossible',
     'USER_PASSWORD_MODIF_INVALID'   => 'Modification de votre mot de passe impossible',

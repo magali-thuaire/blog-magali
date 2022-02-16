@@ -4,7 +4,7 @@ use App\App;
 use App\Controller\PostController;
 use App\Controller\HomeController as HomeController;
 use App\Controller\SecurityController;
-use Core\Security\Security;
+use App\Security\Security;
 
 require_once '../app/App.php';
 App::load();
@@ -76,10 +76,10 @@ switch (true) {
         $controller = new SecurityController();
         switch (true) {
             case isset($_GET['email']) && !empty($_GET['email'])
-                 && isset($_GET['tokenValidation']) && !empty($_GET['tokenValidation']):
+                 && isset($_GET['token']) && !empty($_GET['token']):
                 $email = Security::checkInput($_GET['email']);
-                $tokenValidation = Security::checkInput($_GET['tokenValidation']);
-                $controller->validate($email, $tokenValidation);
+                $token = Security::checkInput($_GET['token']);
+                $controller->validate($email, $token);
                 break;
             default:
                 App::getInstance()->notFound();
@@ -104,10 +104,10 @@ switch (true) {
             default:
                 switch (true) {
                     case isset($_GET['email']) && !empty($_GET['email'])
-                         && isset($_GET['tokenValidation']) && !empty($_GET['tokenValidation']):
+                         && isset($_GET['token']) && !empty($_GET['token']):
                         $email = Security::checkInput($_GET['email']);
-                        $tokenValidation = Security::checkInput($_GET['tokenValidation']);
-                        $controller->newPassword($email, $tokenValidation);
+                        $token = Security::checkInput($_GET['token']);
+                        $controller->newPassword($email, $token);
                         break;
                     default:
                         App::getInstance()->notFound();

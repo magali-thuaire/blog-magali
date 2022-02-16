@@ -4,9 +4,7 @@ namespace App\Controller;
 
 use App;
 use App\Entity\ContactEntity;
-use App\Model\ContactMail;
-use Core\Security\CsrfToken;
-use Core\Security\Security;
+use App\Service\ContactMailService;
 use Exception;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -24,7 +22,7 @@ class HomeController extends AppController
     public function index()
     {
         // Initialisation du formulaire
-        $form = $this->createForm('contact');
+        $form = $this->initForm('contact');
 
         // Affichage de la vue
         return $this->render('homepage/index.twig', [
@@ -38,44 +36,26 @@ class HomeController extends AppController
      */
     public function newContact()
     {
-        // Nettoyage des données postées
-        $formData = Security::checkInputs($_POST);
+        $form = $this->createForm('contact');
 
-        // Récupération du token
-        $token = new CsrfToken('contact', $formData['csrfToken']);
-        unset($formData['csrfToken']);
+        try {
+            // Création du contact
+            $contact = new ContactEntity();
+            $contact->hydrate((array) $form);
+        } catch (Exception $e) {
+            $form->setError($e->getMessage());
+        }
 
-        // Initialisation du formulaire avec données nettoyées
-        $form = $this
-            ->createForm('contact', false)
-            ->hydrate($formData);
-
-        if ($form->isTokenValid($token)) {
-            try {
-                // Création du contact
-                $contact = new ContactEntity();
-                $contact->hydrate($formData);
-            } catch (Exception $e) {
-                $form->setError($e->getMessage());
+        if (!$form->hasError()) {
+            // Envoi du mail
+            if (ContactMailService::send($contact)) {
+                // Enregistrement en BDD
+                $this->contactManager->new($contact);
+                $form->setSuccess(CONTACT_SUCCESS_EMAIL);
+            } else {
+                // Message d'erreur
+                $form->setError(ERROR_SEND_EMAIL);
             }
-
-            if (!$form->getError()) {
-                // Envoi du mail
-                $email = new ContactMail();
-                $send_email = $email->sendEmail($contact);
-
-                if ($send_email) {
-                    // Enregistrement en BDD
-                    $this->contactManager->new($contact);
-                    // Message de réussite
-                    $form->setSuccess(CONTACT_SUCCESS_MESSAGE);
-                } else {
-                    // Message d'erreur
-                    $form->setError(ERROR_SEND_EMAIL);
-                }
-            }
-        } else {
-            throw new Exception('Invalid CSRF token');
         }
 
         // Données du formulaire en json

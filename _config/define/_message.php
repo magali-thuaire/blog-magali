@@ -6,7 +6,7 @@ $contactConst = [
     'CONTACT_ERROR_NAME'        => ['CONTACT_ERROR' => 'nom'],
     'CONTACT_ERROR_EMAIL'       => ['CONTACT_ERROR' => 'email'],
     'CONTACT_ERROR_MESSAGE'     => ['CONTACT_ERROR' => 'message'],
-    'CONTACT_SUCCESS_MESSAGE'   => 'Votre message a bien été envoyé',
+    'CONTACT_SUCCESS_EMAIL'     => 'Votre message a bien été envoyé',
 ];
 
 $emailConst = [

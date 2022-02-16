@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Model;
+namespace Core\Trait;
 
 trait HydrateTrait
 {
