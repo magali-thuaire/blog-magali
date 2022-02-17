@@ -97,4 +97,15 @@ class App
         header('HTTP/1.0 404');
         return $this->getRenderer()->render('/security/404.twig');
     }
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    public function forbidden()
+    {
+        header('HTTP/1.0 403');
+        return $this->getRenderer()->render('/security/403.twig');
+    }
 }

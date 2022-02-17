@@ -59,6 +59,9 @@ trait PostTrait
             }
         }
 
+        if(property_exists($data, 'commentsApproved')) {
+            $post->commentsApproved = $data->commentsApproved;
+        }
         return $post;
     }
 
@@ -118,5 +121,12 @@ trait PostTrait
                 $post->addComment($comment);
             }
         }
+    }
+
+    public function filterComments($posts)
+    {
+        array_filter($posts, function($post) {
+            die(var_dump($post));
+        });
     }
 }

@@ -91,4 +91,9 @@ class AppController
         $entity = str_replace('Manager', '', $key);
         return $this->getManager($entity);
     }
+
+    protected function getUser()
+    {
+        return Security::getUser();
+    }
 }
