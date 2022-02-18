@@ -19,14 +19,13 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
     $p = 'dashboard';
 }
 
+$controller = new AdminPostController();
 switch (true) {
     // Demande du tableau de bord
     case $p === 'dashboard':
-        $controller = new AdminPostController();
         $controller->index();
         break;
     case $p === 'post-confirm-delete':
-        $controller = new AdminPostController();
         switch (true) {
             case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
                 $id = Security::checkInput($_GET['id']);
@@ -37,7 +36,6 @@ switch (true) {
         }
         break;
     case $p === 'post-delete':
-        $controller = new AdminPostController();
         switch (true) {
             case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']) && $_POST:
                 $id = Security::checkInput($_GET['id']);
@@ -48,7 +46,6 @@ switch (true) {
         }
         break;
     case $p === 'post-update':
-        $controller = new AdminPostController();
         switch (true) {
             case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
                 $id = Security::checkInput($_GET['id']);
@@ -62,5 +59,15 @@ switch (true) {
                 $controller->index();
         }
         break;
+    case $p === 'post-new':
+        switch ($_POST) {
+            case true:
+                $controller->new();
+                break;
+            default:
+                $controller->create();
+        }
+        break;
     default:
+        $controller->index();
 }

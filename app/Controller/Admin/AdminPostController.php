@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
+use App\Entity\PostEntity;
 use Exception;
 
 class AdminPostController extends AppController
@@ -106,5 +107,50 @@ class AdminPostController extends AppController
 
         $this->addMessage($form);
         header('Location: ' . R_ADMIN);
+    }
+
+    public function create()
+    {
+        $form = $this->initForm('post-new');
+
+        $this->render('admin/post/new.twig', [
+            'form' => $form
+        ]);
+    }
+
+    public function new()
+    {
+        $form = $this->createForm('post-new');
+        try {
+            // Création du commentaire
+            $post = new PostEntity();
+            $post->setAuthor($this->getUser());
+            $post->hydrate((array) $form);
+        } catch (Exception $e) {
+            $form->setError($e->getMessage());
+        }
+
+        if (!$form->hasError()) {
+            $post->setPublished(property_exists($form, 'published') ? true : false);
+            $isCreated = $this->postManager->new($post);
+
+            if ($isCreated) {
+                $form->setSuccess(ADMIN_POST_NEW_SUCCESS_MESSAGE);
+            } else {
+                $form->setError(ADMIN_POST_NEW_ERROR_MESSAGE);
+            }
+
+            $this->addMessage($form);
+            header('Location: ' . R_ADMIN);
+        } else {
+            $this->addMessage($form);
+            $app = $this->getMessage();
+
+            $this->render('admin/post/new.twig', [
+                'post' => $post,
+                'form' => $form,
+                'app' => $app
+            ]);
+        }
     }
 }

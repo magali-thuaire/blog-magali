@@ -99,7 +99,7 @@ class QueryBuilder
         return $this;
     }
 
-    public function values($values): static
+    public function columns(): static
     {
         $this->columns = func_get_args();
         return $this;
@@ -144,7 +144,7 @@ class QueryBuilder
             $statement = 'INSERT INTO ' . $this->insert;
         }
 
-        // values
+        // columns
         if (!empty($this->columns)) {
             $statement .= ' ('
                           . implode(', ', $this->columns) . ')'

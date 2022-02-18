@@ -126,6 +126,24 @@ class PostManager extends EntityManager
         return $this->execute($statement, $attributs);
     }
 
+    public function new(PostEntity $post): bool
+    {
+        $qb = $this->createQueryBuilder()
+               ->insert('post')
+               ->columns('title', 'header', 'content', 'published', 'author')
+        ;
+
+        $statement = $qb->getQuery();
+        $attributs = [
+            ':title'        => $post->getTitle(),
+            ':header'       => $post->getHeader(),
+            ':content'      => $post->getContent(),
+            ':published'    => $post->isPublished(),
+            ':author'       => $post->getAuthor()->getId()
+        ];
+        return $this->execute($statement, $attributs, true);
+    }
+
     //--------------------------------------------------------------
     //------- Query Builder
     //--------------------------------------------------------------

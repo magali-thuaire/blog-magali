@@ -27,6 +27,12 @@
                     Mes articles
                 </a>
             </li>
+            <li class="nav-item adminSidebar__item">
+                <a href="{{ constant('R_ADMIN_POST_NEW') }}" class="nav-link text-dark font-italic">
+                    <i class="adminSidebar__item-icon fas fa-pen-clip"></i>
+                    Nouvel article
+                </a>
+            </li>
             {% if session.user.role in [constant('App\\Entity\\UserEntity::ROLE_SUPERADMIN')] %}
             <li class="nav-item adminSidebar__item">
                 <a href="#" class="nav-link text-dark font-italic">

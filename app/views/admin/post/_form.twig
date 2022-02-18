@@ -1,0 +1,37 @@
+<div class="alert js-alert alert-danger d-flex align-items-center mb-2 {{ app.error ?: 'd-none' }}" role="alert">{{ app.error ?? '' }}</div>
+<div class="alert js-alert alert-success d-flex align-items-center mb-2 {{ app.success ?: 'd-none' }}" role="alert">{{ app.success ?? '' }}</div>
+<div class="card p-3">
+    <form id="postForm" action="{{ action }}" method="POST">
+        <div class="form-floating">
+            <input type="text" name="title" class="form-control" placeholder="titre" value="{{ post.title ?: '' }}" required>
+            <label>Titre de l'article</label>
+        </div>
+        <div class="form-floating mt-2">
+            <input type="text" name="header" class="form-control" placeholder="chapô" value="{{ post.header ?: '' }}" required>
+            <label for="post-header">Chapô</label>
+        </div>
+        <div class="form-floating mt-2">
+            <textarea class="form-control" name="content" style="height: 180px" required>{{ post.content ?: '' }} </textarea>
+            <label>Contenu</label>
+        </div>
+        {% if post.author is defined %}
+        <div class="form-floating mt-2">
+            <input type="text" name="author" class="form-control text-capitalize" placeholder="auteur" value="{{ post.author.username ?? '' }}" disabled>
+            <label>Auteur</label>
+        </div>
+        {% endif %}
+        <div class="form-check mt-2">
+            <input id="post-published" name="published" class="form-check-input" type="checkbox" value="" {{ post.published ? 'checked' : '' }}>
+            <label class="form-check-label" for="post-published">
+                <span class="post-published badge bg-success {{ post.published ? '' : 'd-none' }}">publié</span>
+                <span class="post-published badge bg-warning {{ post.published ? 'd-none' : '' }}">non publié</span>
+            </label>
+        </div>
+        <input type="hidden" name="csrfToken" value="{{ form.csrfToken}}">
+        <div class="col-lg-12 text-center mt-5">
+            <button class="btn btn-primary-color" name="submit" type="submit">
+                Modifier
+            </button>
+        </div>
+    </form>
+</div>

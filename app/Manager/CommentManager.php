@@ -41,7 +41,7 @@ class CommentManager extends EntityManager
     {
         return $this->createQueryBuilder()
             ->insert('comment')
-            ->values('content', 'post', 'author')
+            ->columns('content', 'post', 'author')
         ;
     }
 }

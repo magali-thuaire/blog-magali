@@ -265,7 +265,7 @@ class UserManager extends EntityManager
     {
         return $this->createQueryBuilder()
                 ->insert('user')
-                ->values('username', 'email', 'password', 'validation_token', 'role')
+                ->columns('username', 'email', 'password', 'validation_token', 'role')
         ;
     }
 }

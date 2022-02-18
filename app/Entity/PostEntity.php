@@ -11,15 +11,19 @@ class PostEntity
     use HydrateTrait;
 
     private int $id;
-    private string $title;
-    private string $header;
-    private string $content;
+    private string $title = '';
+    private string $header = '';
+    private string $content = '';
     private UserEntity $author;
-    private bool $published;
+    private bool $published = false;
     private ?DateTime $publishedAt;
     private DateTime $createdAt;
     private ?DateTime $updatedAt;
     private array $comments = [];
+
+    private const ERROR_TITLE = POST_ERROR_TITLE;
+    private const ERROR_HEADER = POST_ERROR_HEADER;
+    private const ERROR_CONTENT = POST_ERROR_CONTENT;
 
     public function getId(): ?int
     {
@@ -39,7 +43,13 @@ class PostEntity
 
     public function setTitle(string $title): self
     {
-        $this->title = $title;
+        
+        if (!empty($title)) {
+            $this->title = $title;
+        } else {
+            throw new Exception(self::ERROR_TITLE);
+        }
+
         return $this;
     }
 
@@ -50,7 +60,12 @@ class PostEntity
 
     public function setHeader(string $header): self
     {
-        $this->header = $header;
+        if (!empty($header)) {
+            $this->header = $header;
+        } else {
+            throw new Exception(self::ERROR_HEADER);
+        }
+        
         return $this;
     }
 
@@ -61,7 +76,11 @@ class PostEntity
 
     public function setContent(string $content): self
     {
-        $this->content = $content;
+        if (!empty($content)) {
+            $this->content = $content;
+        } else {
+            throw new Exception(self::ERROR_CONTENT);
+        }
         return $this;
     }
 
