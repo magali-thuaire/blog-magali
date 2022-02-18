@@ -64,7 +64,7 @@ class PostController extends AppController
             // Création du commentaire
             $comment = new CommentEntity();
             $comment->hydrate((array) $form);
-            $post = $this->postManager->findOneById($id);
+            $post = $this->postManager->findOnePublishedById($id);
         } catch (Exception $e) {
             $form->setError($e->getMessage());
         }

@@ -7,6 +7,8 @@ use App\Entity\UserEntity;
 use App\Trait\PostTrait;
 use Core\Database\QueryBuilder;
 use Core\Manager\EntityManager;
+use DateTime;
+use Exception;
 
 class PostManager extends EntityManager
 {
@@ -35,6 +37,17 @@ class PostManager extends EntityManager
     }
 
     /**
+     * Retourne un unique article publié identifié à partir de son id
+     */
+    public function findOnePublishedById(int $id): ?PostEntity
+    {
+        $statement = $this->getOnePublishedById()->getQuery();
+        $postData = $this->prepare($statement, [':id' => $id], true, false);
+
+        return $this->createPostWithAuthor($postData);
+    }
+
+    /**
      * Retourne un unique article identifié à partir de son id
      */
     public function findOneById(int $id): ?PostEntity
@@ -42,6 +55,26 @@ class PostManager extends EntityManager
         $statement = $this->getOneById()->getQuery();
         $postData = $this->prepare($statement, [':id' => $id], true, false);
 
+        return $this->createPostWithAuthor($postData);
+    }
+
+    /**
+
+     * Retourne un unique article identifié à partir de son id si l'utilisateur est l'auteur
+     */
+    public function findOneByIdIfGranted(int $id, UserEntity $user): ?PostEntity
+    {
+        $qb = $this->getOneById()->andWhere('author = :author');
+        $statement = $qb->getQuery();
+        $attributs = [
+            ':id' => $id,
+            ':author' => $user->getId()
+        ];
+        $postData = $this->prepare($statement, $attributs, true, false);
+
+        if (!$postData) {
+            throw new Exception(ADMIN_POST_UPDATE_ERROR_MESSAGE);
+        }
         return $this->createPostWithAuthor($postData);
     }
 
@@ -54,6 +87,62 @@ class PostManager extends EntityManager
         $postsData = $this->prepare($statement, [':id' => $user->getId()]);
 
         return $this->createPostsWithAuthor($postsData);
+    }
+
+    public function delete(PostEntity $post, UserEntity $user): bool
+    {
+        $qb = $this->createQueryBuilder()
+                    ->delete('post')
+                    ->where('id = :id')
+        ;
+
+        $attributs = [':id' => $post->getId()];
+
+        if ($user->getRole() !== UserEntity::ROLE_SUPERADMIN) {
+            $qb->andWhere('author = :author');
+            $attributs = array_merge($attributs, [':author' => $user->getId()]);
+        }
+
+        $statement = $qb->getQuery();
+        return $this->execute($statement, $attributs);
+    }
+
+    public function update(PostEntity $post): bool
+    {
+        $qb = $this->createQueryBuilder()
+            ->update('post', 'p')
+            ->set('p.title = :title', 'p.header = :header', 'p.content = :content', 'p.published = :published', 'p.updated_at = :date')
+            ->where('p.id = :id')
+        ;
+
+        $statement = $qb->getQuery();
+        $attributs = [
+            ':id'           => $post->getId(),
+            ':title'        => $post->getTitle(),
+            ':header'       => $post->getHeader(),
+            ':content'      => $post->getContent(),
+            ':published'    => $post->isPublished(),
+            ':date'         => (new DateTime())->format('Y-m-d H:i:s')
+        ];
+        return $this->execute($statement, $attributs);
+    }
+
+    public function new(PostEntity $post): bool
+    {
+        $qb = $this->createQueryBuilder()
+               ->insert('post')
+               ->columns('title', 'header', 'content', 'published', 'author')
+        ;
+
+        $statement = $qb->getQuery();
+        $attributs = [
+            ':title'        => $post->getTitle(),
+            ':header'       => $post->getHeader(),
+            ':content'      => $post->getContent(),
+            ':published'    => $post->isPublished(),
+            ':author'       => $post->getAuthor()->getId()
+        ];
+        return $this->execute($statement, $attributs, true);
     }
 
     //--------------------------------------------------------------
@@ -97,9 +186,9 @@ class PostManager extends EntityManager
     }
 
     /**
-     * Retourne le QB d'un unique article identifié à partir de son id
+     * Retourne le QB d'un unique article publié identifié à partir de son id
      */
-    private function getOneById(): QueryBuilder
+    private function getOnePublishedById(): QueryBuilder
     {
         return $this->getAllPublished()
             ->andWhere('p.id = :id')
@@ -109,9 +198,19 @@ class PostManager extends EntityManager
     /**
      * Retourne le QB d'un unique article identifié à partir de son id
      */
+    private function getOneById(): QueryBuilder
+    {
+        return $this->getAll()
+                ->andWhere('p.id = :id')
+        ;
+    }
+
+    /**
+     * Retourne le QB d'un unique article identifié à partir de son id
+     */
     private function getOneByIdWithCommentsApproved(): QueryBuilder
     {
-        return $this->getOneById()
+        return $this->getOnePublishedById()
             ->addSelect('c.content as commentContent, c.created_at as commentCreatedAt, c.author as commentAuthor')
             ->leftJoin('comment', 'c', 'c.post = p.id', 'c.approved IS TRUE')
             ->orderBy('c.created_at', 'DESC')

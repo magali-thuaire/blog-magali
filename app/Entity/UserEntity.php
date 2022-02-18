@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Core\Trait\HydrateTrait;
-use Core\Trait\MagicTrait;
 use DateTime;
 use Exception;
 use JetBrains\PhpStorm\Pure;
@@ -11,7 +10,6 @@ use JetBrains\PhpStorm\Pure;
 class UserEntity
 {
     use HydrateTrait;
-    use MagicTrait;
 
     private int $id;
     private string $username;
@@ -23,9 +21,9 @@ class UserEntity
     private DateTime $createdAt;
     private string $role;
 
-    private const ROLE_USER = 'ROLE_USER';
-    private const ROLE_ADMIN = 'ROLE_ADMIN';
-    private const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
     private const ERROR_EMAIL = USER_ERROR_EMAIL;
     private const ERROR_PASSWORD = USER_ERROR_PASSWORD;
     private const ERROR_USERNAME_LENGTH = USER_ERROR_AUTHOR_LENGTH;

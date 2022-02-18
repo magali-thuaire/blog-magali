@@ -12,6 +12,7 @@ class QueryBuilder
     private array $orderBy = [];
     private array $groupBy = [];
     private string $insert = '';
+    private string $delete = '';
     private array $columns = [];
     private string $update = '';
     private array $set = [];
@@ -92,7 +93,13 @@ class QueryBuilder
         return $this;
     }
 
-    public function values($values): static
+    public function delete($table): static
+    {
+        $this->delete = $table;
+        return $this;
+    }
+
+    public function columns(): static
     {
         $this->columns = func_get_args();
         return $this;
@@ -137,7 +144,7 @@ class QueryBuilder
             $statement = 'INSERT INTO ' . $this->insert;
         }
 
-        // values
+        // columns
         if (!empty($this->columns)) {
             $statement .= ' ('
                           . implode(', ', $this->columns) . ')'
@@ -153,6 +160,11 @@ class QueryBuilder
         // set
         if (!empty($this->set)) {
             $statement .=  ' SET ' . implode(', ', $this->set);
+        }
+
+        // delete
+        if (!empty($this->delete)) {
+            $statement =  'DELETE FROM ' . $this->delete;
         }
 
         // where

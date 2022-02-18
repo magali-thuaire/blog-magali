@@ -1,18 +1,23 @@
 import $ from "jquery";
 import 'datatables.net-bs5';
+import ajaxModal from '../../components/modal/ajax_modal';
 
 $(document).ready(function () {
 
-    // Table des transactions
+    $(".js-alert").fadeTo(4000, 0, function () {
+        $(".js-alert").addClass('d-none');
+    })
+
+    // Table des articles
     $('#post-table').DataTable({
-        "order": [[2, "desc"]],
+        "order": [[1, "desc"]],
         "keys": true,
-        // "columnDefs": [
-        //     {
-        //         "targets": 5,
-        //         "sortable": false
-        //     },
-        // ],
+        "columnDefs": [
+        {
+            "targets": 4,
+            "sortable": false
+        },
+        ],
         "language": {
             "sEmptyTable": "Aucune donnée disponible dans le tableau",
             "sInfo": "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
@@ -44,4 +49,23 @@ $(document).ready(function () {
             }
         }
     });
+
+    $('#post-table tbody').on('click', '.js-post-delete', function () {
+        let target = this;
+        // Appel AJAX et intégration d'une modale
+        ajaxModal(target, 'post-modal');
+    });
+
+    $('#post-published').on('click', function () {
+        let target = this
+        let isPublished = $(target).is(':checked');
+
+        if (isPublished) {
+            $('.post-published.bg-success').removeClass('d-none');
+            $('.post-published.bg-warning').addClass('d-none');
+        } else {
+            $('.post-published.bg-warning').removeClass('d-none');
+            $('.post-published.bg-success').addClass('d-none');
+        }
+    })
 })

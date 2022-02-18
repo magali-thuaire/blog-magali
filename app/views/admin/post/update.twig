@@ -1,0 +1,8 @@
+{% extends 'admin/base.twig' %}
+
+{% block body %}
+    <div class="px-3 mt-2">
+        <h2>Article {{ post.title }}</h2>
+        {{ include('admin/post/_form.twig', { action: constant('R_ADMIN_POST_UPDATE') ~ post.id }) }}
+    </div>
+{% endblock %}

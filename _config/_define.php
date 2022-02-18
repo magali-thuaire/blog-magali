@@ -16,6 +16,7 @@ $array = [
     'userConst',
     'emailConst',
     'commentConst',
+    'postConst',
     'assets',
     'routes',
     'form'

@@ -21,7 +21,7 @@ class ContactManager extends EntityManager
     {
         $qb = $this->createQueryBuilder()
            ->insert('contact')
-           ->values('name', 'email', 'message')
+           ->columns('name', 'email', 'message')
         ;
         $statement = $qb->getQuery();
         $attributs = [

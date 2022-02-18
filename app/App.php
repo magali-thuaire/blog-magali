@@ -78,10 +78,6 @@ class App
         /**
          * Chargement des autoloaders
          */
-        require_once APP . '/Autoloader.php';
-        Autoloader::register();
-        require_once CORE . '/Autoloader.php';
-        CoreAutoloader::register();
         require_once ROOT . '/vendor/autoload.php';
 
         session_start();

@@ -33,7 +33,7 @@ class Security extends CoreSecurity
     {
 
         $user = self::getUser();
-        if (in_array($user->getRole(), ['ROLE_SUPERADMIN', 'ROLE_ADMIN'])) {
+        if (in_array($user->getRole(), [UserEntity::ROLE_SUPERADMIN, UserEntity::ROLE_ADMIN])) {
             return true;
         }
 

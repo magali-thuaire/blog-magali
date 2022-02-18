@@ -5,6 +5,7 @@ namespace App\Trait;
 use App\Entity\CommentEntity;
 use App\Entity\PostEntity;
 use App\Entity\UserEntity;
+use Exception;
 
 trait PostTrait
 {
@@ -43,6 +44,10 @@ trait PostTrait
      */
     private function createPostWithAuthor($data): PostEntity
     {
+
+        if(!$data) {
+            throw new Exception(POST_ERROR);
+        }
 
         // Création de l'auteur
         $author = $this->createAuthor($data);

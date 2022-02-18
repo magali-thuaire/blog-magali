@@ -22,12 +22,19 @@
 
         <ul class="nav flex-column bg-dark mb-0">
             <li class="nav-item adminSidebar__item">
-                <a href="#" class="nav-link text-dark font-italic">
+                <a href="{{ constant('R_ADMIN') }}" class="nav-link text-dark font-italic">
+
                     <i class="adminSidebar__item-icon fas fa-newspaper"></i>
                     Mes articles
                 </a>
             </li>
-            {% if session.user.role in ['ROLE_SUPERADMIN'] %}
+            <li class="nav-item adminSidebar__item">
+                <a href="{{ constant('R_ADMIN_POST_NEW') }}" class="nav-link text-dark font-italic">
+                    <i class="adminSidebar__item-icon fas fa-pen-clip"></i>
+                    Nouvel article
+                </a>
+            </li>
+            {% if session.user.role in [constant('App\\Entity\\UserEntity::ROLE_SUPERADMIN')] %}
             <li class="nav-item adminSidebar__item">
                 <a href="#" class="nav-link text-dark font-italic">
                     <i class="adminSidebar__item-icon fas fa-user-group"></i>
@@ -66,7 +73,8 @@
                 </ul>
             </div>
         </nav>
-        <div class="container mt-5">
+        <div class="adminBody container mt-5">
+
             {% block body %}{% endblock %}
         </div>
    </div>
