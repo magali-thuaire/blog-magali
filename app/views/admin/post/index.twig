@@ -21,7 +21,9 @@
                 {% for post in posts %}
                     <tr>
                         <td class="text-capitalize">{{ post.title|truncate(30, ' ...') }}</td>
-                        <td>{{ post.createdAt|format_datetime('short', 'none', locale='fr') }}</td>
+                        <td>
+                            {{ post.publishedAt ? post.publishedAt|format_datetime('short', 'none', locale='fr') : 'en attente de publication' }}
+                        </td>
                         <td>
                             {% if post.published == true %}
                                 <span class="badge bg-success">publié</span>
@@ -30,9 +32,8 @@
                             {% endif %}
                         </td>
                         <td class="d-none d-md-block p-3">
-
                             <span class="indicator-container">
-                                {{ post.commentsApproved ?? 0 }}
+                                {{ post.comments|length }}
                                 {% set not_approved = post.comments|length - post.commentsApproved %}
                                 {% if not_approved != 0 %}
                                     <span class="indicator">{{ not_approved }}</span>
@@ -40,12 +41,8 @@
                             </span>
                         </td>
                         <td>
-                            <a href="{{ constant('R_POST') ~ post.id }}" class="btn btn-sm btn-show {{ post.published ?: 'disabled' }}" data-bs-toggle="tooltip" data-placement="top" title="Voir">
-                                {% if post.published %}
-                                    <i class="table-post__icon fas fa-eye"></i>
-                                {% else %}
-                                    <i class="table-post__icon fas fa-eye-slash"></i>
-                                {% endif %}
+                            <a href="{{ constant('R_ADMIN_POST_SHOW') ~ post.id }}" class="btn btn-sm btn-show {{ post.published ?: 'btn-grey' }}" data-bs-toggle="tooltip" data-placement="top" title="Voir">
+                                <i class="table-post__icon fas fa-eye"></i>
                             </a>
                             <a href="{{ constant('R_ADMIN_POST_UPDATE') ~ post.id }}" class="btn btn-sm btn-update" data-bs-toggle="tooltip" data-placement="top" title="Modifier">
                                 <i class="table-post__icon fas fa-pencil"></i>

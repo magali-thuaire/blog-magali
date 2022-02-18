@@ -4,6 +4,13 @@
             <div class="col-12 col-md-2 text-md-center blog-post-comment__aside">
                 <p class="text-capitalize mb-0"><strong>--{{ comment.author }}</strong></p>
                 <p>le {{ comment.createddAt|format_datetime('long', 'none', locale='fr') }}</p>
+                {% if admin == true %}
+                    {% if comment.approved == true %}
+                        <p class="badge bg-success">approuvé</p>
+                    {% else %}
+                        <p class="badge bg-warning">non approuvé</p>
+                    {% endif %}
+                {% endif %}
             </div>
             <div class="col blog-post-comment__body">
                 <div class="p-3">

@@ -38,13 +38,16 @@
 <!-- Comments section-->
 <section id="comments" class="p-5">
     <div class="px-4 pb-4 d-md-flex justify-content-between align-items-center">
-        <h2>
+        <h2 class="mb-0">
             Commentaires
             ({{ post.comments|length }})
         </h2>
-        <a class="btn btn-primary-color mt-3 mt-md-0" data-bs-toggle="collapse" href="#collapseExample" role="button">Déposer un commentaire</a>
+        {% if admin == false %}
+            <a class="btn btn-primary-color mt-3 mt-md-0" data-bs-toggle="collapse" href="#collapseExample" role="button">Déposer un commentaire</a>
+        {% endif %}
     </div>
-    <div class="collapse mb-5" id="collapseExample">
+    {% if admin == false %}
+        <div class="collapse mb-5" id="collapseExample">
         <div class="d-flex justify-content-center">
             <form id="commentForm" class="col-10 col-md-6 mt-4" data-href="{{ constant('F_COMMENT') ~ post.id }}" method="POST">
                 <div class="alert d-flex align-items-center js-form-message d-none" role="alert"></div>
@@ -61,6 +64,7 @@
             </form>
         </div>
     </div>
+    {% endif %}
     {% for comment in post.comments %}
         {% include 'post/_comment.twig' %}
     {% endfor %}
