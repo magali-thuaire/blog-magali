@@ -6,11 +6,11 @@ use App\Controller\AppController;
 use App\Entity\PostEntity;
 use Exception;
 
+
 class AdminPostController extends AppController
 {
     public function index()
     {
-
         $posts = $this->postManager->findAllByAuthorOrderedByNewest($this->getUser());
         $app = $this->getMessage();
 

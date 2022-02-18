@@ -2,6 +2,7 @@
 {% block body %}
     <div class="px-3 mt-2">
         <h2>Mes articles</h2>
+
         <div class="alert js-alert alert-danger d-flex align-items-center mb-2 {{ app.error ?: 'd-none' }}" role="alert">{{ app.error ?? '' }}</div>
         <div class="alert js-alert alert-success d-flex align-items-center mb-2 {{ app.success ?: 'd-none' }}" role="alert">{{ app.success ?? '' }}</div>
         <div class="card p-3">
@@ -13,6 +14,7 @@
                     <th>Statut</th>
                     <th class="d-none d-md-block">Commentaires</th>
                     <th></th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -28,6 +30,7 @@
                             {% endif %}
                         </td>
                         <td class="d-none d-md-block p-3">
+
                             <span class="indicator-container">
                                 {{ post.commentsApproved ?? 0 }}
                                 {% set not_approved = post.comments|length - post.commentsApproved %}

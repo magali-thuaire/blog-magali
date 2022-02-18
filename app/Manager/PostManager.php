@@ -59,6 +59,7 @@ class PostManager extends EntityManager
     }
 
     /**
+
      * Retourne un unique article identifié à partir de son id si l'utilisateur est l'auteur
      */
     public function findOneByIdIfGranted(int $id, UserEntity $user): ?PostEntity
