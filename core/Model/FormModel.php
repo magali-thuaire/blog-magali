@@ -4,14 +4,12 @@ namespace Core\Model;
 
 use Core\Security\CsrfToken;
 use Core\Trait\HydrateTrait;
-use Core\Trait\MagicTrait;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 
 class FormModel
 {
     use HydrateTrait;
-    use MagicTrait;
 
     public $error;
     public $success;

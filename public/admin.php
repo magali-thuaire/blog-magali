@@ -47,5 +47,20 @@ switch (true) {
                 $controller->index();
         }
         break;
+    case $p === 'post-update':
+        $controller = new AdminPostController();
+        switch (true) {
+            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
+                $id = Security::checkInput($_GET['id']);
+                if ($_POST) {
+                    $controller->update($id);
+                } else {
+                    $controller->change($id);
+                }
+                break;
+            default:
+                $controller->index();
+        }
+        break;
     default:
 }

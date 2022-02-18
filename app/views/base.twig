@@ -32,7 +32,7 @@
                                     <a class="nav-link dropdown-item" href="{{ constant('R_LOGIN') }}">Se connecter</a>
                                     <a class="nav-link dropdown-item" href="{{ constant('R_REGISTER') }}">S'inscrire</a>
                                 {% else %}
-                                    {% if session.user.role in ['ROLE_SUPERADMIN', 'ROLE_ADMIN'] %}
+                                    {% if session.user.role in [constant('App\\Entity\\UserEntity::ROLE_SUPERADMIN'), constant('App\\Entity\\UserEntity::ROLE_ADMIN')] %}
                                         <a class="nav-link dropdown-item" href="{{ constant('R_ADMIN') }}">Administrer</a>
                                     {% endif %}
                                     <a class="nav-link dropdown-item" href="{{ constant('R_LOGOUT') }}">Se déconnecter</a>

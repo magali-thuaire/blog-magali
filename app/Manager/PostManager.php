@@ -7,6 +7,8 @@ use App\Entity\UserEntity;
 use App\Trait\PostTrait;
 use Core\Database\QueryBuilder;
 use Core\Manager\EntityManager;
+use DateTime;
+use Exception;
 
 class PostManager extends EntityManager
 {
@@ -57,6 +59,25 @@ class PostManager extends EntityManager
     }
 
     /**
+     * Retourne un unique article identifié à partir de son id si l'utilisateur est l'auteur
+     */
+    public function findOneByIdIfGranted(int $id, UserEntity $user): ?PostEntity
+    {
+        $qb = $this->getOneById()->andWhere('author = :author');
+        $statement = $qb->getQuery();
+        $attributs = [
+            ':id' => $id,
+            ':author' => $user->getId()
+        ];
+        $postData = $this->prepare($statement, $attributs, true, false);
+
+        if (!$postData) {
+            throw new Exception(ADMIN_POST_UPDATE_ERROR_MESSAGE);
+        }
+        return $this->createPostWithAuthor($postData);
+    }
+
+    /**
      * Retourne tous les articles d'un auteur, ordonné du plus récent au plus ancien
      */
     public function findAllByAuthorOrderedByNewest(UserEntity $user): ?array
@@ -67,15 +88,41 @@ class PostManager extends EntityManager
         return $this->createPostsWithAuthor($postsData);
     }
 
-    public function delete(PostEntity $post): bool
+    public function delete(PostEntity $post, UserEntity $user): bool
     {
         $qb = $this->createQueryBuilder()
                     ->delete('post')
                     ->where('id = :id')
         ;
-        $statement = $qb ->getQuery();
+
         $attributs = [':id' => $post->getId()];
 
+        if ($user->getRole() !== UserEntity::ROLE_SUPERADMIN) {
+            $qb->andWhere('author = :author');
+            $attributs = array_merge($attributs, [':author' => $user->getId()]);
+        }
+
+        $statement = $qb->getQuery();
+        return $this->execute($statement, $attributs);
+    }
+
+    public function update(PostEntity $post): bool
+    {
+        $qb = $this->createQueryBuilder()
+            ->update('post', 'p')
+            ->set('p.title = :title', 'p.header = :header', 'p.content = :content', 'p.published = :published', 'p.updated_at = :date')
+            ->where('p.id = :id')
+        ;
+
+        $statement = $qb->getQuery();
+        $attributs = [
+            ':id'           => $post->getId(),
+            ':title'        => $post->getTitle(),
+            ':header'       => $post->getHeader(),
+            ':content'      => $post->getContent(),
+            ':published'    => $post->isPublished(),
+            ':date'         => (new DateTime())->format('Y-m-d H:i:s')
+        ];
         return $this->execute($statement, $attributs);
     }
 

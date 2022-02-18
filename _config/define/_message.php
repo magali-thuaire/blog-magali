@@ -26,5 +26,8 @@ $commentConst = [
 ];
 $postConst = [
     'POST_ERROR'                            => 'Cet article n\'existe pas',
-    'ADMIN_POST_DELETED_SUCCESS_MESSAGE'    => 'L\'article a été supprimé avec succès'
+    'ADMIN_POST_DELETED_SUCCESS_MESSAGE'    => 'L\'article a été supprimé avec succès',
+    'ADMIN_POST_DELETED_ERROR_MESSAGE'      => 'Vous n\'avez pas les droits nécessaires pour supprimer cet article',
+    'ADMIN_POST_UPDATE_ERROR_MESSAGE'       => 'Vous n\'avez pas les droits nécessaires pour modifier cet article',
+    'ADMIN_POST_UPDATED_SUCCESS_MESSAGE'    => 'L\'article a été mis à jour avec succès'
 ];

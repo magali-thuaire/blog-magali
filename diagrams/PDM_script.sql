@@ -66,8 +66,10 @@ ALTER TABLE blog_magali.comment ADD CONSTRAINT post_comment_fk
         ON DELETE CASCADE
         ON UPDATE NO ACTION;
 
+set GLOBAL sql_mode = "";
 
 INSERT INTO blog_magali.user (username, email, password, validation_token, created_at, role, user_confirmed, admin_validated) VALUES ('magali', 'magali@thuaire.fr', '$2y$10$/anNHKJvlocJ2UYhY4iRv.DS6LnVkqcFmDoWaHTEAga8dhE2V6v2K', 'validation token', '2022-01-31 09:00:00', 'ROLE_SUPERADMIN', 1, 1);
+INSERT INTO blog_magali.user (username, email, password, validation_token, created_at, role, user_confirmed, admin_validated) VALUES ('magali', 'magali@thuaire.com', '$2y$10$/anNHKJvlocJ2UYhY4iRv.DS6LnVkqcFmDoWaHTEAga8dhE2V6v2K', 'validation token', '2022-01-31 09:00:00', 'ROLE_ADMIN', 1, 1);
 INSERT INTO blog_magali.post (title, header, content, author, published, published_at, created_at, updated_at)
 VALUES
     ('title1', 'Lorem ipsum dolor sit amet', 'Curabitur non metus sagittis, feugiat ipsum at, hendrerit velit. Integer sem augue, lobortis sit amet elit a, dictum maximus libero. Duis eu ligula facilisis, ultricies libero ac, semper mi. Duis aliquet luctus velit, et laoreet ligula bibendum commodo. Donec consectetur interdum tellus nec fermentum. Maecenas non turpis laoreet, tempus quam mollis, elementum lacus. Aenean nec pretium nulla, et porttitor ex. Duis sit amet neque augue. Donec nec leo turpis. Duis id risus lobortis, aliquet dolor consequat, volutpat purus.', 1, true, '2022-02-01 10:00:00', '2022-02-01 09:00:00', null),

@@ -3,14 +3,12 @@
 namespace App\Entity;
 
 use Core\Trait\HydrateTrait;
-use Core\Trait\MagicTrait;
 use DateTime;
 use Exception;
 
 class PostEntity
 {
     use HydrateTrait;
-    use MagicTrait;
 
     private int $id;
     private string $title;

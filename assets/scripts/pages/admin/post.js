@@ -10,7 +10,7 @@ $(document).ready(function () {
 
     // Table des articles
     $('#post-table').DataTable({
-        "order": [[2, "desc"]],
+        "order": [[1, "desc"]],
         "keys": true,
         "columnDefs": [
         {
@@ -55,4 +55,17 @@ $(document).ready(function () {
         // Appel AJAX et intégration d'une modale
         ajaxModal(target, 'post-modal');
     });
+
+    $('#post-published').on('click', function () {
+        let target = this
+        let isPublished = $(target).is(':checked');
+
+        if (isPublished) {
+            $('.post-published.bg-success').removeClass('d-none');
+            $('.post-published.bg-warning').addClass('d-none');
+        } else {
+            $('.post-published.bg-warning').removeClass('d-none');
+            $('.post-published.bg-success').addClass('d-none');
+        }
+    })
 })
