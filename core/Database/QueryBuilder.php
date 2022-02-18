@@ -105,6 +105,12 @@ class QueryBuilder
         return $this;
     }
 
+    public function addColumns(): static
+    {
+        $this->columns = array_merge($this->columns, func_get_args());
+        return $this;
+    }
+
     public function update($table, $alias): static
     {
 
@@ -116,6 +122,12 @@ class QueryBuilder
     public function set(): static
     {
         $this->set = func_get_args();
+        return $this;
+    }
+
+    public function addSet(): static
+    {
+        $this->set = array_merge($this->set, func_get_args());
         return $this;
     }
 

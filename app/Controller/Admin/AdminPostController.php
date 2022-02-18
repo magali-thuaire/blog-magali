@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\App;
 use App\Controller\AppController;
 use App\Entity\PostEntity;
 use Exception;
@@ -17,6 +18,21 @@ class AdminPostController extends AppController
         $this->render('admin/post/index.twig', [
             'posts' => $posts,
             'app' => $app
+        ]);
+    }
+
+    public function show(int $id)
+    {
+        /** @var PostEntity|null $posts */
+        $post = $this->postManager->findOneByIdIfGranted($id, $this->getUser());
+
+        if (!$post) {
+            return App::getInstance()->notFound();
+        }
+
+        $this->render('post/show.twig', [
+            'post' => $post,
+            'admin' => true
         ]);
     }
 
@@ -90,13 +106,14 @@ class AdminPostController extends AppController
         }
 
         if (!$form->hasError()) {
+            $isPublishedChange = ((property_exists($form, 'published') ? true : false) !== $post->isPublished());
             $post
                 ->setTitle($form->title)
                 ->setHeader($form->header)
                 ->setContent($form->content)
                 ->setPublished(property_exists($form, 'published') ? true : false)
             ;
-            $isUpdated = $this->postManager->update($post);
+            $isUpdated = $this->postManager->update($post, $isPublishedChange);
 
             if ($isUpdated) {
                 $form->setSuccess(ADMIN_POST_UPDATED_SUCCESS_MESSAGE);

@@ -68,6 +68,16 @@ switch (true) {
                 $controller->create();
         }
         break;
+    case $p === 'post':
+        switch (true) {
+            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
+                $id = Security::checkInput($_GET['id']);
+                $controller->show($id);
+                break;
+            default:
+                $controller->index();
+        }
+        break;
     default:
         $controller->index();
 }

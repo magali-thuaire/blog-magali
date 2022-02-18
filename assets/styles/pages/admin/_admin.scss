@@ -113,14 +113,6 @@
         box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);
     }
 
-    .bg-success {
-        background-color: $color-success !important;
-    }
-
-    .bg-warning {
-        background-color: $color-warning !important;
-    }
-
     .indicator {
         background: $color-danger;
         border-radius: 50%;
@@ -148,9 +140,10 @@
     .btn-show {
         background-color: $primary-color;
         border-color: $primary-color;
-        &.disabled {
-            background-color: $grey;
-            border-color: $grey;
+        &.btn-grey {
+            opacity: 0.75 !important;
+            background-color: $light;
+            border-color: $light;
         }
     }
     .btn-delete {

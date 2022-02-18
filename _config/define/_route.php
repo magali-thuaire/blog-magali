@@ -14,6 +14,7 @@ $routes = [
     'R_ADMIN_POST_DELETE'           => '../public/admin.php?p=post-delete&id=',
     'R_ADMIN_POST_UPDATE'           => '../public/admin.php?p=post-update&id=',
     'R_ADMIN_POST_NEW'              => '../public/admin.php?p=post-new',
+    'R_ADMIN_POST_SHOW'             => '../public/admin.php?p=post&id=',
 ];
 
 $form = [

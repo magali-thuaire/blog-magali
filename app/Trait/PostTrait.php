@@ -119,6 +119,7 @@ trait PostTrait
                     'content' => $data->commentContent,
                     'createdAt' => $data->commentCreatedAt,
                     'author' => $data->commentAuthor,
+                    'approved' => (property_exists($data, 'approved')) ? $data->approved : false
                 ];
 
                 $comment = new CommentEntity();
