@@ -13,7 +13,9 @@ $(document).ready(function () {
         'p=post',
         'p=login',
         'p=forgot-password',
-        'admin'
+        'p=dashboard',
+        'p=post-update',
+        'p=post-new',
     ];
 
     // Find all anchors
@@ -42,8 +44,8 @@ $(document).ready(function () {
             target: '#navbarNav'
         });
     } else {
-        $navLinks.attr('href', function (k,v) {
-            excludedPages.forEach((element) => {
+        excludedPages.forEach((element) => {
+            $navLinks.attr('href', function (k,v) {
                 if (v.includes(element) && url.href.includes(element)) {
                     $(this).addClass('active');
                 }
@@ -56,6 +58,12 @@ $(document).ready(function () {
         element.attr('href', deleteAnchor);
     })
 
+    // mettre la navbar en inactive dans l'admin
+    if(url.href.includes('admin')) {
+        $navLinks.removeClass('active');
+    }
+
+    // mettre le menu utilisateur en actif
     if (url.href.includes('login') || url.href.includes('register') || url.href.includes('forgot-password') || url.href.includes('admin')) {
         $dropdown.addClass('active');
     }
