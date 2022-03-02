@@ -2,9 +2,7 @@
 
 namespace App;
 
-use App\Autoloader as Autoloader;
 use Core\Config;
-use Core\Autoloader as CoreAutoloader;
 use Core\Database\MysqlDatabase;
 use Core\Manager\EntityManager;
 use Core\Renderer\TwigRenderer;

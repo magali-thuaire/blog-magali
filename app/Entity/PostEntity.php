@@ -41,6 +41,9 @@ class PostEntity
         return $this->title;
     }
 
+    /**
+     * @throws Exception
+     */
     public function setTitle(string $title): self
     {
         
@@ -58,6 +61,9 @@ class PostEntity
         return $this->header;
     }
 
+    /**
+     * @throws Exception
+     */
     public function setHeader(string $header): self
     {
         if (!empty($header)) {
@@ -74,6 +80,9 @@ class PostEntity
         return $this->content;
     }
 
+    /**
+     * @throws Exception
+     */
     public function setContent(string $content): self
     {
         if (!empty($content)) {

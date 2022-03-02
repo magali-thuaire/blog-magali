@@ -38,6 +38,7 @@ class PostManager extends EntityManager
 
     /**
      * Retourne un unique article publié identifié à partir de son id
+     * @throws Exception
      */
     public function findOnePublishedById(int $id): ?PostEntity
     {
@@ -49,6 +50,7 @@ class PostManager extends EntityManager
 
     /**
      * Retourne un unique article identifié à partir de son id
+     * @throws Exception
      */
     public function findOneById(int $id): ?PostEntity
     {
@@ -59,10 +61,10 @@ class PostManager extends EntityManager
     }
 
     /**
-
      * Retourne un unique article identifié à partir de son id si l'utilisateur est l'auteur
+     * @throws Exception
      */
-    public function findOneByIdIfGranted(int $id, UserEntity $user): ?PostEntity
+    public function findOneByIdIfIsGranted(int $id, UserEntity $user): ?PostEntity
     {
         $qb = $this->getOneByIdWithComments()->andWhere('p.author = :author');
         $statement = $qb->getQuery();
@@ -88,6 +90,13 @@ class PostManager extends EntityManager
         return $this->createPostsWithAuthor($postsData);
     }
 
+    /**
+     * Suppression d'un article
+     * @param PostEntity $post
+     * @param UserEntity $user
+     *
+     * @return bool
+     */
     public function delete(PostEntity $post, UserEntity $user): bool
     {
         $qb = $this->createQueryBuilder()
@@ -106,6 +115,13 @@ class PostManager extends EntityManager
         return $this->execute($statement, $attributs);
     }
 
+    /**
+     * Mise à jour d'un article
+     * @param PostEntity $post
+     * @param bool       $isPublishedChange
+     *
+     * @return bool
+     */
     public function update(PostEntity $post, bool $isPublishedChange): bool
     {
         $qb = $this->createQueryBuilder()
@@ -140,6 +156,12 @@ class PostManager extends EntityManager
         return $this->execute($statement, $attributs);
     }
 
+    /**
+     * Création d'un nouvel article
+     * @param PostEntity $post
+     *
+     * @return bool
+     */
     public function new(PostEntity $post): bool
     {
         $qb = $this->createQueryBuilder()

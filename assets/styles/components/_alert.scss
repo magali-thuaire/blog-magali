@@ -1,0 +1,10 @@
+.alert {
+    border-left-width: medium;
+    &-danger {
+        border-left-color: $color-danger;
+    }
+    &-success {
+        border-left-color: $color-success;
+    }
+}
+

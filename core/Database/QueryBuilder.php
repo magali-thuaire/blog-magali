@@ -13,6 +13,7 @@ class QueryBuilder
     private array $groupBy = [];
     private string $insert = '';
     private string $delete = '';
+    private string $deleteTarget = '';
     private array $columns = [];
     private string $update = '';
     private array $set = [];
@@ -93,9 +94,10 @@ class QueryBuilder
         return $this;
     }
 
-    public function delete($table): static
+    public function delete($table, $alias = '', $target = ''): static
     {
-        $this->delete = $table;
+        $this->deleteTarget = $target;
+        $this->delete = $table . ' ' . $alias;
         return $this;
     }
 
@@ -137,20 +139,6 @@ class QueryBuilder
         // select
         $statement =  'SELECT ' . implode(', ', $this->select) . ' FROM ' . $this->from;
 
-        // inner join
-        if (!empty($this->innerJoin)) {
-            foreach ($this->innerJoin as $innerJoin) {
-                $statement .= ' INNER JOIN ' . $innerJoin;
-            }
-        }
-
-        // left join
-        if (!empty($this->leftJoin)) {
-            foreach ($this->leftJoin as $leftJoin) {
-                $statement .= ' LEFT JOIN ' . $leftJoin;
-            }
-        }
-
         // insert
         if (!empty($this->insert)) {
             $statement = 'INSERT INTO ' . $this->insert;
@@ -176,7 +164,21 @@ class QueryBuilder
 
         // delete
         if (!empty($this->delete)) {
-            $statement =  'DELETE FROM ' . $this->delete;
+            $statement =  'DELETE ' . $this->deleteTarget . ' FROM ' . $this->delete;
+        }
+
+        // inner join
+        if (!empty($this->innerJoin)) {
+            foreach ($this->innerJoin as $innerJoin) {
+                $statement .= ' INNER JOIN ' . $innerJoin;
+            }
+        }
+
+        // left join
+        if (!empty($this->leftJoin)) {
+            foreach ($this->leftJoin as $leftJoin) {
+                $statement .= ' LEFT JOIN ' . $leftJoin;
+            }
         }
 
         // where

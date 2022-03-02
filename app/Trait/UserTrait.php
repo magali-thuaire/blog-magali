@@ -57,6 +57,9 @@ trait UserTrait
         return $user->plainPassword === $user->plainPasswordConfirm;
     }
 
+    /**
+     * @throws Exception
+     */
     private function isTokenValid($user, $token): bool
     {
         if (!Security::isTokenValid($user, $token)) {
