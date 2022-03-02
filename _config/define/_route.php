@@ -20,6 +20,11 @@ $routes = [
     'R_ADMIN_COMMENT_APPROVE'           => '../public/admin.php?p=comment-approve&id=',
     'R_ADMIN_COMMENT_CONFIRM_DELETE'    => '../public/admin.php?p=comment-confirm-delete&id=',
     'R_ADMIN_COMMENT_DELETE'            => '../public/admin.php?p=comment-delete&id=',
+    'R_ADMIN_USER'                      => '../public/admin.php?p=user',
+    'R_ADMIN_USER_CONFIRM_VALIDATE'     => '../public/admin.php?p=user-confirm-validate&id=',
+    'R_ADMIN_USER_VALIDATE'             => '../public/admin.php?p=user-validate&id=',
+    'R_ADMIN_USER_CONFIRM_DELETE'       => '../public/admin.php?p=user-confirm-delete&id=',
+    'R_ADMIN_USER_DELETE'               => '../public/admin.php?p=user-delete&id=',
 ];
 
 $form = [

@@ -127,7 +127,7 @@ class SecurityController extends AppController
      */
     public function validate(string $email, string $token)
     {
-        $user = $this->userManager->findUserByEmail($email);
+        $user = $this->userManager->findOneByEmail($email);
 
         if ($isTokenValid = Security::isTokenValid($user, $token)) {
             $isUserConfirm = $this->userManager->confirmUser($user);
@@ -179,7 +179,7 @@ class SecurityController extends AppController
             // Création de l'utilisateur
             $user = new UserEntity();
             $user->hydrate((array) $form);
-            if (!($user = $this->userManager->findUserByEmail($user->getEmail()))) {
+            if (!($user = $this->userManager->findOneByEmail($user->getEmail()))) {
                 $form->setError(USER_ERROR_NOT_EXISTS);
             }
         } catch (Exception $e) {
@@ -217,7 +217,7 @@ class SecurityController extends AppController
         $form = $this->initForm('reset-password');
 
         try {
-            $user = $this->userManager->findUserByEmail($email);
+            $user = $this->userManager->findOneByEmail($email);
         } catch (Exception $e) {
             $form->setError($e->getMessage());
         }

@@ -76,13 +76,13 @@ class CommentManager extends EntityManager
         $attributs = [
             ':id' => $id,
         ];
+
         if ($user->getRole() !== UserEntity::ROLE_SUPERADMIN) {
             $qb->andWhere('p.author = :author');
             $attributs = array_merge($attributs, [':author' => $user->getId()]);
         }
 
         $statement = $qb->getQuery();
-
         $commentData = $this->prepare($statement, $attributs, true, false);
 
         if (!$commentData) {
@@ -130,12 +130,12 @@ class CommentManager extends EntityManager
 
     /**
      * Supprimer un commentaire
-     * @param CommentEntity $post
+     * @param CommentEntity $comment
      * @param UserEntity    $user
      *
      * @return bool
      */
-    public function delete(CommentEntity $post, UserEntity $user): bool
+    public function delete(CommentEntity $comment, UserEntity $user): bool
     {
         $qb = $this->createQueryBuilder()
                    ->delete('comment', 'c', 'c')
@@ -143,7 +143,7 @@ class CommentManager extends EntityManager
                    ->where('c.id = :id')
         ;
 
-        $attributs = [':id' => $post->getId()];
+        $attributs = [':id' => $comment->getId()];
 
         if ($user->getRole() !== UserEntity::ROLE_SUPERADMIN) {
             $qb->andWhere('p.author = :author');

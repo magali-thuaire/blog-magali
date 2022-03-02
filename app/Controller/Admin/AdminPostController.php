@@ -16,7 +16,7 @@ class AdminPostController extends AppController
      */
     public function index()
     {
-        $posts = $this->postManager->findAllByAuthorOrderedByNewest($this->getUser());
+        $posts = $this->postManager->findAllOrderedByNewest($this->getUser());
         $app = $this->getMessage();
 
         $this->render('admin/post/index.twig', [
@@ -56,7 +56,10 @@ class AdminPostController extends AppController
         $post = $this->postManager->findOneById($id);
         $form = $this->initForm('post-delete');
 
-        return $this->render('admin/post/_modal.delete.twig', [
+        $form->action = R_ADMIN_POST_DELETE . $post->getId();
+        $form->message = ADMIN_POST_DELETED_MODAL_MESSAGE;
+
+        return $this->render('admin/post/_modal.twig', [
             'post' => $post,
             'form' => $form
         ]);

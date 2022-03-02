@@ -2,7 +2,6 @@
 {% block body %}
     <div class="px-3 mt-2">
         <h2>Mes articles</h2>
-
         <div class="alert js-alert alert-danger d-flex align-items-center mb-2 {{ app.error ?: 'd-none' }}" role="alert">{{ app.error ?? '' }}</div>
         <div class="alert js-alert alert-success d-flex align-items-center mb-2 {{ app.success ?: 'd-none' }}" role="alert">{{ app.success ?? '' }}</div>
         <div class="card p-3">
@@ -42,13 +41,13 @@
                         </td>
                         <td>
                             <a href="{{ constant('R_ADMIN_POST_SHOW') ~ post.id }}" class="btn btn-sm btn-show {{ post.published ?: 'btn-grey' }}" data-bs-toggle="tooltip" data-placement="top" title="Voir">
-                                <i class="table-post__icon fas fa-eye"></i>
+                                <i class="table__icon fas fa-eye"></i>
                             </a>
                             <a href="{{ constant('R_ADMIN_POST_UPDATE') ~ post.id }}" class="btn btn-sm btn-update" data-bs-toggle="tooltip" data-placement="top" title="Modifier">
-                                <i class="table-post__icon fas fa-pencil"></i>
+                                <i class="table__icon fas fa-pencil"></i>
                             </a>
                             <a data-href="{{ constant('R_ADMIN_POST_CONFIRM_DELETE') ~ post.id }}" class="btn btn-sm btn-delete js-post-delete" data-bs-toggle="tooltip" data-placement="top" title="Supprimer">
-                                <i class="table-post__icon fas fa-trash"></i>
+                                <i class="table__icon fas fa-trash"></i>
                             </a>
                         </td>
                     </tr>

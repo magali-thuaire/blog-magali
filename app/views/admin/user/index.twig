@@ -1,0 +1,55 @@
+{% extends 'admin/base.twig' %}
+{% block body %}
+    <div class="px-3 mt-2">
+        <h2>Utilisateurs</h2>
+        <div class="alert js-alert alert-danger d-flex align-items-center mb-2 {{ app.error ?: 'd-none' }}" role="alert">{{ app.error ?? '' }}</div>
+        <div class="alert js-alert alert-success d-flex align-items-center mb-2 {{ app.success ?: 'd-none' }}" role="alert">{{ app.success ?? '' }}</div>
+        <div class="card p-3">
+            <table id="user-table" class="table table-hover" style="width:100%">
+                <thead>
+                <tr>
+                    <th>Nom d'utilisateur</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Utilisateur</th>
+                    <th>Admin</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td class="text-capitalize">{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>
+                            {% if user.userConfirmed == true %}
+                                <span class="badge bg-success">confirmé</span>
+                            {% else %}
+                                <span class="badge bg-warning">non confirmé</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if user.adminValidated == true %}
+                                <span class="badge bg-success">validé</span>
+                            {% else %}
+                                <span class="badge bg-warning">en attente de validation</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if user.adminValidated == false %}
+                                <a data-href="{{ constant('R_ADMIN_USER_CONFIRM_VALIDATE') ~ user.id }}" class="btn btn-sm btn-success js-user-validate" data-bs-toggle="tooltip" data-placement="top" title="Valider">
+                                    <i class="table__icon fas fa-check"></i>
+                                </a>
+                            {% endif %}
+                            <a data-href="{{ constant('R_ADMIN_USER_CONFIRM_DELETE') ~ user.id }}" class="btn btn-sm btn-delete js-user-delete" data-bs-toggle="tooltip" data-placement="top" title="Supprimer">
+                                <i class="table__icon fas fa-trash"></i>
+                            </a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="user-modal"></div>
+{% endblock %}

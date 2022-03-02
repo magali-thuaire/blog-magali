@@ -3,6 +3,7 @@
 use App\App;
 use App\Controller\Admin\AdminCommentController;
 use App\Controller\Admin\AdminPostController;
+use App\Controller\Admin\AdminUserController;
 use App\Controller\SecurityController;
 use App\Security\Security;
 
@@ -27,6 +28,7 @@ if (isset($_GET['p']) && !empty($_GET['p'])) {
 
 $postController = new AdminPostController();
 $commentController = new AdminCommentController();
+$userController = new AdminUserController();
 
 switch (true) {
     // Demande du tableau de bord
@@ -127,6 +129,79 @@ switch (true) {
                 break;
             default:
                 $commentController->index();
+        }
+        break;
+    case $p === 'user':
+        switch (Security::isSuperAdmin()) {
+            case true:
+                $userController->index();
+                break;
+            default:
+                $postController->index();
+        }
+        break;
+    case $p === 'user-confirm-validate':
+        switch (Security::isSuperAdmin()) {
+            case true:
+                switch (true) {
+                    case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
+                        $id = Security::checkInput($_GET['id']);
+                        $userController->confirmValidate($id);
+                        break;
+                    default:
+                        $userController->index();
+                }
+                break;
+            default:
+                $userController->index();
+        }
+        break;
+    case $p === 'user-validate':
+        switch (Security::isSuperAdmin()) {
+            case true:
+                switch (true) {
+                    case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
+                        $id = Security::checkInput($_GET['id']);
+                        $userController->validate($id);
+                        break;
+                    default:
+                        $userController->index();
+                }
+                break;
+            default:
+                $userController->index();
+        }
+        break;
+    case $p === 'user-confirm-delete':
+        switch (Security::isSuperAdmin()) {
+            case true:
+                switch (true) {
+                    case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
+                        $id = Security::checkInput($_GET['id']);
+                        $userController->confirmDelete($id);
+                        break;
+                    default:
+                        $userController->index();
+                }
+                break;
+            default:
+                $userController->index();
+        }
+        break;
+    case $p === 'user-delete':
+        switch (Security::isSuperAdmin()) {
+            case true:
+                switch (true) {
+                    case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
+                        $id = Security::checkInput($_GET['id']);
+                        $userController->delete($id);
+                        break;
+                    default:
+                        $userController->index();
+                }
+                break;
+            default:
+                $userController->index();
         }
         break;
     default:

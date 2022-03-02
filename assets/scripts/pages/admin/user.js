@@ -4,13 +4,13 @@ import ajaxModal from '../../components/modal/ajax_modal';
 
 $(document).ready(function () {
 
-    // Table des commentaires
-    $('#comment-table').DataTable({
-        "order": [[1, "asc"]],
+    // Table des utilisateurs
+    $('#user-table').DataTable({
+        "order": [[4, "asc"]],
         "keys": true,
         "columnDefs": [
         {
-            "targets": 4,
+            "targets": 5,
             "sortable": false
         },
         ],
@@ -46,10 +46,9 @@ $(document).ready(function () {
         }
     });
 
-    $('#comment-table tbody').on('click', '.js-comment-approve, .js-comment-delete', function () {
+    $('#user-table tbody').on('click', '.js-user-validate, .js-user-delete', function () {
         let target = this;
         // Appel AJAX et intégration d'une modale
-        ajaxModal(target, 'comment-modal');
+        ajaxModal(target, 'user-modal');
     });
-
 })
