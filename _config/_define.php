@@ -1,7 +1,5 @@
 <?php
 
-use Core\Config;
-
 require '../core/Config.php';
 require '../_config/define/_directory.php';
 require '../_config/define/_security.php';

@@ -12,3 +12,4 @@ import './scripts/pages/homepage';
 import './scripts/pages/blog';
 import './scripts/pages/admin/admin';
 import './scripts/pages/admin/post';
+import './scripts/pages/admin/comment';

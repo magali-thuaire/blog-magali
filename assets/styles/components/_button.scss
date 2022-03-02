@@ -33,3 +33,8 @@
     transition: color 500ms ease-in-out, background-color 800ms ease-in-out, border-color 500ms ease-in-out;
   }
 }
+
+.btn-success {
+  background-color: $color-success;
+  border-color: $color-success;
+}

@@ -1,12 +1,12 @@
-<div class="modal fade" id="delete_post" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="delete_comment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
-            <form action="{{ constant('R_ADMIN_POST_DELETE') ~ post.id }}" method="POST" class="d-inline-block" >
+            <form action="{{ constant('R_ADMIN_COMMENT_DELETE') ~ comment.id }}" method="POST" class="d-inline-block" >
                 <div class="modal-header text-uppercase font-weight-bold">
-                    {{ post.author }} - {{ post.createdAt | date('d/m/Y') }} : {{ post.title }}
+                    {{ comment.author }} - {{ comment.createdAt | date('d/m/Y') }} : {{ comment.post.title }}
                 </div>
                 <div class="modal-body text-center p-4">
-                    Etes-vous certain(e) de vouloir supprimer cet article  ?
+                    Etes-vous certain(e) de vouloir supprimer ce commentaire  ?
                     <input type="hidden" name="csrfToken" value="{{ form.csrfToken }}">
                 </div>
                 <div class="modal-footer">

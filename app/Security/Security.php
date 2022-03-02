@@ -2,13 +2,9 @@
 
 namespace App\Security;
 
-use App\Controller\SecurityController;
 use App\Entity\UserEntity;
 use Core\Security\Security as CoreSecurity;
 use JetBrains\PhpStorm\Pure;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 class Security extends CoreSecurity
 {
@@ -31,28 +27,22 @@ class Security extends CoreSecurity
 
     public static function isAccessGranted(): bool
     {
-
         $user = self::getUser();
-        if (in_array($user->getRole(), [UserEntity::ROLE_SUPERADMIN, UserEntity::ROLE_ADMIN])) {
-            return true;
+
+        if (!in_array($user->getRole(), [UserEntity::ROLE_SUPERADMIN, UserEntity::ROLE_ADMIN])) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
-     * @throws RuntimeError
-     * @throws SyntaxError
-     * @throws LoaderError
      */
     public static function getUser()
     {
         // Récupération de l'utilisateur
         if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
             return $_SESSION['user'];
-        } else {
-            $controller = new SecurityController();
-            $controller->login();
         }
     }
 }

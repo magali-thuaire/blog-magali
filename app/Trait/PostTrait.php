@@ -11,12 +11,12 @@ trait PostTrait
 {
     /**
      * Retourne un tableau de Post dont les auteurs sont des objets User
+     * @throws Exception
      */
     private function createPostsWithAuthor($postsData): ?array
     {
         $posts = [];
         if ($postsData) {
-            /** @var PostEntity $post */
             foreach ($postsData as $postData) {
                 $posts[] = $this->createPostWithAuthor($postData);
             }
@@ -27,6 +27,7 @@ trait PostTrait
 
     /**
      * Retourne un objet Post dont les commentaires sont des objets Comment et dont l'auteur est un objet User
+     * @throws Exception
      */
     public function createPostWithAuthorAndComments($postData): ?PostEntity
     {
@@ -41,11 +42,12 @@ trait PostTrait
 
     /**
      * Retourne un objet Post dont l'auteur est un object User
+     * @throws Exception
      */
     private function createPostWithAuthor($data): PostEntity
     {
 
-        if(!$data) {
+        if (!$data) {
             throw new Exception(POST_ERROR);
         }
 
@@ -64,7 +66,7 @@ trait PostTrait
             }
         }
 
-        if(property_exists($data, 'commentsApproved')) {
+        if (property_exists($data, 'commentsApproved')) {
             $post->commentsApproved = $data->commentsApproved;
         }
         return $post;
@@ -127,12 +129,5 @@ trait PostTrait
                 $post->addComment($comment);
             }
         }
-    }
-
-    public function filterComments($posts)
-    {
-        array_filter($posts, function($post) {
-            die(var_dump($post));
-        });
     }
 }

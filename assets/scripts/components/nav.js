@@ -59,7 +59,7 @@ $(document).ready(function () {
     })
 
     // mettre la navbar en inactive dans l'admin
-    if(url.href.includes('admin')) {
+    if (url.href.includes('admin')) {
         $navLinks.removeClass('active');
     }
 

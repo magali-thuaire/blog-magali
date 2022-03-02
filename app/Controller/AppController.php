@@ -8,6 +8,7 @@ use Core\Manager\EntityManager;
 use Core\Model\FormModel;
 use Core\Security\CsrfToken;
 use Exception;
+use JetBrains\PhpStorm\Pure;
 use stdClass;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -93,7 +94,12 @@ class AppController
         return $this->getManager($entity);
     }
 
-    protected function getUser()
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     */
+    #[Pure] protected function getUser()
     {
         return Security::getUser();
     }

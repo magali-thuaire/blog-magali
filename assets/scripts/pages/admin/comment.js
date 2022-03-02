@@ -5,8 +5,8 @@ import ajaxModal from '../../components/modal/ajax_modal';
 $(document).ready(function () {
 
     // Table des articles
-    $('#post-table').DataTable({
-        "order": [[1, "desc"]],
+    $('#comment-table').DataTable({
+        "order": [[1, "asc"]],
         "keys": true,
         "columnDefs": [
         {
@@ -46,22 +46,10 @@ $(document).ready(function () {
         }
     });
 
-    $('#post-table tbody').on('click', '.js-post-delete', function () {
+    $('#comment-table tbody').on('click', '.js-comment-approve, .js-comment-delete', function () {
         let target = this;
         // Appel AJAX et intégration d'une modale
-        ajaxModal(target, 'post-modal');
+        ajaxModal(target, 'comment-modal');
     });
 
-    $('#post-published').on('click', function () {
-        let target = this
-        let isPublished = $(target).is(':checked');
-
-        if (isPublished) {
-            $('.post-published.bg-success').removeClass('d-none');
-            $('.post-published.bg-warning').addClass('d-none');
-        } else {
-            $('.post-published.bg-warning').removeClass('d-none');
-            $('.post-published.bg-success').addClass('d-none');
-        }
-    })
 })

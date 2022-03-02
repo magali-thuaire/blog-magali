@@ -7,9 +7,13 @@ use App\Controller\AppController;
 use App\Entity\PostEntity;
 use Exception;
 
-
 class AdminPostController extends AppController
 {
+    /**
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     * @throws \Twig\Error\LoaderError
+     */
     public function index()
     {
         $posts = $this->postManager->findAllByAuthorOrderedByNewest($this->getUser());
@@ -21,10 +25,15 @@ class AdminPostController extends AppController
         ]);
     }
 
+    /**
+     * @throws \Twig\Error\SyntaxError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\LoaderError
+     */
     public function show(int $id)
     {
         /** @var PostEntity|null $posts */
-        $post = $this->postManager->findOneByIdIfGranted($id, $this->getUser());
+        $post = $this->postManager->findOneByIdIfIsGranted($id, $this->getUser());
 
         if (!$post) {
             return App::getInstance()->notFound();
@@ -36,6 +45,12 @@ class AdminPostController extends AppController
         ]);
     }
 
+    /**
+     * @throws \Twig\Error\SyntaxError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\LoaderError
+     * @throws Exception
+     */
     public function confirmDelete(int $id)
     {
         $post = $this->postManager->findOneById($id);
@@ -74,12 +89,18 @@ class AdminPostController extends AppController
         header('Location: ' . R_ADMIN);
     }
 
+    /**
+     * @throws \Twig\Error\SyntaxError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\LoaderError
+     * @throws Exception
+     */
     public function change(int $id)
     {
         $form = $this->initForm('post-update');
 
         try {
-            $post = $this->postManager->findOneByIdIfGranted($id, $this->getUser());
+            $post = $this->postManager->findOneByIdIfIsGranted($id, $this->getUser());
         } catch (Exception $e) {
             $form->setError($e->getMessage());
         }
@@ -95,23 +116,26 @@ class AdminPostController extends AppController
         ]);
     }
 
+    /**
+     * @throws Exception
+     */
     public function update(int $id)
     {
         $form = $this->createForm('post-update');
 
         try {
-            $post = $this->postManager->findOneByIdIfGranted($id, $this->getUser());
+            $post = $this->postManager->findOneByIdIfIsGranted($id, $this->getUser());
         } catch (Exception $e) {
             $form->setError($e->getMessage());
         }
 
         if (!$form->hasError()) {
-            $isPublishedChange = ((property_exists($form, 'published') ? true : false) !== $post->isPublished());
+            $isPublishedChange = (property_exists($form, 'published') !== $post ->isPublished());
             $post
                 ->setTitle($form->title)
                 ->setHeader($form->header)
                 ->setContent($form->content)
-                ->setPublished(property_exists($form, 'published') ? true : false)
+                ->setPublished(property_exists($form, 'published'))
             ;
             $isUpdated = $this->postManager->update($post, $isPublishedChange);
 
@@ -126,6 +150,12 @@ class AdminPostController extends AppController
         header('Location: ' . R_ADMIN);
     }
 
+    /**
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     * @throws \Twig\Error\LoaderError
+     * @throws Exception
+     */
     public function create()
     {
         $form = $this->initForm('post-new');
@@ -135,6 +165,12 @@ class AdminPostController extends AppController
         ]);
     }
 
+    /**
+     * @throws \Twig\Error\SyntaxError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\LoaderError
+     * @throws Exception
+     */
     public function new()
     {
         $form = $this->createForm('post-new');
@@ -148,7 +184,7 @@ class AdminPostController extends AppController
         }
 
         if (!$form->hasError()) {
-            $post->setPublished(property_exists($form, 'published') ? true : false);
+            $post->setPublished(property_exists($form, 'published'));
             $isCreated = $this->postManager->new($post);
 
             if ($isCreated) {
