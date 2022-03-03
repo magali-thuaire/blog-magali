@@ -2,15 +2,19 @@
 
 namespace App\Controller\Admin;
 
+use App\App;
 use App\Controller\AppController;
 use Exception;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class AdminUserController extends AppController
 {
     /**
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
      */
     public function index()
     {
@@ -24,9 +28,9 @@ class AdminUserController extends AppController
     }
 
     /**
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\LoaderError
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      * @throws Exception
      */
     public function confirmValidate(int $id)
@@ -34,8 +38,8 @@ class AdminUserController extends AppController
         $user = $this->userManager->findOneById($id, $this->getUser());
         $form = $this->initForm('user-validate');
 
-        $form->action = R_ADMIN_USER_VALIDATE . $user->getId();
-        $form->message = ADMIN_USER_VALIDATED_MODAL_MESSAGE;
+        $form->action = App::$config['R_ADMIN_USER_VALIDATE'] . $user->getId();
+        $form->message = App::$config['ADMIN_USER_VALIDATED_MODAL_MESSAGE'];
 
         return $this->render('admin/user/_modal.twig', [
             'user'    => $user,
@@ -60,20 +64,20 @@ class AdminUserController extends AppController
             $isValidated = $this->userManager->validate($user->getId(), $this->getUser());
 
             if ($isValidated) {
-                $form->setSuccess(ADMIN_USER_VALIDATED_SUCCESS_MESSAGE);
+                $form->setSuccess(App::$config['ADMIN_USER_VALIDATED_SUCCESS_MESSAGE']);
             } else {
-                $form->setError(ADMIN_USER_VALIDATED_ERROR_MESSAGE);
+                $form->setError(App::$config['ADMIN_USER_VALIDATED_ERROR_MESSAGE']);
             }
         }
 
         $this->addMessage($form);
-        header('Location: ' . R_ADMIN_USER);
+        header('Location: ' . App::$config['R_ADMIN_USER']);
     }
 
     /**
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\LoaderError
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      * @throws Exception
      */
     public function confirmDelete(int $id)
@@ -86,8 +90,8 @@ class AdminUserController extends AppController
             $form->setError($e->getMessage());
         }
 
-        $form->action = R_ADMIN_USER_DELETE . $user->getId();
-        $form->message = ADMIN_USER_DELETED_MODAL_MESSAGE;
+        $form->action = App::$config['R_ADMIN_USER_DELETE'] . $user->getId();
+        $form->message = App::$config['ADMIN_USER_DELETED_MODAL_MESSAGE'];
 
         return $this->render('admin/user/_modal.twig', [
             'user' => $user,
@@ -112,13 +116,13 @@ class AdminUserController extends AppController
             $isDeleted = $this->userManager->delete($user, $this->getUser());
 
             if ($isDeleted) {
-                $form->setSuccess(ADMIN_USER_DELETED_SUCCESS_MESSAGE);
+                $form->setSuccess(App::$config['ADMIN_USER_DELETED_SUCCESS_MESSAGE']);
             } else {
-                $form->setError(ADMIN_USER_DELETED_ERROR_MESSAGE);
+                $form->setError(App::$config['ADMIN_USER_DELETED_ERROR_MESSAGE']);
             }
         }
 
         $this->addMessage($form);
-        header('Location: ' . R_ADMIN_USER);
+        header('Location: ' . App::$config['R_ADMIN_USER']);
     }
 }

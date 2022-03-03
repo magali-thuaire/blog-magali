@@ -8,6 +8,7 @@ use App\Controller\SecurityController;
 use App\Security\Security;
 
 require_once '../app/App.php';
+App::$config['ROOT'] = dirname(__DIR__);
 App::load();
 
 // Pas d'utilisateur authentifié

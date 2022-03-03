@@ -4,16 +4,16 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Magali</title>
-        <link rel="icon" type="image/x-icon" href="{{ constant('FAVICON') }}" />
-        <link href="{{ constant('CSS') }}" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="{{ constant('JS') }}" defer></script>
+        <link rel="icon" type="image/x-icon" href="{{ config['FAVICON'] }}" />
+        <link href="{{ config['CSS'] }}" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="{{ config['JS'] }}" defer></script>
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
             <!-- Navigation-->
             <nav id="clientNavbar" class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
                 <div class="container-fluid px-5">
-                    <a class="navbar-brand logo" href="{{ constant('R_HOMEPAGE') }}">
+                    <a class="navbar-brand logo" href="{{ config['R_HOMEPAGE'] }}">
                         <span class="text-info">Magali</span>
                         THUAIRE
                     </a>
@@ -22,20 +22,20 @@
                     </button>
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link" href="{{ constant('R_HOMEPAGE') }}">Accueil</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ constant('R_BLOG') }}">Mon blog</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ constant('R_CONTACT') }}">Contact</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ config['R_HOMEPAGE'] }}">Accueil</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ config['R_BLOG'] }}">Mon blog</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ config['R_CONTACT'] }}">Contact</a></li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i></a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
                                 {% if session.user is not defined %}
-                                    <a class="nav-link dropdown-item" href="{{ constant('R_LOGIN') }}">Se connecter</a>
-                                    <a class="nav-link dropdown-item" href="{{ constant('R_REGISTER') }}">S'inscrire</a>
+                                    <a class="nav-link dropdown-item" href="{{ config['R_LOGIN'] }}">Se connecter</a>
+                                    <a class="nav-link dropdown-item" href="{{ config['R_REGISTER'] }}">S'inscrire</a>
                                 {% else %}
-                                    {% if session.user.role in [constant('App\\Entity\\UserEntity::ROLE_SUPERADMIN'), constant('App\\Entity\\UserEntity::ROLE_ADMIN')] %}
-                                        <a class="nav-link dropdown-item" href="{{ constant('R_ADMIN') }}">Administrer</a>
+                                    {% if session.user.role in roles_admin %}
+                                        <a class="nav-link dropdown-item" href="{{ config['R_ADMIN'] }}">Administrer</a>
                                     {% endif %}
-                                    <a class="nav-link dropdown-item" href="{{ constant('R_LOGOUT') }}">Se déconnecter</a>
+                                    <a class="nav-link dropdown-item" href="{{ config['R_LOGOUT'] }}">Se déconnecter</a>
                                 {% endif %}
                                 </ul>
                             </li>

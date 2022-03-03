@@ -4,16 +4,16 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Magali</title>
-    <link rel="icon" type="image/x-icon" href="{{ constant('FAVICON') }}" />
-    <link href="{{ constant('CSS') }}" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="{{ constant('JS') }}" defer></script>
+    <link rel="icon" type="image/x-icon" href="{{ config['FAVICON'] }}" />
+    <link href="{{ config['CSS'] }}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="{{ config['JS'] }}" defer></script>
 </head>
 <body>
 <main>
     <div id="adminSidebar" class="bg-dark" >
         <div class="py-4 px-3 mb-4 bg-dark">
-            <a class="d-flex flex-column align-items-center text-decoration-none" href="{{ constant('R_ADMIN') }}">
-                <img src="{{ constant('FAVICON') }}" alt="..." width="50" class="mr-3 shadow-sm">
+            <a class="d-flex flex-column align-items-center text-decoration-none" href="{{ config['R_ADMIN'] }}">
+                <img src="{{ config['FAVICON'] }}" alt="..." width="50" class="mr-3 shadow-sm">
                 <h4 class="font-weight-light text-muted mb-0">Blog Magali</h4>
             </a>
         </div>
@@ -22,27 +22,27 @@
 
         <ul class="nav flex-column bg-dark mb-0">
             <li class="nav-item adminSidebar__item">
-                <a href="{{ constant('R_ADMIN') }}" class="nav-link text-dark font-italic">
+                <a href="{{ config['R_ADMIN'] }}" class="nav-link text-dark font-italic">
 
                     <i class="adminSidebar__item-icon fas fa-newspaper"></i>
                     Mes articles
                 </a>
             </li>
             <li class="nav-item adminSidebar__item">
-                <a href="{{ constant('R_ADMIN_COMMENT') }}" class="nav-link text-dark font-italic">
+                <a href="{{ config['R_ADMIN_COMMENT'] }}" class="nav-link text-dark font-italic">
                     <i class="adminSidebar__item-icon fas fa-comments"></i>
                     Commentaires
                 </a>
             </li>
             <li class="nav-item adminSidebar__item">
-                <a href="{{ constant('R_ADMIN_POST_NEW') }}" class="nav-link text-dark font-italic">
+                <a href="{{ config['R_ADMIN_POST_NEW'] }}" class="nav-link text-dark font-italic">
                     <i class="adminSidebar__item-icon fas fa-pen-clip"></i>
                     Nouvel article
                 </a>
             </li>
-            {% if session.user.role in [constant('App\\Entity\\UserEntity::ROLE_SUPERADMIN')] %}
+            {% if session.user.role == role_superadmin %}
             <li class="nav-item adminSidebar__item">
-                <a href="{{ constant('R_ADMIN_USER') }}" class="nav-link text-dark font-italic">
+                <a href="{{ config['R_ADMIN_USER'] }}" class="nav-link text-dark font-italic">
                     <i class="adminSidebar__item-icon fas fa-user-group"></i>
                     Utilisateurs
                 </a>
@@ -61,9 +61,9 @@
             <!-- Collapse menu -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="{{ constant('R_HOMEPAGE') }}">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ constant('R_BLOG') }}">Le Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ constant('R_CONTACT') }}">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ config['R_HOMEPAGE'] }}">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ config['R_BLOG'] }}">Le Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ config['R_CONTACT'] }}">Contact</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-user"></i>
@@ -71,7 +71,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
                             {% if session.user is defined %}
-                                <a class="nav-link dropdown-item" href="{{ constant('R_LOGOUT') }}">Se déconnecter</a>
+                                <a class="nav-link dropdown-item" href="{{ config['R_LOGOUT'] }}">Se déconnecter</a>
                             {% endif %}
                         </ul>
                     </li>

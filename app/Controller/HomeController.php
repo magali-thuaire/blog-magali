@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App;
+use App\App;
 use App\Entity\ContactEntity;
 use App\Service\ContactMailService;
 use Exception;
@@ -51,10 +51,10 @@ class HomeController extends AppController
             if (ContactMailService::send($contact)) {
                 // Enregistrement en BDD
                 $this->contactManager->new($contact);
-                $form->setSuccess(CONTACT_SUCCESS_EMAIL);
+                $form->setSuccess(App::$config['CONTACT_SUCCESS_EMAIL']);
             } else {
                 // Message d'erreur
-                $form->setError(ERROR_SEND_EMAIL);
+                $form->setError(App::$config['ERROR_SEND_EMAIL']);
             }
         }
 

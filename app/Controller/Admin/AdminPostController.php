@@ -6,13 +6,16 @@ use App\App;
 use App\Controller\AppController;
 use App\Entity\PostEntity;
 use Exception;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class AdminPostController extends AppController
 {
     /**
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
      */
     public function index()
     {
@@ -26,9 +29,9 @@ class AdminPostController extends AppController
     }
 
     /**
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\LoaderError
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      */
     public function show(int $id)
     {
@@ -46,9 +49,9 @@ class AdminPostController extends AppController
     }
 
     /**
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\LoaderError
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      * @throws Exception
      */
     public function confirmDelete(int $id)
@@ -56,8 +59,8 @@ class AdminPostController extends AppController
         $post = $this->postManager->findOneById($id);
         $form = $this->initForm('post-delete');
 
-        $form->action = R_ADMIN_POST_DELETE . $post->getId();
-        $form->message = ADMIN_POST_DELETED_MODAL_MESSAGE;
+        $form->action = App::$config['R_ADMIN_POST_DELETE'] . $post->getId();
+        $form->message = App::$config['ADMIN_POST_DELETED_MODAL_MESSAGE'];
 
         return $this->render('admin/post/_modal.twig', [
             'post' => $post,
@@ -82,20 +85,20 @@ class AdminPostController extends AppController
             $isDeleted = $this->postManager->delete($post, $this->getUser());
 
             if ($isDeleted) {
-                $form->setSuccess(ADMIN_POST_DELETED_SUCCESS_MESSAGE);
+                $form->setSuccess(App::$config['ADMIN_POST_DELETED_SUCCESS_MESSAGE']);
             } else {
-                $form->setError(ADMIN_POST_DELETED_ERROR_MESSAGE);
+                $form->setError(App::$config['ADMIN_POST_DELETED_ERROR_MESSAGE']);
             }
         }
 
         $this->addMessage($form);
-        header('Location: ' . R_ADMIN);
+        header('Location: ' . App::$config['R_ADMIN']);
     }
 
     /**
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\LoaderError
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      * @throws Exception
      */
     public function change(int $id)
@@ -110,7 +113,7 @@ class AdminPostController extends AppController
 
         if ($form->hasError()) {
             $this->addMessage($form);
-            header('Location: ' . R_ADMIN);
+            header('Location: ' . App::$config['R_ADMIN']);
         }
 
         $this->render('admin/post/update.twig', [
@@ -143,20 +146,20 @@ class AdminPostController extends AppController
             $isUpdated = $this->postManager->update($post, $isPublishedChange);
 
             if ($isUpdated) {
-                $form->setSuccess(ADMIN_POST_UPDATED_SUCCESS_MESSAGE);
+                $form->setSuccess(App::$config['ADMIN_POST_UPDATED_SUCCESS_MESSAGE']);
             } else {
-                $form->setError(ADMIN_POST_UPDATE_ERROR_MESSAGE);
+                $form->setError(App::$config['ADMIN_POST_UPDATE_ERROR_MESSAGE']);
             }
         }
 
         $this->addMessage($form);
-        header('Location: ' . R_ADMIN);
+        header('Location: ' . App::$config['R_ADMIN']);
     }
 
     /**
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
      * @throws Exception
      */
     public function create()
@@ -169,9 +172,9 @@ class AdminPostController extends AppController
     }
 
     /**
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\LoaderError
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      * @throws Exception
      */
     public function new()
@@ -191,13 +194,13 @@ class AdminPostController extends AppController
             $isCreated = $this->postManager->new($post);
 
             if ($isCreated) {
-                $form->setSuccess(ADMIN_POST_NEW_SUCCESS_MESSAGE);
+                $form->setSuccess(App::$config['ADMIN_POST_NEW_SUCCESS_MESSAGE']);
             } else {
-                $form->setError(ADMIN_POST_NEW_ERROR_MESSAGE);
+                $form->setError(App::$config['ADMIN_POST_NEW_ERROR_MESSAGE']);
             }
 
             $this->addMessage($form);
-            header('Location: ' . R_ADMIN);
+            header('Location: ' . App::$config['R_ADMIN']);
         } else {
             $this->addMessage($form);
             $app = $this->getMessage();

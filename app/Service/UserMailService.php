@@ -2,16 +2,18 @@
 
 namespace App\Service;
 
+use App\App;
 use App\Entity\UserEntity;
 use App\Security\Security;
 
 class UserMailService
 {
+    private const FROM = 'magali.thuaire@gmail.com';
     private const SUBJECT = 'Blog de Magali - Activation de votre compte';
 
     public static function send(
         UserEntity $user,
-        $from = EMAIL_DEFAULT_FROM,
+        $from = self::FROM,
         $subject = self::SUBJECT
     ): bool {
         $validationLink = Security ::generateValidationLink($user);

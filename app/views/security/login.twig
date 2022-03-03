@@ -7,7 +7,7 @@
             <h1 class="login__title text-center mb-4" >Se connecter</h1>
             <div class="alert alert-danger d-flex align-items-center mb-2 {{ form.error ? '' : 'd-none' }}" role="alert">{{ form.error ?: '' }}</div>
             <div class="alert alert-success d-flex align-items-center mb-2 {{ form.success ? '' : 'd-none' }}" role="alert">{{ form.success ?: '' }}</div>
-            <form id="loginForm" action="{{ constant('F_LOGIN') }}" method="POST">
+            <form id="loginForm" action="{{ config['F_LOGIN'] }}" method="POST">
                 <div class="form-floating">
                     <input type="email" name="email" class="form-control" placeholder="email" value="{{ form.email ?: '' }}" required>
                     <label>Email</label>
@@ -16,7 +16,7 @@
                     <input type="password" name="plainPassword" class="form-control" placeholder="mot de passe" required>
                     <label>Mot de passe</label>
                 </div>
-                <a class="d-flex justify-content-end text-decoration-none text-muted login__forgot-password mt-2" href="{{ constant('R_FORGOT_PASSWORD') }}">Mot de passe oublié ?</a>
+                <a class="d-flex justify-content-end text-decoration-none text-muted login__forgot-password mt-2" href="{{ config['R_FORGOT_PASSWORD'] }}">Mot de passe oublié ?</a>
 <!--                TODO: Remember me-->
 <!--                <div class="checkbox mt-3">-->
 <!--                    <label>-->

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\App;
+use App\Entity\UserEntity;
 use App\Security\Security;
 use Core\Manager\EntityManager;
 use Core\Model\FormModel;
@@ -35,6 +36,9 @@ class AppController
      */
     protected function render($view, $variables = [])
     {
+        $variables['config'] = App::$config;
+        $variables['roles_admin'] = [UserEntity::ROLE_ADMIN, UserEntity::ROLE_SUPERADMIN];
+        $variables['role_superadmin'] = UserEntity::ROLE_SUPERADMIN;
         return App::getInstance()->getRenderer()->render($view, $variables);
     }
 
@@ -73,7 +77,7 @@ class AppController
             ->hydrate($formData);
 
         if (!$form->isTokenValid($token)) {
-            throw new Exception(INVALID_CSRF_TOKEN);
+            throw new Exception(App::$config['INVALID_CSRF_TOKEN']);
         }
 
         return $form;
@@ -95,9 +99,6 @@ class AppController
     }
 
     /**
-     * @throws SyntaxError
-     * @throws RuntimeError
-     * @throws LoaderError
      */
     #[Pure] protected function getUser()
     {

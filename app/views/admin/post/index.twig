@@ -40,13 +40,13 @@
                             </span>
                         </td>
                         <td>
-                            <a href="{{ constant('R_ADMIN_POST_SHOW') ~ post.id }}" class="btn btn-sm btn-show {{ post.published ?: 'btn-grey' }}" data-bs-toggle="tooltip" data-placement="top" title="Voir">
+                            <a href="{{ config['R_ADMIN_POST_SHOW'] ~ post.id }}" class="btn btn-sm btn-show {{ post.published ?: 'btn-grey' }}" data-bs-toggle="tooltip" data-placement="top" title="Voir">
                                 <i class="table__icon fas fa-eye"></i>
                             </a>
-                            <a href="{{ constant('R_ADMIN_POST_UPDATE') ~ post.id }}" class="btn btn-sm btn-update" data-bs-toggle="tooltip" data-placement="top" title="Modifier">
+                            <a href="{{ config['R_ADMIN_POST_UPDATE'] ~ post.id }}" class="btn btn-sm btn-update" data-bs-toggle="tooltip" data-placement="top" title="Modifier">
                                 <i class="table__icon fas fa-pencil"></i>
                             </a>
-                            <a data-href="{{ constant('R_ADMIN_POST_CONFIRM_DELETE') ~ post.id }}" class="btn btn-sm btn-delete js-post-delete" data-bs-toggle="tooltip" data-placement="top" title="Supprimer">
+                            <a data-href="{{ config['R_ADMIN_POST_CONFIRM_DELETE'] ~ post.id }}" class="btn btn-sm btn-delete js-post-delete" data-bs-toggle="tooltip" data-placement="top" title="Supprimer">
                                 <i class="table__icon fas fa-trash"></i>
                             </a>
                         </td>

@@ -4,9 +4,9 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Magali</title>
-        <link rel="icon" type="image/x-icon" href="{{ constant('FAVICON') }}" />
-        <link href="{{ constant('CSS') }}" rel="stylesheet" type="text/css">
-        <script type="text/javascript" src="{{ constant('JS') }}" defer></script>
+        <link rel="icon" type="image/x-icon" href="{{ config['FAVICON'] }}" />
+        <link href="{{ config['CSS'] }}" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="{{ config['JS'] }}" defer></script>
     </head>
     <body>
         <div id="notfound">
@@ -16,7 +16,7 @@
                 </div>
                 <h2>Oups!</h2>
                 <p>La page que vous cherchez semble introuvable</p>
-                <a href="{{ constant('R_HOMEPAGE') }}">Retour à l'accueil</a>
+                <a href="{{ config['R_HOMEPAGE'] }}">Retour à l'accueil</a>
             </div>
         </div>
     </body>

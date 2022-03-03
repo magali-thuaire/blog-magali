@@ -15,9 +15,9 @@ class ContactEntity
     private string $message;
     private DateTime $date;
 
-    private const ERROR_NAME = CONTACT_ERROR_NAME;
-    private const ERROR_EMAIL = CONTACT_ERROR_EMAIL;
-    private const ERROR_MESSAGE = CONTACT_ERROR_MESSAGE;
+    private const ERROR_NAME = 'Veuillez renseigner un nom valide';
+    private const ERROR_EMAIL = 'Veuillez renseigner un email valide';
+    private const ERROR_MESSAGE = 'Veuillez renseigner un message valide';
 
     public function __construct()
     {

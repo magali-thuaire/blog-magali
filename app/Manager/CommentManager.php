@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\App;
 use App\Entity\CommentEntity;
 use App\Entity\UserEntity;
 use App\Trait\CommentTrait;
@@ -19,9 +20,12 @@ class CommentManager extends EntityManager
 
     /**
      * Retourne un tableau de commentaires non approuvés pour un auteur d'article spécifique
+     *
      * @param UserEntity $user
      *
      * @return array|null
+     * @throws Exception
+     * @throws Exception
      */
     public function findAllUnapproved(UserEntity $user): ?array
     {
@@ -60,7 +64,7 @@ class CommentManager extends EntityManager
         $commentData = $this->prepare($statement, $attributs, true, false);
 
         if (!$commentData) {
-            throw new Exception(ADMIN_COMMENT_ERROR_MESSAGE);
+            throw new Exception(App::$config['ADMIN_COMMENT_ERROR_MESSAGE']);
         }
 
         return $this->createCommentWithPost($commentData);
@@ -86,7 +90,7 @@ class CommentManager extends EntityManager
         $commentData = $this->prepare($statement, $attributs, true, false);
 
         if (!$commentData) {
-            throw new Exception(ADMIN_COMMENT_ERROR_MESSAGE);
+            throw new Exception(App::$config['ADMIN_COMMENT_ERROR_MESSAGE']);
         }
 
         return $this->createCommentWithPost($commentData);

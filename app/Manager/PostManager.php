@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\App;
 use App\Entity\PostEntity;
 use App\Entity\UserEntity;
 use App\Trait\PostTrait;
@@ -82,7 +83,7 @@ class PostManager extends EntityManager
         $postData = $this->prepare($statement, $attributs);
 
         if (!$postData) {
-            throw new Exception(ADMIN_POST_UPDATE_ERROR_MESSAGE);
+            throw new Exception(App::$config['ADMIN_POST_UPDATE_ERROR_MESSAGE']);
         }
         return $this->createPostWithAuthorAndComments($postData);
     }

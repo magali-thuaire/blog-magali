@@ -24,10 +24,11 @@ class UserEntity
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_SUPERADMIN = 'ROLE_SUPERADMIN';
-    private const ERROR_EMAIL = USER_ERROR_EMAIL;
-    private const ERROR_PASSWORD = USER_ERROR_PASSWORD;
-    private const ERROR_USERNAME_LENGTH = USER_ERROR_AUTHOR_LENGTH;
-    private const ERROR_USERNAME = USER_ERROR_USERNAME;
+
+    private const ERROR_EMAIL = 'Veuillez renseigner un email valide';
+    private const ERROR_PASSWORD = 'Veuillez renseigner un mot de passe valide';
+    private const ERROR_USERNAME = 'Veuillez renseigner un nom d\'utilisateur valide';
+    private const ERROR_USERNAME_LENGTH = 'Veuillez renseigner un nom d\'utilisateur de moins de 50 caractères';
 
     public function getId(): ?int
     {

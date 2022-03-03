@@ -7,7 +7,7 @@
             <h1 class="register__title text-center mb-4" >S'inscrire</h1>
             <div class="alert alert-danger d-flex align-items-center mb-2 {{ form.error ? '' : 'd-none' }}" role="alert">{{ form.error ?: '' }}</div>
             <div class="alert alert-success d-flex align-items-center mb-2 {{ form.success ? '' : 'd-none' }}" role="alert">{{ form.success ?: '' }}</div>
-            <form id="registerForm" action="{{ constant('F_REGISTER') }}" method="POST">
+            <form id="registerForm" action="{{ config['F_REGISTER'] }}" method="POST">
                 <div class="form-floating">
                     <input type="text" name="username" class="form-control" placeholder="nom d'utilisateur" value="{{ form.username ?: '' }}" required>
                     <label>Nom d'utilisateur</label>

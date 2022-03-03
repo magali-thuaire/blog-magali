@@ -2,6 +2,7 @@
 
 namespace App\Trait;
 
+use App\App;
 use App\Entity\UserEntity;
 use App\Security\Security;
 use Exception;
@@ -84,12 +85,12 @@ trait UserTrait
 
         // Vérification du mot de passe
         if (!is_string($user->plainPassword) || empty($user->plainPassword)) {
-            throw new Exception(USER_ERROR_PASSWORD);
+            throw new Exception(App::$config['USER_ERROR_PASSWORD']);
         }
 
         // Vérification de la vérification du mot de passe
         if (!is_string($user->plainPasswordConfirm) || empty($user->plainPasswordConfirm)) {
-            throw new Exception(USER_ERROR_PASSWORD);
+            throw new Exception(App::$config['USER_ERROR_PASSWORD']);
         }
 
         return $user->plainPassword === $user->plainPasswordConfirm;
@@ -101,7 +102,7 @@ trait UserTrait
     private function isTokenValid($user, $token): bool
     {
         if (!Security::isTokenValid($user, $token)) {
-            throw new Exception(USER_PASSWORD_TOKEN_INVALID);
+            throw new Exception(App::$config['USER_PASSWORD_TOKEN_INVALID']);
         }
 
         return true;

@@ -38,11 +38,11 @@
                         </td>
                         <td>
                             {% if user.adminValidated == false %}
-                                <a data-href="{{ constant('R_ADMIN_USER_CONFIRM_VALIDATE') ~ user.id }}" class="btn btn-sm btn-success js-user-validate" data-bs-toggle="tooltip" data-placement="top" title="Valider">
+                                <a data-href="{{ config['R_ADMIN_USER_CONFIRM_VALIDATE'] ~ user.id }}" class="btn btn-sm btn-success js-user-validate" data-bs-toggle="tooltip" data-placement="top" title="Valider">
                                     <i class="table__icon fas fa-check"></i>
                                 </a>
                             {% endif %}
-                            <a data-href="{{ constant('R_ADMIN_USER_CONFIRM_DELETE') ~ user.id }}" class="btn btn-sm btn-delete js-user-delete" data-bs-toggle="tooltip" data-placement="top" title="Supprimer">
+                            <a data-href="{{ config['R_ADMIN_USER_CONFIRM_DELETE'] ~ user.id }}" class="btn btn-sm btn-delete js-user-delete" data-bs-toggle="tooltip" data-placement="top" title="Supprimer">
                                 <i class="table__icon fas fa-trash"></i>
                             </a></td>
                     </tr>

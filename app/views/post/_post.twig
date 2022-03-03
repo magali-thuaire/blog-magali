@@ -10,7 +10,7 @@
             </div>
             <div class="col blog-post__body">
                 <h3 class="blog-post__title">
-                    <a class="text-decoration-none" href="{{ constant('R_POST') ~ post.id }}">
+                    <a class="text-decoration-none" href="{{ config['R_POST'] ~ post.id }}">
                         {{ post.title }}
                     </a>
                 </h3>
@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <a class="text-decoration-none" href="{{ constant('R_POST') ~ post.id }}">
+    <a class="text-decoration-none" href="{{ config['R_POST'] ~ post.id }}">
         <p class="blog-post__comment text-center p-3">
             <i class="fa fa-comments blog-post__comment-icon"></i> {{ post.comments|length }} commentaires
         </p>
