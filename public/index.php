@@ -7,6 +7,7 @@ use App\Controller\SecurityController;
 use App\Security\Security;
 
 require_once '../app/App.php';
+App::$config['ROOT'] = dirname(__DIR__);
 App::load();
 
 // Récupération de la page à partir de l'URL

@@ -17,9 +17,9 @@ class CommentEntity
     private DateTime $createdAt;
     private bool $approved;
 
-    private const ERROR_CONTENT = COMMENT_ERROR_CONTENT;
-    private const ERROR_AUTHOR = COMMENT_ERROR_AUTHOR;
-    private const ERROR_AUTHOR_LENGTH = COMMENT_ERROR_AUTHOR_LENGTH;
+    private const ERROR_CONTENT = 'Veuillez renseigner un contenu valide';
+    private const ERROR_AUTHOR = 'Veuillez renseigner un nom d\'utilisateur valide';
+    private const ERROR_AUTHOR_LENGTH = 'Veuillez renseigner un nom d\'utilisateur de moins de 50 caractères';
 
     public function getId(): ?int
     {

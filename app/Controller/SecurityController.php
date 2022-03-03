@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\App;
 use App\Entity\UserEntity;
 use App\Service\PasswordMailService;
 use App\Service\UserMailService;
@@ -49,7 +50,7 @@ class SecurityController extends AppController
         }
 
         if (!$form->getError()) {
-            header('Location: ' . R_ADMIN);
+            header('Location: ' . App::$config['R_ADMIN']);
         }
 
         // Affichage de la vue
@@ -96,10 +97,10 @@ class SecurityController extends AppController
         if (!$form->getError()) {
             if (UserMailService::send($user)) {
                 // Message de réussite
-                $form->setSuccess(USER_SUCCESS_REGISTRATION);
+                $form->setSuccess(App::$config['USER_SUCCESS_REGISTRATION']);
             } else {
                 // Message d'erreur
-                $form->setError(ERROR_SEND_EMAIL);
+                $form->setError(App::$config['ERROR_SEND_EMAIL']);
             }
         }
 
@@ -115,7 +116,7 @@ class SecurityController extends AppController
     public function logout()
     {
         $this->userManager->logout();
-        header('Location: ' . R_HOMEPAGE);
+        header('Location: ' . App::$config['R_HOMEPAGE']);
     }
 
     /**
@@ -134,11 +135,11 @@ class SecurityController extends AppController
         }
 
         if (!$isTokenValid) {
-            $message = ['error' => USER_TOKEN_INVALID];
+            $message = ['error' => App::$config['USER_TOKEN_INVALID']];
         } elseif (!$isUserConfirm) {
-            $message = ['error' => USER_LINK_INVALID];
+            $message = ['error' => App::$config['USER_LINK_INVALID']];
         } else {
-            $message = ['success' => USER_ACCOUNT_ACTIVATED];
+            $message = ['success' => App::$config['USER_ACCOUNT_ACTIVATED']];
         }
 
         $this->login($message);
@@ -180,7 +181,7 @@ class SecurityController extends AppController
             $user = new UserEntity();
             $user->hydrate((array) $form);
             if (!($user = $this->userManager->findOneByEmail($user->getEmail()))) {
-                $form->setError(USER_ERROR_NOT_EXISTS);
+                $form->setError(App::$config['USER_ERROR_NOT_EXISTS']);
             }
         } catch (Exception $e) {
             $form->setError($e->getMessage());
@@ -190,10 +191,10 @@ class SecurityController extends AppController
             // Envoi du mail
             if (PasswordMailService::send($user)) {
                 // Message de réussite
-                $form->setSuccess(USER_SEND_PASSWORD_EMAIL . $user->getEmail());
+                $form->setSuccess(App::$config['USER_SEND_PASSWORD_EMAIL'] . $user->getEmail());
             } else {
                 // Message d'erreur
-                $form->setError(ERROR_SEND_EMAIL);
+                $form->setError(App::$config['ERROR_SEND_EMAIL']);
             }
         }
 
@@ -256,7 +257,7 @@ class SecurityController extends AppController
         }
 
         if (!$form->getError()) {
-            $this->login(['success' => USER_PASSWORD_CHANGED]);
+            $this->login(['success' => App::$config['USER_PASSWORD_CHANGED']]);
         }
 
         // Affichage de la vue

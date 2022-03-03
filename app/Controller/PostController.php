@@ -73,14 +73,14 @@ class PostController extends AppController
         if ($post) {
             $comment->setPost($post);
         } else {
-            $form->setError(COMMENT_ERROR_ARTICLE);
+            $form->setError(App::$config['COMMENT_ERROR_ARTICLE']);
         }
 
         if (!$form->hasError()) {
              $isSuccess = $this->commentManager->new($comment);
 
             if ($isSuccess) {
-                $form->setSuccess(COMMENT_SUCCESS_MESSAGE);
+                $form->setSuccess(App::$config['COMMENT_SUCCESS_MESSAGE']);
             }
         }
 

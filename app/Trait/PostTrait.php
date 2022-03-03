@@ -2,6 +2,7 @@
 
 namespace App\Trait;
 
+use App\App;
 use App\Entity\CommentEntity;
 use App\Entity\PostEntity;
 use App\Entity\UserEntity;
@@ -48,7 +49,7 @@ trait PostTrait
     {
 
         if (!$data) {
-            throw new Exception(POST_ERROR);
+            throw new Exception(App::$config['POST_ERROR']);
         }
 
         // Création de l'auteur

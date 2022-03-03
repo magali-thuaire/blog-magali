@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use App\App;
 use App\Entity\UserEntity;
 use Core\Database\QueryBuilder;
 use Core\Manager\EntityManager;
@@ -20,7 +21,7 @@ class UserManager extends EntityManager
     {
         // Vérification utilisateur validé et confirmé par admin
         if (!($this->isUserExists($userData))) {
-            throw new Exception(INVALID_CREDENTIALS);
+            throw new Exception(App::$config['INVALID_CREDENTIALS']);
         }
         $user = $this->findOneByEmail($userData->getEmail());
 
@@ -43,12 +44,12 @@ class UserManager extends EntityManager
 
         // Vérification utilisateur validé et confirmé par admin
         if (!($user->isUserValidated())) {
-            throw new Exception(USER_ERROR_VALIDATION);
+            throw new Exception(App::$config['USER_ERROR_VALIDATION']);
         }
 
         // Vérification du mot de passe
         if (!$this->isPasswordValid($user, $plainPassword)) {
-            throw new Exception(INVALID_CREDENTIALS);
+            throw new Exception(App::$config['INVALID_CREDENTIALS']);
         }
 
         return true;
@@ -66,7 +67,7 @@ class UserManager extends EntityManager
         }
 
         if (!$register) {
-            throw new Exception(USER_ERROR_EXISTS);
+            throw new Exception(App::$config['USER_ERROR_EXISTS']);
         } else {
             return true;
         }
@@ -81,12 +82,12 @@ class UserManager extends EntityManager
 
         // Vérification si l'utilisateur existe déjà
         if ($this->isUserExists($user)) {
-            throw new Exception(USER_ERROR_EXISTS);
+            throw new Exception(App::$config['USER_ERROR_EXISTS']);
         }
 
         // Vérification du mot de passe et de sa confirmation
         if (!$this->isPasswordConfirm($user)) {
-            throw new Exception(USER_ERROR_PASSWORD_CONFIRM);
+            throw new Exception(App::$config['USER_ERROR_PASSWORD_CONFIRM']);
         }
 
         return true;
@@ -116,12 +117,12 @@ class UserManager extends EntityManager
     {
         // Vérification si l'utilisateur existe
         if (!$this->isUserExists($userData)) {
-            throw new Exception(USER_ERROR_NOT_EXISTS);
+            throw new Exception(App::$config['USER_ERROR_NOT_EXISTS']);
         }
 
         // Vérification du mot de passe et de sa confirmation
         if (!$this->isPasswordConfirm($userData)) {
-            throw new Exception(USER_ERROR_PASSWORD_CONFIRM);
+            throw new Exception(App::$config['USER_ERROR_PASSWORD_CONFIRM']);
         }
 
         return true;
@@ -155,13 +156,13 @@ class UserManager extends EntityManager
             $statement = $this->getOneById()->getQuery();
             $userData = $this->prepare($statement, [':id' => $id], true, false);
         } else {
-            throw new Exception(ADMIN_USER_ERROR_MESSAGE);
+            throw new Exception(App::$config['ADMIN_USER_ERROR_MESSAGE']);
         }
 
         if ($userData) {
             return $this->createUser($userData);
         } else {
-            return throw new Exception(ADMIN_USER_NOT_EXISTS);
+            return throw new Exception(App::$config['ADMIN_USER_NOT_EXISTS']);
         }
     }
 
@@ -265,7 +266,7 @@ class UserManager extends EntityManager
         $isUpdatedPassword = $this->execute($statement, $attributs);
 
         if (!$isUpdatedPassword) {
-            throw new Exception(USER_PASSWORD_MODIF_INVALID);
+            throw new Exception(App::$config['USER_PASSWORD_MODIF_INVALID']);
         } else {
             return true;
         }
@@ -273,6 +274,8 @@ class UserManager extends EntityManager
 
     /**
      * Valider un utilisateur
+     *
+     * @param int        $id
      * @param UserEntity $user
      *
      * @return bool

@@ -2,6 +2,8 @@
 
 namespace Core\Security;
 
+use JetBrains\PhpStorm\Pure;
+
 class Security
 {
     // Fonction de nettoyage d'une valeur
@@ -10,7 +12,7 @@ class Security
         return htmlspecialchars(stripslashes(trim($data)));
     }
 
-    public static function checkInputs(array $dataArray): array
+    #[Pure] public static function checkInputs(array $dataArray): array
     {
         $dataArrayChecked = [];
         foreach ($dataArray as $key => $data) {

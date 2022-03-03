@@ -6,6 +6,7 @@ use Core\Config;
 use Core\Database\MysqlDatabase;
 use Core\Manager\EntityManager;
 use Core\Renderer\TwigRenderer;
+use stdClass;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
@@ -15,6 +16,7 @@ class App
     private static $instance;
     private $db_instance;
     private $renderer;
+    public static $config;
 
     public static function getInstance(): App
     {
@@ -27,7 +29,7 @@ class App
 
     public function getDb(): MysqlDatabase
     {
-        $db_config = Config::getInstance(CONFIG_DB);
+        $db_config = Config::getInstance(self::$config['CONFIG_DB']);
 
         if (is_null($this->db_instance)) {
             $this->db_instance = new MysqlDatabase(
@@ -50,7 +52,7 @@ class App
     public function getRenderer(): TwigRenderer
     {
         if (is_null($this->renderer)) {
-            $this->renderer = new TwigRenderer(VIEWS);
+            $this->renderer = new TwigRenderer(self::$config['VIEWS']);
         }
         return $this->renderer;
     }
@@ -60,10 +62,20 @@ class App
         require_once '../_config/_define.php';
         $const = [];
         foreach ($array as $v) {
-            $const = array_merge($const, ${$v});
+            $const[] = ${$v};
         }
 
-        Config::define($const);
+        foreach ($const as $array) {
+            array_map(function ($key, $value) {
+                if ($value instanceof stdClass) {
+                    $value = (array) $value;
+                    $value = self::$config[current($value)] . next($value);
+                } elseif (is_array($value) && (array_values($value) !== $value)) {
+                    $value = current($value);
+                }
+                self::$config[$key] =  $value;
+            }, array_keys($array), $array);
+        }
     }
 
     public static function load()
@@ -76,7 +88,7 @@ class App
         /**
          * Chargement des autoloaders
          */
-        require_once ROOT . '/vendor/autoload.php';
+        require_once self::$config['ROOT'] . '/vendor/autoload.php';
 
         session_start();
     }

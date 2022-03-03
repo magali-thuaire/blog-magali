@@ -21,9 +21,9 @@ class PostEntity
     private ?DateTime $updatedAt;
     private array $comments = [];
 
-    private const ERROR_TITLE = POST_ERROR_TITLE;
-    private const ERROR_HEADER = POST_ERROR_HEADER;
-    private const ERROR_CONTENT = POST_ERROR_CONTENT;
+    private const ERROR_TITLE = 'Veuillez renseigner un titre valide';
+    private const ERROR_HEADER = 'Veuillez renseigner un chapô valide';
+    private const ERROR_CONTENT = 'Veuillez renseigner un contenu valide';
 
     public function getId(): ?int
     {
@@ -46,7 +46,7 @@ class PostEntity
      */
     public function setTitle(string $title): self
     {
-        
+
         if (!empty($title)) {
             $this->title = $title;
         } else {
@@ -71,7 +71,7 @@ class PostEntity
         } else {
             throw new Exception(self::ERROR_HEADER);
         }
-        
+
         return $this;
     }
 

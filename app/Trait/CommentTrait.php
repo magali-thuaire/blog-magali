@@ -2,6 +2,7 @@
 
 namespace App\Trait;
 
+use App\App;
 use App\Entity\CommentEntity;
 use App\Entity\PostEntity;
 use Exception;
@@ -32,7 +33,7 @@ trait CommentTrait
     {
 
         if (!$data) {
-            throw new Exception(COMMENT_ERROR);
+            throw new Exception(App::$config['COMMENT_ERROR']);
         }
 
         // Création de l'article

@@ -11,11 +11,11 @@
                     <h1 class="display-6 fw-bolder text-white mb-2">Développeuse Web PHP/Symfony </h1>
                     <p class="lead fw-normal text-white-50 mb-4">En formation...</p>
                     <div class="d-grid gap-3 d-sm-flex">
-                        <a class="btn btn-outline-light btn-hover-primary-color btn-lg px-4 me-sm-3" href="{{ constant('FILES') ~ '/cv_magali_thuaire.pdf' }}" download>
+                        <a class="btn btn-outline-light btn-hover-primary-color btn-lg px-4 me-sm-3" href="{{ config['R_FILES'] ~ '/cv_magali_thuaire.pdf' }}" download>
                             <i class="fas fa-file-download icon"></i>
                             Mon CV
                         </a>
-                        <a class="btn btn-outline-primary-color btn-hover-primary-color btn-lg px-4" href="{{ constant('R_CONTACT') }}">
+                        <a class="btn btn-outline-primary-color btn-hover-primary-color btn-lg px-4" href="{{ config['R_CONTACT'] }}">
                             <i class="fas fa-paper-plane icon"></i>
                             Me contacter
                         </a>
@@ -66,7 +66,7 @@
                 </div>
             </div>
             <div class="col-lg-6 mt-lg-1">
-                <form id="contactForm" data-href="{{ constant('F_CONTACT') }}" method="POST">
+                <form id="contactForm" data-href="{{ config['F_CONTACT'] }}" method="POST">
                     <div class="alert d-flex align-items-center js-form-message d-none" role="alert"></div>
                     <div class="row">
                         <div class="col-lg-12">

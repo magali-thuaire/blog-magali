@@ -2,15 +2,19 @@
 
 namespace App\Controller\Admin;
 
+use App\App;
 use App\Controller\AppController;
 use Exception;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class AdminCommentController extends AppController
 {
     /**
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
      */
     public function index()
     {
@@ -24,9 +28,9 @@ class AdminCommentController extends AppController
     }
 
     /**
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\LoaderError
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      * @throws Exception
      */
     public function confirmApprove(int $id)
@@ -34,8 +38,8 @@ class AdminCommentController extends AppController
         $comment = $this->commentManager->findOneUnapprovedByIdIfIsGranted($id, $this->getUser());
         $form = $this->initForm('comment-approve');
 
-        $form->action = R_ADMIN_COMMENT_APPROVE . $comment->getId();
-        $form->message = ADMIN_COMMENT_APPROVED_MODAL_MESSAGE;
+        $form->action = App::$config['R_ADMIN_COMMENT_APPROVE'] . $comment->getId();
+        $form->message = App::$config['ADMIN_COMMENT_APPROVED_MODAL_MESSAGE'];
 
         return $this->render('admin/comment/_modal.twig', [
             'comment' => $comment,
@@ -60,20 +64,20 @@ class AdminCommentController extends AppController
             $isApproved = $this->commentManager->approve($comment);
 
             if ($isApproved) {
-                $form->setSuccess(ADMIN_COMMENT_APPROVED_SUCCESS_MESSAGE);
+                $form->setSuccess(App::$config['ADMIN_COMMENT_APPROVED_SUCCESS_MESSAGE']);
             } else {
-                $form->setError(ADMIN_COMMENT_APPROVED_ERROR_MESSAGE);
+                $form->setError(App::$config['ADMIN_COMMENT_APPROVED_ERROR_MESSAGE']);
             }
         }
 
         $this->addMessage($form);
-        header('Location: ' . R_ADMIN_COMMENT);
+        header('Location: ' . App::$config['R_ADMIN_COMMENT']);
     }
 
     /**
-     * @throws \Twig\Error\SyntaxError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\LoaderError
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
      * @throws Exception
      */
     public function confirmDelete(int $id)
@@ -87,8 +91,8 @@ class AdminCommentController extends AppController
             $form->setError($e->getMessage());
         }
 
-        $form->action = R_ADMIN_COMMENT_DELETE . $comment->getId();
-        $form->message = ADMIN_COMMENT_DELETED_MODAL_MESSAGE;
+        $form->action = App::$config['R_ADMIN_COMMENT_DELETE'] . $comment->getId();
+        $form->message = App::$config['ADMIN_COMMENT_DELETED_MODAL_MESSAGE'];
 
         return $this->render('admin/comment/_modal.twig', [
             'comment' => $comment,
@@ -113,13 +117,13 @@ class AdminCommentController extends AppController
             $isDeleted = $this->commentManager->delete($comment, $this->getUser());
 
             if ($isDeleted) {
-                $form->setSuccess(ADMIN_COMMENT_DELETED_SUCCESS_MESSAGE);
+                $form->setSuccess(App::$config['ADMIN_COMMENT_DELETED_SUCCESS_MESSAGE']);
             } else {
-                $form->setError(ADMIN_COMMENT_DELETED_ERROR_MESSAGE);
+                $form->setError(App::$config['ADMIN_COMMENT_DELETED_ERROR_MESSAGE']);
             }
         }
 
         $this->addMessage($form);
-        header('Location: ' . R_ADMIN_COMMENT);
+        header('Location: ' . App::$config['R_ADMIN_COMMENT']);
     }
 }

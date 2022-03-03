@@ -38,11 +38,11 @@ class TwigRenderer
         echo $this->twig->render($view, $variables);
     }
 
-    private function truncateFilter()
+    private function truncateFilter(): TwigFilter
     {
         return new TwigFilter('truncate', function ($string, $length = 20, $append = ' ...') {
 
-            if(strlen($string) > $length) {
+            if (strlen($string) > $length) {
                 return substr($string, 0, $length) . $append;
             } else {
                 return $string;
