@@ -36,6 +36,17 @@ class Security extends CoreSecurity
         return true;
     }
 
+    public static function isSuperAdmin(): bool
+    {
+        $user = self::getUser();
+
+        if ($user->getRole() !== UserEntity::ROLE_SUPERADMIN) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      */
     public static function getUser()

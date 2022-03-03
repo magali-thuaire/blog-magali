@@ -17,6 +17,44 @@ trait UserTrait
     }
 
     /**
+     * Retourne un tableau de User
+     * @throws Exception
+     */
+    private function createUsers($usersData): ?array
+    {
+        $users = [];
+        if ($usersData) {
+            foreach ($usersData as $userData) {
+                $users[] = $this->createUser($userData);
+            }
+        }
+        return $users;
+    }
+
+    /**
+     * Retourne un objet User
+     */
+    private function createUser($data): UserEntity
+    {
+        // Création de l'utilisateur
+        $userData = [
+            'id'                => $data->id,
+            'username'          => $data->username,
+            'email'             => $data->email,
+            'role'              => $data->role,
+            'userConfirmed'     => $data->userConfirmed,
+            'adminValidated'    => $data->adminValidated,
+            'createdAt'         => $data->createdAt,
+        ];
+
+
+        $user = new UserEntity();
+        $user->hydrate($userData);
+
+        return $user;
+    }
+
+    /**
      * Création de l'utilisateur en session
      * @param UserEntity $user
      */

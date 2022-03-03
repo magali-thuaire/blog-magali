@@ -22,7 +22,7 @@ class UserManager extends EntityManager
         if (!($this->isUserExists($userData))) {
             throw new Exception(INVALID_CREDENTIALS);
         }
-        $user = $this->findUserByEmail($userData->getEmail());
+        $user = $this->findOneByEmail($userData->getEmail());
 
         if ($this->canLogin($user, $userData->plainPassword)) {
             $this->createUserSession($user);
@@ -99,7 +99,7 @@ class UserManager extends EntityManager
     public function resetPassword(UserEntity $userData, string $token): void
     {
         if ($this->canResetPassword($userData)) {
-            $user = $this->findUserByEmail($userData->getEmail());
+            $user = $this->findOneByEmail($userData->getEmail());
 
             if ($this->isTokenValid($user, $token)) {
                 // Modification du mot de passe
@@ -133,12 +133,45 @@ class UserManager extends EntityManager
     //--------------------------------------------------------------
 
     /**
+     * Retourne tous les utilisateurs
+     *
+     */
+    public function findAll(): ?array
+    {
+        $statement = $this->getAll()->getQuery();
+        $usersData = $this->query($statement);
+
+        return $this->createUsers($usersData);
+    }
+
+    /**
+     * Retourne un unique utilisateur en fonction de son id
+     * @throws Exception
+     */
+    public function findOneById(int $id, UserEntity $user): ?UserEntity
+    {
+
+        if ($user->getRole() === UserEntity::ROLE_SUPERADMIN) {
+            $statement = $this->getOneById()->getQuery();
+            $userData = $this->prepare($statement, [':id' => $id], true, false);
+        } else {
+            throw new Exception(ADMIN_USER_ERROR_MESSAGE);
+        }
+
+        if ($userData) {
+            return $this->createUser($userData);
+        } else {
+            return throw new Exception(ADMIN_USER_NOT_EXISTS);
+        }
+    }
+
+    /**
      * Retourne un unique utilisateur en fonction de son email
      * @throws Exception
      */
-    public function findUserByEmail(string $email): ?UserEntity
+    public function findOneByEmail(string $email): ?UserEntity
     {
-        $statement = $this->getUserByEmail()->getQuery();
+        $statement = $this->getOneByEmail()->getQuery();
         $user = $this->prepare($statement, [':email' => $email], true, true);
 
         if ($user) {
@@ -156,7 +189,7 @@ class UserManager extends EntityManager
      */
     private function isUserExists(UserEntity $user): bool
     {
-        $statement = $this->getUserByEmail()->getQuery();
+        $statement = $this->getOneByEmail()->getQuery();
         $user = $this->execute($statement, [':email' => $user->getEmail()]);
 
         if ($user) {
@@ -178,7 +211,7 @@ class UserManager extends EntityManager
             ->setRole(null)
         ;
 
-        $statement = $this->createUser()->getQuery();
+        $statement = $this->createUserQuery()->getQuery();
         $attributs = [
             ':username'         => $user->getUsername(),
             ':email'            => $user->getEmail(),
@@ -238,15 +271,83 @@ class UserManager extends EntityManager
         }
     }
 
+    /**
+     * Valider un utilisateur
+     * @param UserEntity $user
+     *
+     * @return bool
+     */
+    public function validate(int $id, UserEntity $user): bool
+    {
+
+        if ($user->getRole() === UserEntity::ROLE_SUPERADMIN) {
+            $qb = $this->createQueryBuilder()
+                       ->update('user', 'u')
+                       ->set('u.admin_validated = TRUE', 'u.role = :role')
+                       ->where('u.id = :id')
+            ;
+            $attributs = [
+                ':id' => $id,
+                ':role' => UserEntity::ROLE_ADMIN
+            ];
+            $statement = $qb->getQuery();
+            return $this->execute($statement, $attributs);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Supprimer un utilisateur
+     */
+    public function delete(UserEntity $user, UserEntity $admin): bool
+    {
+        if ($admin->getRole() === UserEntity::ROLE_SUPERADMIN) {
+            $statement = $this->createQueryBuilder()
+                              ->delete('user', 'u', 'u')
+                              ->where('u.id = :id')
+                              ->getQuery()
+            ;
+            return $this->execute($statement, [':id' => $user->getId()]);
+        } else {
+            return false;
+        }
+    }
+
     //--------------------------------------------------------------
     //------- Query Builder
     //--------------------------------------------------------------
 
     /**
-     * Retourne le QB d'un utilisateur identifié par son email
+     * Retourne le QB de tous les utilisateurs
      * @return QueryBuilder
      */
-    private function getUserByEmail(): QueryBuilder
+    private function getAll(): QueryBuilder
+    {
+        return $this->createQueryBuilder()
+                    ->select('u.id', 'u.username', 'u.email', 'u.role')
+                    ->addSelect('u.user_confirmed as userConfirmed', 'u.admin_validated as adminValidated')
+                    ->addSelect('u.created_at as createdAt')
+                    ->from('user', 'u')
+        ;
+    }
+
+    /**
+     * Retourne le QB d'un utilisateur unique identifié par son id
+     * @return QueryBuilder
+     */
+    private function getOneById(): QueryBuilder
+    {
+        return $this->getAll()
+                    ->andWhere('u.id = :id')
+        ;
+    }
+
+    /**
+     * Retourne le QB d'un utilisateur unique identifié par son email
+     * @return QueryBuilder
+     */
+    private function getOneByEmail(): QueryBuilder
     {
         return $this->createQueryBuilder()
                     ->select('u.id', 'u.username', 'u.email', 'u.password', 'u.role')
@@ -261,7 +362,7 @@ class UserManager extends EntityManager
      * Retourne le QB permettant de créer un utilisateur en base de données
      * @return QueryBuilder
      */
-    private function createUser(): QueryBuilder
+    private function createUserQuery(): QueryBuilder
     {
         return $this->createQueryBuilder()
                 ->insert('user')

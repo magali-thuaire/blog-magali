@@ -1,13 +1,13 @@
-<div class="modal fade" id="approve_comment" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_user" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-md" role="document">
         <div class="modal-content">
-            <form action="{{ constant('R_ADMIN_COMMENT_APPROVE') ~ comment.id }}" method="POST" class="d-inline-block" >
+            <form action="{{ form.action }}" method="POST" class="d-inline-block" >
                 <div class="modal-header text-uppercase font-weight-bold">
-                    {{ comment.author }} - {{ comment.createdAt | date('d/m/Y') }} : {{ comment.post.title }}
+                    Utilisateur créé le {{ user.createdAt | date('d/m/Y') }}
                 </div>
                 <div class="modal-body text-center text-warning fw-bold p-4">
-                    <p class="text-muted">{{ comment.content }}</p>
-                    Etes-vous certain(e) de vouloir approuver ce commentaire  ?
+                    <p class="text-muted"><span class="text-capitalize">{{ user.username }}</span> - {{ user.email }}</p>
+                    {{ form.message }}
                     <input type="hidden" name="csrfToken" value="{{ form.csrfToken }}">
                 </div>
                 <div class="modal-footer">

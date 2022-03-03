@@ -13,12 +13,12 @@ $(document).ready(function () {
 
     let url = new URL(window.location.href);
     let $navLinks = $('#adminSidebar').find('.nav-link');
-    console.log($navLinks);
     let excludedPages =  [
         'p=dashboard',
         'p=post-update',
         'p=post-new',
         'p=comment',
+        'p=user',
     ];
     excludedPages.forEach((element) => {
         $navLinks.attr('href', function (k,v) {

@@ -66,13 +66,21 @@ class PostManager extends EntityManager
      */
     public function findOneByIdIfIsGranted(int $id, UserEntity $user): ?PostEntity
     {
-        $qb = $this->getOneByIdWithComments()->andWhere('p.author = :author');
-        $statement = $qb->getQuery();
+        $qb = $this->getOneByIdWithComments();
+
         $attributs = [
             ':id' => $id,
-            ':author' => $user->getId()
         ];
+
+
+        if ($user->getRole() !== UserEntity::ROLE_SUPERADMIN) {
+            $qb->andWhere('p.author = :author');
+            $attributs = array_merge($attributs, [':author' => $user->getId()]);
+        }
+
+        $statement = $qb->getQuery();
         $postData = $this->prepare($statement, $attributs);
+
         if (!$postData) {
             throw new Exception(ADMIN_POST_UPDATE_ERROR_MESSAGE);
         }
@@ -82,10 +90,18 @@ class PostManager extends EntityManager
     /**
      * Retourne tous les articles d'un auteur, ordonné du plus récent au plus ancien
      */
-    public function findAllByAuthorOrderedByNewest(UserEntity $user): ?array
+    public function findAllOrderedByNewest(UserEntity $user): ?array
     {
-        $statement = $this->getAllByAuthorOrderedByNewest()->getQuery();
-        $postsData = $this->prepare($statement, [':id' => $user->getId()]);
+        $qb = $this->getAllOrderedByNewest();
+
+        $attributs = [];
+        if ($user->getRole() !== UserEntity::ROLE_SUPERADMIN) {
+            $qb->andWhere('a.id = :id');
+            $attributs = array_merge($attributs, [':id' => $user->getId()]);
+        }
+
+        $statement = $qb->getQuery();
+        $postsData = $this->prepare($statement, $attributs);
 
         return $this->createPostsWithAuthor($postsData);
     }
@@ -275,13 +291,12 @@ class PostManager extends EntityManager
     /**
      * Retourne le QB d'un unique article identifié à partir de son id
      */
-    private function getAllByAuthorOrderedByNewest(): QueryBuilder
+    private function getAllOrderedByNewest(): QueryBuilder
     {
         return $this->getAll()
             ->addCount('c.approved', 'comments', 'p.id')
             ->addSelect('sum(c.approved) as commentsApproved')
             ->leftJoin('comment', 'c', 'c.post = p.id')
-            ->andWhere('a.id = :id')
         ;
     }
 }

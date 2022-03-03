@@ -34,7 +34,10 @@ class AdminCommentController extends AppController
         $comment = $this->commentManager->findOneUnapprovedByIdIfIsGranted($id, $this->getUser());
         $form = $this->initForm('comment-approve');
 
-        return $this->render('admin/comment/_modal.approve.twig', [
+        $form->action = R_ADMIN_COMMENT_APPROVE . $comment->getId();
+        $form->message = ADMIN_COMMENT_APPROVED_MODAL_MESSAGE;
+
+        return $this->render('admin/comment/_modal.twig', [
             'comment' => $comment,
             'form'    => $form
         ]);
@@ -84,7 +87,10 @@ class AdminCommentController extends AppController
             $form->setError($e->getMessage());
         }
 
-        return $this->render('admin/comment/_modal.delete.twig', [
+        $form->action = R_ADMIN_COMMENT_DELETE . $comment->getId();
+        $form->message = ADMIN_COMMENT_DELETED_MODAL_MESSAGE;
+
+        return $this->render('admin/comment/_modal.twig', [
             'comment' => $comment,
             'form' => $form
         ]);

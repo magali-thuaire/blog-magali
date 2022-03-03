@@ -37,4 +37,8 @@
 .btn-success {
   background-color: $color-success;
   border-color: $color-success;
+  &:hover {
+    background-color: $color-success;
+    border-color: $color-success;
+  }
 }

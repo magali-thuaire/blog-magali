@@ -28,13 +28,13 @@
                         <td>{{ comment.content|truncate(30, ' ...') }}</td>
                         <td>
                             <a href="{{ constant('R_ADMIN_POST_SHOW') ~ comment.post.id }}" class="btn btn-sm btn-show" data-bs-toggle="tooltip" data-placement="top" title="Voir">
-                                <i class="table-post__icon fas fa-eye"></i>
+                                <i class="table__icon fas fa-eye"></i>
                             </a>
                             <a data-href="{{ constant('R_ADMIN_COMMENT_CONFIRM_APPROVE') ~ comment.id }}" class="btn btn-sm btn-success js-comment-approve" data-bs-toggle="tooltip" data-placement="top" title="Approuver">
-                                <i class="table-post__icon fas fa-check"></i>
+                                <i class="table__icon fas fa-check"></i>
                             </a>
                             <a data-href="{{ constant('R_ADMIN_COMMENT_CONFIRM_DELETE') ~ comment.id }}" class="btn btn-sm btn-delete js-comment-delete" data-bs-toggle="tooltip" data-placement="top" title="Supprimer">
-                                <i class="table-post__icon fas fa-trash"></i>
+                                <i class="table__icon fas fa-trash"></i>
                             </a>
                         </td>
                     </tr>
