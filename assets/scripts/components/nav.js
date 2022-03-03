@@ -16,6 +16,7 @@ $(document).ready(function () {
         'p=dashboard',
         'p=post-update',
         'p=post-new',
+        'admin',
     ];
 
     // Find all anchors
