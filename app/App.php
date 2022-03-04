@@ -31,7 +31,7 @@ class App
     {
         $db_config = Config::getInstance(self::$config['CONFIG_DB']);
 
-        if (is_null($this->db_instance)) {
+        if ($this->db_instance === null) {
             $this->db_instance = new MysqlDatabase(
                 $db_config->get('db_name'),
                 $db_config->get('db_host'),
@@ -51,13 +51,13 @@ class App
 
     public function getRenderer(): TwigRenderer
     {
-        if (is_null($this->renderer)) {
+        if ($this->renderer === null) {
             $this->renderer = new TwigRenderer(self::$config['VIEWS']);
         }
         return $this->renderer;
     }
 
-    private static function getConfig()
+    private function setConfig()
     {
         require_once '../_config/_define.php';
         $const = [];
@@ -81,9 +81,9 @@ class App
     public static function load()
     {
         /**
-         * Chargement des contantes
+         * Chargement des fichiers de configuration
          */
-        App::getConfig();
+        App::getInstance()->setConfig();
 
         /**
          * Chargement des autoloaders

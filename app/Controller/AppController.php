@@ -8,8 +8,9 @@ use App\Security\Security;
 use Core\Manager\EntityManager;
 use Core\Model\FormModel;
 use Core\Security\CsrfToken;
+use Core\Service\Post;
+use Core\Service\Session;
 use Exception;
-use JetBrains\PhpStorm\Pure;
 use stdClass;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -49,7 +50,7 @@ class AppController
     protected function initForm(string $tokenKey, bool $tokenInitialize = true, array $messages = []): FormModel
     {
         if ($tokenInitialize) {
-            $_SESSION[$tokenKey] = uniqid(rand(), true);
+            Session::put($tokenKey, uniqid(rand(), true));
         }
         return new FormModel($tokenKey, $messages);
     }
@@ -65,7 +66,7 @@ class AppController
     protected function createForm(string $tokenKey): FormModel
     {
         // Nettoyage des données postées
-        $formData = Security::checkInputs($_POST);
+        $formData = Security::checkInputs(Post::getAll());
 
         // Récupération du token
         $token = new CsrfToken($tokenKey, $formData['csrfToken']);
@@ -100,28 +101,28 @@ class AppController
 
     /**
      */
-    #[Pure] protected function getUser()
+    protected function getUser()
     {
         return Security::getUser();
     }
 
     protected function addMessage(FormModel $form): void
     {
-        $_SESSION['success'] = $form->getSuccess();
-        $_SESSION['error'] = $form->getError();
+        Session::put('success', $form->getSuccess());
+        Session::put('error', $form->getError());
     }
 
     protected function getMessage(): stdClass
     {
         $app = new stdClass();
 
-        if (isset($_SESSION['success'])) {
-            $app->success = $_SESSION['success'];
-            unset($_SESSION['success']);
+        if (Session::get('success')) {
+            $app->success = Session::get('success');
+            Session::unset('success');
         }
-        if (isset($_SESSION['error'])) {
-            $app->error = $_SESSION['error'];
-            unset($_SESSION['error']);
+        if (Session::get('error')) {
+            $app->error = Session::get('error');
+            Session::unset('error');
         }
 
         return $app;

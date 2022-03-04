@@ -10,7 +10,7 @@ export default function (target, init = false, callback = []) {
             if (callback) {
                 callback.forEach((callbackElement) => {
                     callbackElement();
-                })
+                });
             }
         });
     }

@@ -1,17 +1,20 @@
-.form-control:focus, .form-check-input {
+.form-control:focus,
+.form-check-input {
   border-color: $primary-color;
   box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25);
 }
 
-.btn-check:focus + .btn, .btn:focus {
+.btn:focus,
+.btn-check:focus + .btn {
   box-shadow: 0 0 0 0.25rem rgba($primary-color, 0.25);
 }
 
 .form-floating {
   label {
-    color: rgba(0,0,0,0.5);
+    color: rgba(0, 0, 0, 0.5);
   }
 }
+
 .form-check-input:checked {
   background-color: $primary-color;
   border-color: $primary-color;

@@ -1,5 +1,6 @@
 import $ from "jquery";
 import alert from "./alert";
+import buttonEnabled from "./button_enabled";
 
 export default function (target, callbackForm = []) {
     //Formulaire de contact : transmission des données
@@ -10,15 +11,10 @@ export default function (target, callbackForm = []) {
         let formData = $(target).serialize();
         let messageTarget = '.js-form-message';
         let button = 'button[type=submit]';
-        let alertCallback = [buttonEnabled];
+        let alertCallback = [buttonEnabled(button)];
 
         if (callbackForm.length !== 0) {
             alertCallback = alertCallback.concat(callbackForm);
-        }
-
-        function buttonEnabled()
-        {
-            $(button).removeAttr('disabled');
         }
 
         $.ajax({

@@ -9,5 +9,5 @@ export default function (modal) {
             // Modale remise à 0
             $('#' + modal).empty();
         }, 0.5 * 1000);
-    })
+    });
 }

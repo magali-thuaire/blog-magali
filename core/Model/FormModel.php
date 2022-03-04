@@ -3,6 +3,7 @@
 namespace Core\Model;
 
 use Core\Security\CsrfToken;
+use Core\Service\Session;
 use Core\Trait\HydrateTrait;
 use Exception;
 use JetBrains\PhpStorm\Pure;
@@ -20,7 +21,7 @@ class FormModel
      */
     public function __construct(string $keyToken = null, array $messages = [])
     {
-        $csrfToken = new CsrfToken($keyToken, $_SESSION[$keyToken]);
+        $csrfToken = new CsrfToken($keyToken, Session::get($keyToken));
         $this->setCsrfToken($csrfToken);
 
         if (!empty($messages)) {

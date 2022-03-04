@@ -5,6 +5,7 @@ namespace App\Security;
 use App\App;
 use App\Entity\UserEntity;
 use Core\Security\Security as CoreSecurity;
+use Core\Service\Session;
 use JetBrains\PhpStorm\Pure;
 
 class Security extends CoreSecurity
@@ -50,11 +51,11 @@ class Security extends CoreSecurity
 
     /**
      */
-    public static function getUser()
+    #[Pure] public static function getUser()
     {
         // Récupération de l'utilisateur
-        if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
-            return $_SESSION['user'];
+        if (!empty(Session::get('user'))) {
+            return Session::get('user');
         }
     }
 }

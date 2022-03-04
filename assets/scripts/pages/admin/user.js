@@ -51,4 +51,4 @@ $(document).ready(function () {
         // Appel AJAX et intégration d'une modale
         ajaxModal(target, 'user-modal');
     });
-})
+});
