@@ -1,52 +1,52 @@
 @import '~datatables.net-bs5/css/dataTables.bootstrap5.css';
 
 table {
+  color: $light;
+  th, td {
     color: $light;
-    th, td {
-        color: $light;
-        font-size: 14px;
-        vertical-align: middle !important;
-    }
+    font-size: 14px;
+    vertical-align: middle !important;
+  }
 }
 
 /* PAGINATION */
 
 .page-link {
-    background-color: $primary-color;
-    border: 1px solid $primary-color;
-    border-radius: 0 !important;
-    &:hover {
-        border-color: $primary-color;
-    }
+  background-color: $primary-color;
+  border: 1px solid $primary-color;
+  border-radius: 0 !important;
+  &:hover {
+    border-color: $primary-color;
+  }
 }
 
 .page-item {
-    &.active .page-link {
-        background-color: $primary-color;
-        border-color: $primary-color;
-    }
+  &.active .page-link {
+    background-color: $primary-color;
+    border-color: $primary-color;
+  }
 }
 
 .dataTables_length, .dataTables_filter, .dataTables_info, .dataTables_paginate {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .dataTables_length, .dataTables_filter {
-    margin-bottom: 1rem !important;
+  margin-bottom: 1rem !important;
 }
 
 .dataTables_info, .dataTables_paginate {
-    margin-top: 1rem !important;
+  margin-top: 1rem !important;
 }
 
 .dataTables_length, .dataTables_filter, .dataTables_info {
-    color: $light;
+  color: $light;
 }
 
 .dataTables_length, .dataTables_filter {
-    margin-bottom: 1rem !important;
+  margin-bottom: 1rem !important;
 }
 
 .dataTables_info, .dataTables_paginate {
-    margin-top: 1rem !important;
+  margin-top: 1rem !important;
 }

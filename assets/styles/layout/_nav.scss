@@ -1,39 +1,39 @@
 .nav {
-    &-link {
-        color: white !important;
-        text-transform: uppercase;
-        &.active {
-            color: $primary-color !important;
-        }
-        &:hover{
-            color: $primary-color !important;
-            transition: color 800ms;
-        }
+  &-link {
+    color: white !important;
+    text-transform: uppercase;
+    &.active {
+      color: $primary-color !important;
     }
+    &:hover{
+      color: $primary-color !important;
+      transition: color 800ms;
+    }
+  }
 }
 
 .dropdown {
-    &-menu {
-        background-color: rgba(0, 0, 0, 0.7);
-        padding: 1rem;
+  &-menu {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 1rem;
+  }
+  &-item {
+    &:hover {
+      color:  white !important;
+      background-color: $primary-color;
     }
-    &-item {
-        &:hover {
-            color:  white !important;
-            background-color: $primary-color;
-        }
-        &.active {
-            color:  white !important;
-            background-color: $primary-color;
-        }
+    &.active {
+      color:  white !important;
+      background-color: $primary-color;
     }
-    &-toggle {
-        &.active {
-            color: $primary-color !important;
-        }
-        &::after {
-            color: white;
+  }
+  &-toggle {
+    &.active {
+      color: $primary-color !important;
+    }
+    &::after {
+      color: white;
 
-        }
     }
+  }
 }
