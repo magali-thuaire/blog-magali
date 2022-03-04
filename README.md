@@ -1,5 +1,7 @@
 # Blog de Magali
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/67de0722010842aebd6485c07e524cff)](https://app.codacy.com/gh/magali-thuaire/blog-magali?utm_source=github.com&utm_medium=referral&utm_content=magali-thuaire/blog-magali&utm_campaign=Badge_Grade_Settings)
+
 ## Setup
 
 **Get the git Repository**
