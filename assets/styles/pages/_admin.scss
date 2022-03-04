@@ -128,20 +128,29 @@
     background: $color-danger;
     border-radius: 50%;
     box-shadow: 0 0.1rem 0.2rem rgb(0 0 0 / 5%);
-    color: #fff;
-    display: block;
+    color: white;
+    display: inline-block;
     font-size: 0.675rem;
     height: 18px;
     padding: 1px;
-    position: absolute;
-    right: -20px;
-    text-align: center;
-    top: -5px;
     transition: top 0.1s ease-out;
     width: 18px;
+    text-align: center;
 
     &-container {
       position: relative;
+      font-style: italic;
+      font-size: 14px;
+
+      p {
+        color: $color-danger;
+      }
+    }
+
+    &-badge {
+      position: absolute;
+      right: -20px;
+      top: -5px;
     }
   }
 
