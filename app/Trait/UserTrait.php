@@ -5,6 +5,7 @@ namespace App\Trait;
 use App\App;
 use App\Entity\UserEntity;
 use App\Security\Security;
+use Core\Service\Session;
 use Exception;
 
 trait UserTrait
@@ -14,7 +15,7 @@ trait UserTrait
      */
     public function logout(): void
     {
-        unset($_SESSION['user']);
+        Session::unset('user');
     }
 
     /**
@@ -61,7 +62,7 @@ trait UserTrait
      */
     private function createUserSession(UserEntity $user): void
     {
-        $_SESSION['user'] = $user;
+        Session::put('user', $user);
     }
 
     /**

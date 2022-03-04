@@ -1,6 +1,6 @@
 import $ from "jquery";
 
-import empty_modal from "./empty_modal";
+import emptyModal from "./empty_modal";
 
 // Appel AJAX et intégration d'une modale
 export default function (target, modal) {
@@ -14,10 +14,10 @@ export default function (target, modal) {
         // Injecte le html dans la modale
         $('#' + modal).html(data);
         // Récupère l'id de la modale
-        let modal_id = $('.modal').attr('id');
+        let modalId = $('.modal').attr('id');
         // Ouvre la modale
-        let postModal = new bootstrap.Modal($('#' + modal_id));
-        postModal.show();
-        empty_modal(modal);
-    })
+        let targetModal = new bootstrap.Modal($('#' + modalId));
+        targetModal.show();
+        emptyModal(modal);
+    });
 }

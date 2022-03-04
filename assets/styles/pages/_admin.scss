@@ -1,7 +1,8 @@
 #adminSidebarCollapse {
   &:focus {
-    box-shadow: none ;
+    box-shadow: none;
   }
+
   .burger-menu {
     color: $grey;
     font-size: 25px;
@@ -23,6 +24,7 @@
   left: 0;
   box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.4s;
+
   &.active {
     margin-left: -17rem;
   }
@@ -32,6 +34,7 @@
   width: calc(100% - 17rem);
   margin-left: 17rem;
   transition: all 0.4s;
+
   &.active {
     width: 100%;
     margin: 0;
@@ -41,13 +44,16 @@
 @media (max-width: 980px) {
   #adminSidebar {
     margin-left: -17rem;
+
     &.active {
       margin-left: 0;
     }
   }
+
   #adminContent {
     width: 100%;
     margin: 0;
+
     &.active {
       margin-left: 17rem;
       width: calc(100% - 17rem);
@@ -57,13 +63,16 @@
 
 #adminNavbar {
   box-shadow: 0 0 2rem 0 rgb(41 48 66 / 10%);
+
   .nav {
     &-link {
       color: $light !important;
+
       &.active {
         color: $primary-color !important;
       }
-      &:hover{
+
+      &:hover {
         color: $primary-color !important;
         transition: color 800ms;
       }
@@ -74,16 +83,17 @@
     &-menu {
       background-color: rgba(255, 255, 255, 0.5);
     }
+
     &-item {
       &:hover {
-        color:  white !important;
+        color: white !important;
         background-color: $primary-color;
       }
     }
+
     &-toggle {
       &::after {
         color: $grey;
-
       }
     }
   }
@@ -98,6 +108,7 @@
 
   &__item {
     font-size: 0.9rem;
+
     &-icon {
       margin-right: 10px;
     }
@@ -110,7 +121,7 @@
   }
 
   .card {
-    box-shadow: 2px 3px 9px 4px rgba(0,0,0,0.04);
+    box-shadow: 2px 3px 9px 4px rgba(0, 0, 0, 0.04);
   }
 
   .indicator {
@@ -119,15 +130,16 @@
     box-shadow: 0 0.1rem 0.2rem rgb(0 0 0 / 5%);
     color: #fff;
     display: block;
-    font-size: .675rem;
+    font-size: 0.675rem;
     height: 18px;
     padding: 1px;
     position: absolute;
     right: -20px;
     text-align: center;
     top: -5px;
-    transition: top .1s ease-out;
+    transition: top 0.1s ease-out;
     width: 18px;
+
     &-container {
       position: relative;
     }
@@ -140,16 +152,19 @@
   .btn-show {
     background-color: $primary-color;
     border-color: $primary-color;
+
     &.btn-grey {
       opacity: 0.75 !important;
       background-color: $light;
       border-color: $light;
     }
   }
+
   .btn-delete {
     background-color: $color-danger;
     border-color: $color-danger;
   }
+
   .btn-update {
     background-color: $color-warning;
     border-color: $color-warning;

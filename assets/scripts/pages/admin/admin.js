@@ -4,7 +4,7 @@ $(document).ready(function () {
 
     $(".js-alert").fadeTo(4000, 0, function () {
         $(".js-alert").addClass('d-none');
-    })
+    });
 
     // Sidebar toggle behavior
     $('#adminSidebarCollapse').on('click', function () {
@@ -29,6 +29,6 @@ $(document).ready(function () {
                 let test = $('.nav-link[href*="p=dashboard"]');
                 test.addClass('active');
             }
-        })
-    })
-})
+        });
+    });
+});

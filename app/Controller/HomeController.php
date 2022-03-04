@@ -59,6 +59,6 @@ class HomeController extends AppController
         }
 
         // Données du formulaire en json
-        echo json_encode(['form' => $form]);
+        return print_r(json_encode(['form' => $form]));
     }
 }

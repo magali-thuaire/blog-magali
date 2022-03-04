@@ -1,6 +1,7 @@
 .btn-hover-primary-color {
   color: white;
   text-transform: uppercase;
+
   &:hover {
     background-color: $primary-color;
     border-color: $primary-color;
@@ -16,6 +17,7 @@
   text-transform: uppercase;
   font-size: 0.9em;
   padding: 0.5em 1em;
+
   &:hover {
     background-color: white;
     color: $primary-color;
@@ -27,6 +29,7 @@
   border-color: $primary-color;
   background-color: $primary-color;
   color: white;
+
   &:hover {
     background-color: white;
     color: $primary-color;
@@ -37,6 +40,7 @@
 .btn-success {
   background-color: $color-success;
   border-color: $color-success;
+
   &:hover {
     background-color: $color-success;
     border-color: $color-success;

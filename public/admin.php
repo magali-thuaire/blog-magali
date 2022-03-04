@@ -6,6 +6,8 @@ use App\Controller\Admin\AdminPostController;
 use App\Controller\Admin\AdminUserController;
 use App\Controller\SecurityController;
 use App\Security\Security;
+use Core\Service\Get;
+use Core\Service\Post;
 
 require_once '../app/App.php';
 App::$config['ROOT'] = dirname(__DIR__);
@@ -21,8 +23,8 @@ if (!Security::getUser()) {
 }
 
 // Récupération de la page à partir de l'URL
-if (isset($_GET['p']) && !empty($_GET['p'])) {
-    $p = Security::checkInput($_GET['p']);
+if (!empty(Get::get('p'))) {
+    $p = Get::get('p');
 } else {
     $p = 'dashboard';
 }
@@ -38,8 +40,8 @@ switch (true) {
         break;
     case $p === 'post-confirm-delete':
         switch (true) {
-            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
-                $id = Security::checkInput($_GET['id']);
+            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                $id = Get::get('id');
                 $postController->confirmDelete($id);
                 break;
             default:
@@ -48,8 +50,8 @@ switch (true) {
         break;
     case $p === 'post-delete':
         switch (true) {
-            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']) && $_POST:
-                $id = Security::checkInput($_GET['id']);
+            case !empty(Get::get('id')) && is_numeric(Get::get('id')) && Post::getAll():
+                $id = Get::get('id');
                 $postController->delete($id);
                 break;
             default:
@@ -58,9 +60,9 @@ switch (true) {
         break;
     case $p === 'post-update':
         switch (true) {
-            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
-                $id = Security::checkInput($_GET['id']);
-                if ($_POST) {
+            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                $id = Get::get('id');
+                if (Post::getAll()) {
                     $postController->update($id);
                 } else {
                     $postController->change($id);
@@ -71,7 +73,7 @@ switch (true) {
         }
         break;
     case $p === 'post-new':
-        switch ($_POST) {
+        switch (Post::getAll()) {
             case true:
                 $postController->new();
                 break;
@@ -81,8 +83,8 @@ switch (true) {
         break;
     case $p === 'post':
         switch (true) {
-            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
-                $id = Security::checkInput($_GET['id']);
+            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                $id = Get::get('id');
                 $postController->show($id);
                 break;
             default:
@@ -94,8 +96,8 @@ switch (true) {
         break;
     case $p === 'comment-confirm-approve':
         switch (true) {
-            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
-                $id = Security::checkInput($_GET['id']);
+            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                $id = Get::get('id');
                 $commentController->confirmApprove($id);
                 break;
             default:
@@ -104,8 +106,8 @@ switch (true) {
         break;
     case $p === 'comment-approve':
         switch (true) {
-            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']) && $_POST:
-                $id = Security::checkInput($_GET['id']);
+            case !empty(Get::get('id')) && is_numeric(Get::get('id')) && Post::getAll():
+                $id = Get::get('id');
                 $commentController->approve($id);
                 break;
             default:
@@ -114,8 +116,8 @@ switch (true) {
         break;
     case $p === 'comment-confirm-delete':
         switch (true) {
-            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
-                $id = Security::checkInput($_GET['id']);
+            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                $id = Get::get('id');
                 $commentController->confirmDelete($id);
                 break;
             default:
@@ -124,8 +126,8 @@ switch (true) {
         break;
     case $p === 'comment-delete':
         switch (true) {
-            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
-                $id = Security::checkInput($_GET['id']);
+            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                $id = Get::get('id');
                 $commentController->delete($id);
                 break;
             default:
@@ -145,8 +147,8 @@ switch (true) {
         switch (Security::isSuperAdmin()) {
             case true:
                 switch (true) {
-                    case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
-                        $id = Security::checkInput($_GET['id']);
+                    case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                        $id = Get::get('id');
                         $userController->confirmValidate($id);
                         break;
                     default:
@@ -161,8 +163,8 @@ switch (true) {
         switch (Security::isSuperAdmin()) {
             case true:
                 switch (true) {
-                    case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
-                        $id = Security::checkInput($_GET['id']);
+                    case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                        $id = Get::get('id');
                         $userController->validate($id);
                         break;
                     default:
@@ -177,8 +179,8 @@ switch (true) {
         switch (Security::isSuperAdmin()) {
             case true:
                 switch (true) {
-                    case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
-                        $id = Security::checkInput($_GET['id']);
+                    case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                        $id = Get::get('id');
                         $userController->confirmDelete($id);
                         break;
                     default:
@@ -193,8 +195,8 @@ switch (true) {
         switch (Security::isSuperAdmin()) {
             case true:
                 switch (true) {
-                    case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
-                        $id = Security::checkInput($_GET['id']);
+                    case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                        $id = Get::get('id');
                         $userController->delete($id);
                         break;
                     default:

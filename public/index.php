@@ -4,15 +4,16 @@ use App\App;
 use App\Controller\PostController;
 use App\Controller\HomeController as HomeController;
 use App\Controller\SecurityController;
-use App\Security\Security;
+use Core\Service\Get;
+use Core\Service\Post;
 
 require_once '../app/App.php';
 App::$config['ROOT'] = dirname(__DIR__);
 App::load();
 
 // Récupération de la page à partir de l'URL
-if (isset($_GET['p']) && !empty($_GET['p'])) {
-    $p = Security::checkInput($_GET['p']);
+if (!empty(Get::get('p'))) {
+    $p = Get::get('p');
 } else {
     $p = 'homepage';
 }
@@ -24,7 +25,7 @@ switch (true) {
         $controller->index();
         break;
     // Validation du formulaire de contact
-    case $p === 'contact' && $_POST:
+    case $p === 'contact' && Post::getAll():
         $controller = new HomeController();
         $controller->newContact();
         break;
@@ -32,9 +33,9 @@ switch (true) {
         $controller = new PostController();
         switch (true) {
             // Demande de la page d'un article
-            case isset($_GET['id']) && !empty($_GET['id']) && is_numeric($_GET['id']):
-                $id = Security::checkInput($_GET['id']);
-                switch ($_POST) {
+            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                $id = Get::get('id');
+                switch (Post::getAll()) {
                     // Demande d'ajout d'un commentaire
                     case true:
                         $controller->newComment($id);
@@ -51,7 +52,7 @@ switch (true) {
         break;
     case $p === 'login':
         $controller = new SecurityController();
-        switch ($_POST) {
+        switch (Post::getAll()) {
             case true:
                 $controller->authenticate();
                 break;
@@ -61,7 +62,7 @@ switch (true) {
         break;
     case $p === 'register':
         $controller = new SecurityController();
-        switch ($_POST) {
+        switch (Post::getAll()) {
             case true:
                 $controller->register();
                 break;
@@ -76,10 +77,9 @@ switch (true) {
     case $p === 'validate':
         $controller = new SecurityController();
         switch (true) {
-            case isset($_GET['email']) && !empty($_GET['email'])
-                 && isset($_GET['token']) && !empty($_GET['token']):
-                $email = Security::checkInput($_GET['email']);
-                $token = Security::checkInput($_GET['token']);
+            case !empty(Get::get('email')) && !empty(Get::get('token')):
+                $email = Get::get('email');
+                $token = Get::get('token');
                 $controller->validate($email, $token);
                 break;
             default:
@@ -88,7 +88,7 @@ switch (true) {
         break;
     case $p === 'forgot-password':
         $controller = new SecurityController();
-        switch ($_POST) {
+        switch (Post::getAll()) {
             case true:
                 $controller->emailPassword();
                 break;
@@ -98,16 +98,15 @@ switch (true) {
         break;
     case $p === 'reset-password':
         $controller = new SecurityController();
-        switch ($_POST) {
+        switch (Post::getAll()) {
             case true:
                 $controller->resetPassword();
                 break;
             default:
                 switch (true) {
-                    case isset($_GET['email']) && !empty($_GET['email'])
-                         && isset($_GET['token']) && !empty($_GET['token']):
-                        $email = Security::checkInput($_GET['email']);
-                        $token = Security::checkInput($_GET['token']);
+                    case !empty(Get::get('email')) && !empty(Get::get('token')):
+                        $email = Get::get('email');
+                        $token = Get::get('token');
                         $controller->newPassword($email, $token);
                         break;
                     default:

@@ -40,7 +40,7 @@ $(document).ready(function () {
     });
 
     // Initialisation du scrollspy
-    if (!excludedPages.some(el => url.href.includes(el))) {
+    if (!excludedPages.some((el) => url.href.includes(el))) {
         new bootstrap.ScrollSpy(document.body, {
             target: '#navbarNav'
         });
@@ -50,14 +50,14 @@ $(document).ready(function () {
                 if (v.includes(element) && url.href.includes(element)) {
                     $(this).addClass('active');
                 }
-            })
-        })
+            });
+        });
     }
     // supprimer les ancres vides
     navLinksWithoutAnchor.forEach((element) => {
         let deleteAnchor = element.attr('href').replace('#', '');
         element.attr('href', deleteAnchor);
-    })
+    });
 
     // mettre la navbar en inactive dans l'admin
     if (url.href.includes('admin')) {

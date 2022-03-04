@@ -53,7 +53,7 @@ $(document).ready(function () {
     });
 
     $('#post-published').on('click', function () {
-        let target = this
+        let target = this;
         let isPublished = $(target).is(':checked');
 
         if (isPublished) {
@@ -63,5 +63,5 @@ $(document).ready(function () {
             $('.post-published.bg-warning').removeClass('d-none');
             $('.post-published.bg-success').addClass('d-none');
         }
-    })
-})
+    });
+});

@@ -2,6 +2,7 @@
 
 namespace Core\Renderer;
 
+use Core\Service\Session;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -20,9 +21,9 @@ class TwigRenderer
     {
         $this->viewPath = $viewPath;
 
-                $loader = new FilesystemLoader($this->viewPath);
+        $loader = new FilesystemLoader($this->viewPath);
         $this->twig = new Environment($loader, ['debug' => true]);
-        $this->twig->addGlobal('session', $_SESSION);
+        $this->twig->addGlobal('session', Session::getAll());
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addExtension(new IntlExtension());
         $this->twig->addFilter($this->truncateFilter());
@@ -33,9 +34,9 @@ class TwigRenderer
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function render($view, $variables = [])
+    public function render($view, $variables = []): bool|string
     {
-        echo $this->twig->render($view, $variables);
+        return print_r($this->twig->render($view, $variables));
     }
 
     private function truncateFilter(): TwigFilter
