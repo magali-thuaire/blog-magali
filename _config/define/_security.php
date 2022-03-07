@@ -34,4 +34,6 @@ $userConst = [
     'ADMIN_USER_DELETED_MODAL_MESSAGE'      => 'Etes-vous certain(e) de vouloir supprimer cet utilisateur ?',
     'ADMIN_USER_DELETED_SUCCESS_MESSAGE'    => 'L\'utilisateur a été supprimé avec succès',
     'ADMIN_USER_DELETED_ERROR_MESSAGE'      => 'Vous n\'avez pas les droits nécessaires pour supprimer cet utilisateur',
+    'ADMIN_USER_UPDATE_ERROR_MESSAGE'       => 'Vous n\'avez pas les droits nécessaires pour modifier cet utilisateur',
+    'ADMIN_USER_UPDATED_SUCCESS_MESSAGE'    => 'L\'utilisateur a été mis à jour avec succès',
 ];

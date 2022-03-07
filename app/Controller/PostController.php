@@ -46,6 +46,10 @@ class PostController extends AppController
 
         $form = $this->initForm('comment');
 
+        if ($this->getUser()) {
+            $form->author = $this->getUser();
+        }
+
         $this->render('post/show.twig', [
             'post' => $post,
             'form' => $form

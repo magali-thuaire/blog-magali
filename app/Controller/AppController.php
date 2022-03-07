@@ -11,6 +11,7 @@ use Core\Security\CsrfToken;
 use Core\Service\Post;
 use Core\Service\Session;
 use Exception;
+use JetBrains\PhpStorm\Pure;
 use stdClass;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -35,12 +36,16 @@ class AppController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    protected function render($view, $variables = [])
+    protected function render($view, $variables = []): bool|string
     {
-        $variables['config'] = App::$config;
-        $variables['roles_admin'] = [UserEntity::ROLE_ADMIN, UserEntity::ROLE_SUPERADMIN];
-        $variables['role_superadmin'] = UserEntity::ROLE_SUPERADMIN;
-        return App::getInstance()->getRenderer()->render($view, $variables);
+        $render_config =  [
+            'roles'             => [UserEntity::ROLE_USER, UserEntity::ROLE_ADMIN, UserEntity::ROLE_SUPERADMIN],
+            'roles_admin'       => [UserEntity::ROLE_ADMIN, UserEntity::ROLE_SUPERADMIN],
+            'role_superadmin'   => UserEntity::ROLE_SUPERADMIN,
+        ];
+        App::$render_config = array_merge(App::$render_config, $render_config);
+
+        return App::getInstance()->getRenderer()->render($view, array_merge(App::$render_config, $variables));
     }
 
     /**
@@ -101,7 +106,7 @@ class AppController
 
     /**
      */
-    protected function getUser()
+    #[Pure] protected function getUser()
     {
         return Security::getUser();
     }

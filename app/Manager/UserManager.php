@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\App;
+use App\Entity\PostEntity;
 use App\Entity\UserEntity;
 use Core\Database\QueryBuilder;
 use Core\Manager\EntityManager;
@@ -315,6 +316,44 @@ class UserManager extends EntityManager
         } else {
             return false;
         }
+    }
+
+    /**
+     * Mise à jour d'un utilisateur
+     *
+     * @param UserEntity $user
+     * @param bool       $isAdminValidated
+     *
+     * @return bool
+     */
+    public function update(UserEntity $user, bool $isAdminValidatedChange): bool
+    {
+        $qb = $this->createQueryBuilder()
+                   ->update('user', 'u')
+                   ->set('u.role = :role')
+                   ->where('u.id = :id')
+        ;
+
+        $attributs = [
+            ':id'               => $user->getId(),
+            ':role'             => $user->getRole(),
+        ];
+
+        if ($isAdminValidatedChange) {
+            $qb->addSet('u.admin_validated = :admin_validated');
+            $adminValidated = [':admin_validated'  => $user->isAdminValidated()];
+
+            if (!$user->isAdminValidated()) {
+                $qb->addSet('u.role = :role');
+                $adminValidated = array_merge($adminValidated, [':role' => UserEntity::ROLE_USER]);
+            }
+
+            $attributs = array_merge($attributs, $adminValidated);
+        }
+
+        $statement = $qb->getQuery();
+
+        return $this->execute($statement, $attributs);
     }
 
     //--------------------------------------------------------------

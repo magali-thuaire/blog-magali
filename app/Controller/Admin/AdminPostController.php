@@ -42,7 +42,7 @@ class AdminPostController extends AppController
             return App::getInstance()->notFound();
         }
 
-        $this->render('post/show.twig', [
+        $this->render('admin/post/show.twig', [
             'post' => $post,
             'admin' => true
         ]);
@@ -136,7 +136,7 @@ class AdminPostController extends AppController
         }
 
         if (!$form->hasError()) {
-            $isPublishedChange = (property_exists($form, 'published') !== $post ->isPublished());
+            $isPublishedChange = (property_exists($form, 'published') !== $post->isPublished());
             $post
                 ->setTitle($form->title)
                 ->setHeader($form->header)

@@ -46,3 +46,13 @@
     border-color: $color-success;
   }
 }
+
+.btn-trash {
+  color: $color-danger;
+  margin-top: 5px;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-danger;
+  }
+}

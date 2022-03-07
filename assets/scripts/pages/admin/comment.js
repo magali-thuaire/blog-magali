@@ -46,7 +46,7 @@ $(document).ready(function () {
         }
     });
 
-    $('#comment-table tbody').on('click', '.js-comment-approve, .js-comment-delete', function () {
+    $('body').on('click', '.js-comment-approve, .js-comment-delete', function () {
         let target = this;
         // Appel AJAX et intégration d'une modale
         ajaxModal(target, 'comment-modal');

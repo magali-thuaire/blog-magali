@@ -17,6 +17,7 @@ class App
     private $db_instance;
     private $renderer;
     public static $config;
+    public static $render_config;
 
     public static function getInstance(): App
     {
@@ -76,6 +77,10 @@ class App
                 self::$config[$key] =  $value;
             }, array_keys($array), $array);
         }
+
+        self::$render_config = [
+            'config'            => App::$config,
+        ];
     }
 
     public static function load()
@@ -101,7 +106,7 @@ class App
     public function notFound()
     {
         header('HTTP/1.0 404');
-        return $this->getRenderer()->render('/security/404.twig');
+        return $this->getRenderer()->render('/security/404.twig', App::$render_config);
     }
 
     /**
@@ -112,6 +117,6 @@ class App
     public function forbidden()
     {
         header('HTTP/1.0 403');
-        return $this->getRenderer()->render('/security/403.twig');
+        return $this->getRenderer()->render('/security/403.twig', App::$render_config);
     }
 }

@@ -86,7 +86,7 @@ class AdminCommentController extends AppController
 
         try {
             // Création du commentaire
-            $comment = $this->commentManager->findOneUnapprovedByIdIfIsGranted($id, $this->getUser());
+            $comment = $this->commentManager->findOneByIdIfIsGranted($id, $this->getUser());
         } catch (Exception $e) {
             $form->setError($e->getMessage());
         }

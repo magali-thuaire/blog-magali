@@ -6,10 +6,13 @@
                 <p>le {{ comment.createddAt|format_datetime('long', 'none', locale='fr') }}</p>
                 {% if admin == true %}
                     {% if comment.approved == true %}
-                        <p class="badge bg-success">approuvé</p>
+                        <p class="text-decoration-none badge bg-success mb-0">approuvé</p>
                     {% else %}
-                        <p class="badge bg-warning">non approuvé</p>
+                        <p class="text-decoration-none badge bg-warning mb-0">non approuvé</p>
                     {% endif %}
+                    <a class="mx-2 js-comment-delete btn-trash" data-href="{{ config['R_ADMIN_COMMENT_CONFIRM_DELETE'] ~ comment.id }}">
+                        <i class="fas fa-close"></i>
+                    </a>
                 {% endif %}
             </div>
             <div class="col blog-post-comment__body">

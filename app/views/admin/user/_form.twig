@@ -1,0 +1,35 @@
+<div class="alert js-alert alert-danger d-flex align-items-center mb-2 {{ app.error ?: 'd-none' }}" role="alert">{{ app.error ?? '' }}</div>
+<div class="alert js-alert alert-success d-flex align-items-center mb-2 {{ app.success ?: 'd-none' }}" role="alert">{{ app.success ?? '' }}</div>
+<div class="card p-3">
+    <form id="userForm" action="{{ action }}" method="POST">
+        <div class="form-floating">
+            <input type="text" name="username" class="form-control" value="{{ user.username ?: '' }}" disabled>
+            <label>Nom d'utilisateur</label>
+        </div>
+        <div class="form-floating mt-2">
+            <input type="email" name="email" class="form-control" value="{{ user.email ?: '' }}" disabled>
+            <label>Email</label>
+        </div>
+        <div class="form-floating mt-2">
+            <select class="form-select" id="user-role" name="role">
+                {% for role in roles %}
+                    <option {% if role == user.role %} selected="selected" {% endif %} value="{{ role }}">{{ role }}</option>
+                {% endfor %}
+            </select>
+            <label for="user-role">Rôle</label>
+        </div>
+        <div class="form-check mt-2">
+            <input id="user-validated" name="adminValidated" class="form-check-input" type="checkbox" value="" {{ user.adminValidated ? 'checked' : '' }}>
+            <label class="form-check-label" for="user-validated">
+                <span class="badge bg-success {{ user.adminValidated ? '' : 'd-none' }}">validé</span>
+                <span class="badge bg-warning {{ user.adminValidated ? 'd-none' : '' }}">en attente de validation</span>
+            </label>
+        </div>
+        <input type="hidden" name="csrfToken" value="{{ form.csrfToken}}">
+        <div class="col-lg-12 text-center mt-5">
+            <button class="btn btn-primary-color" name="submit" type="submit">
+                {{ btn }}
+            </button>
+        </div>
+    </form>
+</div>
