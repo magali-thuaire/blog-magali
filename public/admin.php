@@ -31,9 +31,12 @@ if (!empty(Get::get('p'))) {
 
 $postController = new AdminPostController();
 $commentController = new AdminCommentController();
-$userController = new AdminUserController();
 
-switch (true) {
+if (Security::isSuperAdmin()) {
+    $userController = new AdminUserController();
+}
+
+switch ($p) {
     // Demande du tableau de bord
     case $p === 'dashboard':
         $postController->index();
@@ -134,93 +137,57 @@ switch (true) {
                 $commentController->index();
         }
         break;
-    case $p === 'user':
-        switch (Security::isSuperAdmin()) {
-            case true:
+    case Security::isSuperAdmin():
+        switch (true) {
+            case $p === 'user':
                 $userController->index();
                 break;
-            default:
-                $postController->index();
-        }
-        break;
-    case $p === 'user-confirm-validate':
-        switch (Security::isSuperAdmin()) {
-            case true:
-                switch (true) {
-                    case !empty(Get::get('id')) && is_numeric(Get::get('id')):
-                        $id = Get::get('id');
-                        $userController->confirmValidate($id);
-                        break;
-                    default:
-                        $userController->index();
-                }
-                break;
-            default:
-                $userController->index();
-        }
-        break;
-    case $p === 'user-validate':
-        switch (Security::isSuperAdmin()) {
-            case true:
-                switch (true) {
-                    case !empty(Get::get('id')) && is_numeric(Get::get('id')):
-                        $id = Get::get('id');
-                        $userController->validate($id);
-                        break;
-                    default:
-                        $userController->index();
-                }
-                break;
-            default:
-                $userController->index();
-        }
-        break;
-    case $p === 'user-confirm-delete':
-        switch (Security::isSuperAdmin()) {
-            case true:
-                switch (true) {
-                    case !empty(Get::get('id')) && is_numeric(Get::get('id')):
-                        $id = Get::get('id');
-                        $userController->confirmDelete($id);
-                        break;
-                    default:
-                        $userController->index();
-                }
-                break;
-            default:
-                $userController->index();
-        }
-        break;
-    case $p === 'user-delete':
-        switch (Security::isSuperAdmin()) {
-            case true:
-                switch (true) {
-                    case !empty(Get::get('id')) && is_numeric(Get::get('id')):
-                        $id = Get::get('id');
-                        $userController->delete($id);
-                        break;
-                    default:
-                        $userController->index();
-                }
-                break;
-            default:
-                $userController->index();
-        }
-        break;
-    case $p === 'user-update':
-        switch (Security::isSuperAdmin()) {
-            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
-                $id = Get::get('id');
-                if (Post::getAll()) {
-                    $userController->update($id);
+            case $p === 'user-confirm-validate':
+                if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
+                    $id = Get::get('id');
+                    $userController->confirmValidate($id);
                 } else {
-                    $userController->change($id);
+                    $userController->index();
                 }
                 break;
-            default:
-                $userController->index();
+            case $p === 'user-validate':
+                if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
+                    $id = Get::get('id');
+                    $userController->validate($id);
+                } else {
+                    $userController->index();
+                }
+                break;
+            case $p === 'user-confirm-delete':
+                if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
+                    $id = Get::get('id');
+                    $userController->confirmDelete($id);
+                } else {
+                    $userController->index();
+                }
+                break;
+            case $p === 'user-delete':
+                if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
+                    $id = Get::get('id');
+                    $userController->delete($id);
+                } else {
+                    $userController->index();
+                }
+                break;
+            case $p === 'user-update':
+                if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
+                    $id = Get::get('id');
+                    if (Post::getAll()) {
+                        $userController->update($id);
+                    } else {
+                        $userController->change($id);
+                    }
+                } else {
+                    $userController->index();
+                }
+                break;
         }
         break;
     default:
-        $postController->index();
+        App::getInstance()->notFound();
 }

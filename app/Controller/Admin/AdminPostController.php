@@ -42,7 +42,7 @@ class AdminPostController extends AppController
             return App::getInstance()->notFound();
         }
 
-        $this->render('post/show.twig', [
+        $this->render('admin/post/show.twig', [
             'post' => $post,
             'admin' => true
         ]);

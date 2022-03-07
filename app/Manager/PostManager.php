@@ -270,7 +270,7 @@ class PostManager extends EntityManager
     private function getOneByIdWithComments(): QueryBuilder
     {
         return $this->getAll()
-                    ->addSelect('c.content as commentContent, c.created_at as commentCreatedAt, c.author as commentAuthor', 'c.approved')
+                    ->addSelect('c.id as commentId', 'c.content as commentContent', 'c.created_at as commentCreatedAt', 'c.author as commentAuthor', 'c.approved')
                     ->leftJoin('comment', 'c', 'c.post = p.id')
                     ->orderBy('c.created_at', 'DESC')
                     ->andWhere('p.id = :id')

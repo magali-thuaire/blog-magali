@@ -31,43 +31,34 @@ switch (true) {
         break;
     case $p === 'post':
         $controller = new PostController();
-        switch (true) {
-            // Demande de la page d'un article
-            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
-                $id = Get::get('id');
-                switch (Post::getAll()) {
-                    // Demande d'ajout d'un commentaire
-                    case true:
-                        $controller->newComment($id);
-                        break;
-                    // Visualisation d'un article
-                    default:
-                        $controller->show($id);
-                }
-                break;
+        if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
+            $id = Get::get('id');
+            if (Post::getAll()) {
+                // Demande d'ajout d'un commentaire
+                $controller->newComment($id);
+            } else {
+                // Visualisation d'un article
+                $controller->show($id);
+            }
+        } else {
             // Demande de visualisation des articles
-            default:
-                $controller->index();
+            $controller->index();
         }
         break;
     case $p === 'login':
         $controller = new SecurityController();
-        switch (Post::getAll()) {
-            case true:
-                $controller->authenticate();
-                break;
-            default:
-                $controller->login();
+        if (Post::getAll()) {
+            $controller->authenticate();
+        } else {
+            $controller->login();
         }
         break;
     case $p === 'register':
         $controller = new SecurityController();
-        switch (Post::getAll()) {
-            case true:
+        if (Post::getAll()) {
                 $controller->register();
-                break;
-            default:
-                $controller->signin();
+        } else {
+            $controller->signin();
         }
         break;
     case $p === 'logout':
@@ -76,42 +67,32 @@ switch (true) {
         break;
     case $p === 'validate':
         $controller = new SecurityController();
-        switch (true) {
-            case !empty(Get::get('email')) && !empty(Get::get('token')):
-                $email = Get::get('email');
-                $token = Get::get('token');
-                $controller->validate($email, $token);
-                break;
-            default:
-                App::getInstance()->notFound();
+        if (!empty(Get::get('email')) && !empty(Get::get('token'))) {
+            $email = Get::get('email');
+            $token = Get::get('token');
+            $controller->validate($email, $token);
+        } else {
+            App::getInstance()->notFound();
         }
         break;
     case $p === 'forgot-password':
         $controller = new SecurityController();
-        switch (Post::getAll()) {
-            case true:
-                $controller->emailPassword();
-                break;
-            default:
-                $controller->forgotPassword();
+        if (Post::getAll()) {
+            $controller->emailPassword();
+        } else {
+            $controller->forgotPassword();
         }
         break;
     case $p === 'reset-password':
         $controller = new SecurityController();
-        switch (Post::getAll()) {
-            case true:
-                $controller->resetPassword();
-                break;
-            default:
-                switch (true) {
-                    case !empty(Get::get('email')) && !empty(Get::get('token')):
-                        $email = Get::get('email');
-                        $token = Get::get('token');
-                        $controller->newPassword($email, $token);
-                        break;
-                    default:
-                        App::getInstance()->notFound();
-                }
+        if (Post::getAll()) {
+            $controller->resetPassword();
+        } elseif (!empty(Get::get('email')) && !empty(Get::get('token'))) {
+            $email = Get::get('email');
+            $token = Get::get('token');
+            $controller -> newPassword($email, $token);
+        } else {
+            App ::getInstance() -> notFound();
         }
         break;
     default:

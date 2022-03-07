@@ -119,10 +119,11 @@ trait PostTrait
             // Si l'article dispose de commentaires
             if ($data->commentAuthor) {
                 $commentData = [
-                    'content' => $data->commentContent,
+                    'id'        => $data->commentId,
+                    'content'   => $data->commentContent,
                     'createdAt' => $data->commentCreatedAt,
-                    'author' => $data->commentAuthor,
-                    'approved' => (property_exists($data, 'approved')) ? $data->approved : false
+                    'author'    => $data->commentAuthor,
+                    'approved'  => (property_exists($data, 'approved')) ? $data->approved : false
                 ];
 
                 $comment = new CommentEntity();
