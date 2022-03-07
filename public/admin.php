@@ -207,6 +207,20 @@ switch (true) {
                 $userController->index();
         }
         break;
+    case $p === 'user-update':
+        switch (Security::isSuperAdmin()) {
+            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+                $id = Get::get('id');
+                if (Post::getAll()) {
+                    $userController->update($id);
+                } else {
+                    $userController->change($id);
+                }
+                break;
+            default:
+                $userController->index();
+        }
+        break;
     default:
         $postController->index();
 }

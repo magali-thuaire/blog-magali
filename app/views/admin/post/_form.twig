@@ -3,12 +3,12 @@
 <div class="card p-3">
     <form id="postForm" action="{{ action }}" method="POST">
         <div class="form-floating">
-            <input type="text" name="title" class="form-control" placeholder="titre" value="{{ post.title ?: '' }}" required>
+            <input type="text" name="title" class="form-control" value="{{ post.title ?: '' }}" required>
             <label>Titre de l'article</label>
         </div>
         <div class="form-floating mt-2">
-            <input type="text" name="header" class="form-control" placeholder="chapô" value="{{ post.header ?: '' }}" required>
-            <label for="post-header">Chapô</label>
+            <input type="text" name="header" class="form-control" value="{{ post.header ?: '' }}" required>
+            <label>Chapô</label>
         </div>
         <div class="form-floating mt-2">
             <textarea class="form-control" name="content" style="height: 180px" required>{{ post.content ?: '' }} </textarea>

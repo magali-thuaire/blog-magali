@@ -25,6 +25,7 @@ $routes = [
     'R_ADMIN_USER_VALIDATE'             => '../public/admin.php?p=user-validate&id=',
     'R_ADMIN_USER_CONFIRM_DELETE'       => '../public/admin.php?p=user-confirm-delete&id=',
     'R_ADMIN_USER_DELETE'               => '../public/admin.php?p=user-delete&id=',
+    'R_ADMIN_USER_UPDATE'               => '../public/admin.php?p=user-update&id=',
 ];
 
 $form = [

@@ -125,4 +125,64 @@ class AdminUserController extends AppController
         $this->addMessage($form);
         header('Location: ' . App::$config['R_ADMIN_USER']);
     }
+
+
+    /**
+     * @throws SyntaxError
+     * @throws RuntimeError
+     * @throws LoaderError
+     * @throws Exception
+     */
+    public function change(int $id)
+    {
+        $form = $this->initForm('user-update');
+
+        try {
+            $user = $this->userManager->findOneById($id, $this->getUser());
+        } catch (Exception $e) {
+            $form->setError($e->getMessage());
+        }
+
+        if ($form->hasError()) {
+            $this->addMessage($form);
+            header('Location: ' . App::$config['R_ADMIN']);
+        }
+
+        $this->render('admin/user/update.twig', [
+            'form' => $form,
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function update(int $id)
+    {
+        $form = $this->createForm('user-update');
+
+        try {
+            $user = $this->userManager->findOneById($id, $this->getUser());
+        } catch (Exception $e) {
+            $form->setError($e->getMessage());
+        }
+
+        if (!$form->hasError()) {
+            $isAdminValidatedChange = (property_exists($form, 'adminValidated') !== $user->isAdminValidated());
+            $user
+                ->setAdminValidated(property_exists($form, 'adminValidated'))
+                ->setRole($form->role)
+            ;
+            $isUpdated = $this->userManager->update($user, $isAdminValidatedChange);
+
+            if ($isUpdated) {
+                $form->setSuccess(App::$config['ADMIN_USER_UPDATED_SUCCESS_MESSAGE']);
+            } else {
+                $form->setError(App::$config['ADMIN_USER_UPDATE_ERROR_MESSAGE']);
+            }
+        }
+
+        $this->addMessage($form);
+        header('Location: ' . App::$config['R_ADMIN_USER']);
+    }
 }
