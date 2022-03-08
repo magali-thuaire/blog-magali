@@ -18,13 +18,13 @@ class Security extends CoreSecurity
     #[Pure] public static function generateValidationLink(UserEntity $user): string
     {
         return App::$config['URL_SITE'] .
-               '/index.php?p=validate&email=' . $user->getEmail() . '&token=' . $user->getValidationToken();
+               '/validate/' . $user->getEmail() . '/' . $user->getValidationToken();
     }
 
     #[Pure] public static function generateResetPasswordLink(UserEntity $user): string
     {
         return App::$config['URL_SITE'] .
-               '/index.php?p=reset-password&email=' . $user->getEmail() . '&token=' . $user->getValidationToken();
+               '/reset-password/' . $user->getEmail() . '/' . $user->getValidationToken();
     }
 
     public static function isAccessGranted(): bool

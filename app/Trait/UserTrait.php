@@ -62,6 +62,7 @@ trait UserTrait
      */
     private function createUserSession(UserEntity $user): void
     {
+        Session::put('user-created', time());
         Session::put('user', $user);
     }
 

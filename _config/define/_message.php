@@ -1,22 +1,15 @@
 <?php
 
-// Définition des messages
-$contactConst = [
-    'CONTACT_ERROR'             => 'Veuillez renseigner un %s valide',
-    'CONTACT_ERROR_NAME'        => ['CONTACT_ERROR' => 'nom'],
-    'CONTACT_ERROR_EMAIL'       => ['CONTACT_ERROR' => 'email'],
-    'CONTACT_ERROR_MESSAGE'     => ['CONTACT_ERROR' => 'message'],
-    'CONTACT_SUCCESS_EMAIL'     => 'Votre message a bien été envoyé',
-];
+return [
 
-$emailConst = [
-    'ERROR_SEND_EMAIL'          => 'Problème lors de l\'envoi de l\'email',
-    'EMAIL_DEFAULT_SUBJECT'     => 'Message de votre blog',
-    'EMAIL_DEFAULT_TO'          => 'magali.thuaire@gmail.com',
-    'EMAIL_DEFAULT_FROM'        => 'magali.thuaire@gmail.com'
-];
+// CONTACT
+    'CONTACT_ERROR'                         => 'Veuillez renseigner un %s valide',
+    'CONTACT_ERROR_NAME'                    => ['CONTACT_ERROR' => 'nom'],
+    'CONTACT_ERROR_EMAIL'                   => ['CONTACT_ERROR' => 'email'],
+    'CONTACT_ERROR_MESSAGE'                 => ['CONTACT_ERROR' => 'message'],
+    'CONTACT_SUCCESS_EMAIL'                 => 'Votre message a bien été envoyé',
 
-$commentConst = [
+// COMMENT
     'COMMENT_ERROR_BASE'                     => 'Veuillez renseigner un %s valide',
     'COMMENT_ERROR_AUTHOR'                   => ['COMMENT_ERROR_BASE' => 'nom d\'utilisateur'],
     'COMMENT_ERROR_CONTENT'                  => ['COMMENT_ERROR_BASE' => 'message'],
@@ -31,8 +24,7 @@ $commentConst = [
     'ADMIN_COMMENT_DELETED_SUCCESS_MESSAGE'  => 'Le commentaire a été supprimé avec succès',
     'ADMIN_COMMENT_DELETED_ERROR_MESSAGE'    => 'Vous n\'avez pas les droits nécessaires pour supprimer ce commentaire',
 
-];
-$postConst = [
+// POST
     'POST_ERROR_BASE'                        => 'Veuillez renseigner un %s valide',
     'POST_ERROR_TITLE'                       => ['POST_ERROR_BASE' => 'titre'],
     'POST_ERROR_HEADER'                      => ['POST_ERROR_BASE' => 'chapô'],

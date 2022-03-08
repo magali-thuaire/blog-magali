@@ -44,7 +44,7 @@ class SecurityController extends AppController
             // Création de l'utilisateur
             $user = new UserEntity();
             $user->hydrate((array) $form);
-            $this->userManager->login($user);
+            $this->securityManager->login($user);
         } catch (Exception $e) {
             $form->setError($e->getMessage());
         }
@@ -89,13 +89,13 @@ class SecurityController extends AppController
             // Création de l'utilisateur
             $user = new UserEntity();
             $user->hydrate((array) $form);
-            $this->userManager->register($user);
+            $this->securityManager->register($user);
         } catch (Exception $e) {
             $form->setError($e->getMessage());
         }
 
         if (!$form->getError()) {
-            if (UserMailService::send($user)) {
+            if (UserMailService::send($user, App::$config['EMAIL_DEFAULT_FROM'], App::$config['EMAIL_REGISTER_SUBJECT'])) {
                 // Message de réussite
                 $form->setSuccess(App::$config['USER_SUCCESS_REGISTRATION']);
             } else {
@@ -115,7 +115,7 @@ class SecurityController extends AppController
      */
     public function logout()
     {
-        $this->userManager->logout();
+        $this->securityManager->logout();
         header('Location: ' . App::$config['R_HOMEPAGE']);
     }
 
@@ -131,7 +131,7 @@ class SecurityController extends AppController
         $user = $this->userManager->findOneByEmail($email);
 
         if ($isTokenValid = Security::isTokenValid($user, $token)) {
-            $isUserConfirm = $this->userManager->confirmUser($user);
+            $isUserConfirm = $this->securityManager->confirmUser($user);
         }
 
         if (!$isTokenValid) {
@@ -189,7 +189,7 @@ class SecurityController extends AppController
 
         if (!$form->getError()) {
             // Envoi du mail
-            if (PasswordMailService::send($user)) {
+            if (PasswordMailService::send($user, App::$config['EMAIL_DEFAULT_FROM'], App::$config['EMAIL_PASSWORD_SUBJECT'])) {
                 // Message de réussite
                 $form->setSuccess(App::$config['USER_SEND_PASSWORD_EMAIL'] . $user->getEmail());
             } else {
@@ -251,7 +251,7 @@ class SecurityController extends AppController
             // Création de l'utilisateur
             $user = new UserEntity();
             $user->hydrate((array) $form);
-            $this->userManager->resetPassword($user, $form->token);
+            $this->securityManager->resetPassword($user, $form->token);
         } catch (Exception $e) {
             $form->setError($e->getMessage());
         }

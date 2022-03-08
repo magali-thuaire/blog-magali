@@ -33,7 +33,6 @@ class PostManager extends EntityManager
     {
         $statement = $this->getOneByIdWithCommentsApproved()->getQuery();
         $postData = $this->prepare($statement, [':id' => $id], false, false);
-
         return $this->createPostWithAuthorAndComments($postData);
     }
 
@@ -283,7 +282,7 @@ class PostManager extends EntityManager
     private function getOneByIdWithCommentsApproved(): QueryBuilder
     {
         return $this->getOnePublishedById()
-            ->addSelect('c.content as commentContent, c.created_at as commentCreatedAt, c.author as commentAuthor')
+            ->addSelect('c.id as commentId, c.content as commentContent, c.created_at as commentCreatedAt, c.author as commentAuthor')
             ->leftJoin('comment', 'c', 'c.post = p.id', 'c.approved IS TRUE')
             ->orderBy('c.created_at', 'DESC')
         ;

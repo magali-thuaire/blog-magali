@@ -14,20 +14,19 @@ $(document).ready(function () {
     let url = new URL(window.location.href);
     let $navLinks = $('#adminSidebar').find('.nav-link');
     let excludedPages =  [
-        'p=dashboard',
-        'p=post-update',
-        'p=post-new',
-        'p=comment',
-        'p=user',
+        '/admin/dashboard',
+        '/admin/post/new',
+        '/admin/comment',
+        '/admin/user',
     ];
     excludedPages.forEach((element) => {
         $navLinks.attr('href', function (k,v) {
             if (v.includes(element) && url.href.includes(element)) {
                 $(this).addClass('active');
             }
-            if (url.href.includes('p=post-update')) {
-                let test = $('.nav-link[href*="p=dashboard"]');
-                test.addClass('active');
+            if (url.href.includes('post/update')) {
+                let dashboard = $('.nav-link[href*="/admin/dashboard"]');
+                dashboard.addClass('active');
             }
         });
     });

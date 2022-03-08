@@ -9,7 +9,7 @@ class Security
     // Fonction de nettoyage d'une valeur
     public static function checkInput(string $data): ?string
     {
-        return htmlspecialchars(stripslashes(trim($data)));
+        return strip_tags(stripslashes(trim($data)));
     }
 
     #[Pure] public static function checkInputs(array $dataArray): array

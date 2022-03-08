@@ -126,7 +126,6 @@ class AdminUserController extends AppController
         header('Location: ' . App::$config['R_ADMIN_USER']);
     }
 
-
     /**
      * @throws SyntaxError
      * @throws RuntimeError

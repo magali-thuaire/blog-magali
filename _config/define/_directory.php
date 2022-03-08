@@ -1,7 +1,6 @@
 <?php
 
-// Nom des répertoires
-$directory = [
+return [
     'APP'       => (object) ['ROOT', '/app'],
     'VIEWS'     => (object) ['APP', '/views'],
     'CORE'      => (object) ['ROOT', '/core'],

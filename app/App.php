@@ -6,6 +6,7 @@ use Core\Config;
 use Core\Database\MysqlDatabase;
 use Core\Manager\EntityManager;
 use Core\Renderer\TwigRenderer;
+use Core\Service\Session;
 use stdClass;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -60,10 +61,13 @@ class App
 
     private function setConfig()
     {
-        require_once '../_config/_define.php';
         $const = [];
-        foreach ($array as $v) {
-            $const[] = ${$v};
+        $scandir = scandir($prefix = '../_config/define');
+
+        foreach ($scandir as $define) {
+            if (!in_array($define, ['.', '..'])) {
+                $const[] = require_once $prefix . '/' . $define;
+            }
         }
 
         foreach ($const as $array) {
@@ -72,14 +76,14 @@ class App
                     $value = (array) $value;
                     $value = self::$config[current($value)] . next($value);
                 } elseif (is_array($value) && (array_values($value) !== $value)) {
-                    $value = current($value);
+                    $value = sprintf(self::$config[array_key_first($value)], current($value));
                 }
                 self::$config[$key] =  $value;
             }, array_keys($array), $array);
         }
 
         self::$render_config = [
-            'config'            => App::$config,
+            'config'            => App::$config
         ];
     }
 
@@ -96,6 +100,13 @@ class App
         require_once self::$config['ROOT'] . '/vendor/autoload.php';
 
         session_start();
+
+        if (Session::get('user-created')) {
+            if (time() - Session::get('user-created') > 1800) {
+                Session::unset('user');
+                Session::unset('user-created');
+            }
+        }
     }
 
     /**

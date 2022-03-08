@@ -7,6 +7,7 @@
     <link rel="icon" type="image/x-icon" href="{{ config['FAVICON'] }}" />
     <link href="{{ config['CSS'] }}" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="{{ config['JS'] }}" defer></script>
+    <base href="/">
 </head>
 <body>
 <main>
@@ -23,7 +24,6 @@
         <ul class="nav flex-column bg-dark mb-0">
             <li class="nav-item adminSidebar__item">
                 <a href="{{ config['R_ADMIN'] }}" class="nav-link text-dark font-italic">
-
                     <i class="adminSidebar__item-icon fas fa-newspaper"></i>
                     Mes articles
                 </a>
@@ -86,7 +86,7 @@
    </div>
 </main>
 
-<a aria-label="Scroll to the top of the page" href="#" id="scroll-top" class="scroll-top-right">
+<a aria-label="Scroll to the top of the page" href="{{ url ~'#' }}" id="scroll-top" class="scroll-top-right">
     <i class=" fa fa-angle-up" aria-hidden="true" role="img"></i>
 </a>
 </body>

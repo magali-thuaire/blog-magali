@@ -181,4 +181,11 @@ class UserEntity
     {
         return $this->getUsername();
     }
+
+    public function __sleep(): array
+    {
+        return [
+            'id', 'username', 'email', 'userConfirmed', 'adminValidated', 'role'
+        ];
+    }
 }

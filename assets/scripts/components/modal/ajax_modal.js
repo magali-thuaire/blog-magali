@@ -6,7 +6,7 @@ import emptyModal from "./empty_modal";
 export default function (target, modal) {
     // Récupère l'url depuis la propriété "data-href" de la balise html a
     let url = $(target).data('href');
-    console.log(target);
+    console.log(url);
     // Appel ajax vers l'action symfony qui nous renvoie la vue
     return $.ajax({
         method: 'GET',

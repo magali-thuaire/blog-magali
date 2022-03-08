@@ -7,13 +7,10 @@ use App\Security\Security;
 
 class PasswordMailService
 {
-    private const FROM = 'magali.thuaire@gmail.com';
-    private const SUBJECT = 'Blog de Magali - Confirmation de demande de mot de passe';
-
     public static function send(
         UserEntity $user,
-        $from = self::FROM,
-        $subject = self::SUBJECT
+        $from,
+        $subject
     ): bool {
         $validationLink = Security ::generateResetPasswordLink($user);
         $message  = 'Bonjour ' . $user->getUsername() . '</br></br>';

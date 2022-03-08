@@ -42,99 +42,81 @@ switch ($p) {
         $postController->index();
         break;
     case $p === 'post-confirm-delete':
-        switch (true) {
-            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
+        if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
                 $id = Get::get('id');
                 $postController->confirmDelete($id);
-                break;
-            default:
-                $postController->index();
+        } else {
+            $postController->index();
         }
         break;
     case $p === 'post-delete':
-        switch (true) {
-            case !empty(Get::get('id')) && is_numeric(Get::get('id')) && Post::getAll():
-                $id = Get::get('id');
-                $postController->delete($id);
-                break;
-            default:
-                $postController->index();
+        if (!empty(Get::get('id')) && is_numeric(Get::get('id')) && Post::getAll()) {
+            $id = Get::get('id');
+            $postController->delete($id);
+        } else {
+            $postController->index();
         }
         break;
     case $p === 'post-update':
-        switch (true) {
-            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
-                $id = Get::get('id');
-                if (Post::getAll()) {
-                    $postController->update($id);
-                } else {
-                    $postController->change($id);
-                }
-                break;
-            default:
-                $postController->index();
+        if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
+            $id = Get::get('id');
+            if (Post::getAll()) {
+                $postController->update($id);
+            } else {
+                $postController->change($id);
+            }
+        } else {
+            $postController->index();
         }
         break;
     case $p === 'post-new':
-        switch (Post::getAll()) {
-            case true:
-                $postController->new();
-                break;
-            default:
-                $postController->create();
+        if (Post::getAll()) {
+            $postController->new();
+        } else {
+            $postController->create();
         }
         break;
     case $p === 'post':
-        switch (true) {
-            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
-                $id = Get::get('id');
-                $postController->show($id);
-                break;
-            default:
-                $postController->index();
+        if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
+            $id = Get::get('id');
+            $postController->show($id);
+        } else {
+            $postController->index();
         }
         break;
     case $p === 'comment':
         $commentController->index();
         break;
     case $p === 'comment-confirm-approve':
-        switch (true) {
-            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
-                $id = Get::get('id');
-                $commentController->confirmApprove($id);
-                break;
-            default:
-                $commentController->index();
+        if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
+            $id = Get::get('id');
+            $commentController->confirmApprove($id);
+        } else {
+            $commentController->index();
         }
         break;
     case $p === 'comment-approve':
-        switch (true) {
-            case !empty(Get::get('id')) && is_numeric(Get::get('id')) && Post::getAll():
-                $id = Get::get('id');
-                $commentController->approve($id);
-                break;
-            default:
-                $commentController->index();
+        if (!empty(Get::get('id')) && is_numeric(Get::get('id')) && Post::getAll()) {
+            $id = Get::get('id');
+            $commentController->approve($id);
+        } else {
+            $commentController->index();
         }
         break;
     case $p === 'comment-confirm-delete':
-        switch (true) {
-            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
-                $id = Get::get('id');
-                $commentController->confirmDelete($id);
-                break;
-            default:
-                $commentController->index();
+        if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
+            $id = Get::get('id');
+            $commentController->confirmDelete($id);
+        } else {
+            $commentController->index();
         }
         break;
     case $p === 'comment-delete':
-        switch (true) {
-            case !empty(Get::get('id')) && is_numeric(Get::get('id')):
-                $id = Get::get('id');
-                $commentController->delete($id);
-                break;
-            default:
-                $commentController->index();
+        if (!empty(Get::get('id')) && is_numeric(Get::get('id'))) {
+            $id = Get::get('id');
+            $commentController->delete($id);
+        } else {
+            $commentController->index();
         }
         break;
     case Security::isSuperAdmin():

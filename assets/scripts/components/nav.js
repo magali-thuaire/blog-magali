@@ -10,13 +10,14 @@ $(document).ready(function () {
     let navLinksWithoutAnchor = [];
 
     let excludedPages =  [
-        'p=post',
-        'p=login',
-        'p=forgot-password',
-        'p=dashboard',
-        'p=post-update',
-        'p=post-new',
-        'admin',
+        '/post',
+        '/login',
+        '/register',
+        '/forgot-password',
+        '/dashboard',
+        '/post-update',
+        '/post-new',
+        '/admin',
     ];
 
     // Find all anchors
