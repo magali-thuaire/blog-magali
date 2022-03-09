@@ -1,10 +1,7 @@
 <?php
 
-$securityConst = [
-    'INVALID_CSRF_TOKEN'        => 'CSRF token invalide',
-];
-
-$userConst = [
+return [
+    'INVALID_CSRF_TOKEN'                    => 'CSRF token invalide',
     'INVALID_CREDENTIALS'                   => 'Identifiants invalides',
     'USER_ERROR'                            => 'Veuillez renseigner un %s valide',
     'USER_ERROR_LOGIN'                      => ['USER_ERROR' => 'email'],
@@ -17,7 +14,6 @@ $userConst = [
     'USER_ERROR_EXISTS'                     => 'Cet utilisateur existe déjà',
     'USER_ERROR_NOT_EXISTS'                 => 'Il n\'y a aucun compte enregistré avec cette adresse e-mail',
     'USER_SUCCESS_REGISTRATION'             => 'Un email d\'activation de compte vient d\'être envoyé à votre adresse email',
-    'URL_SITE'                              => 'localhost:8888/blog-magali/public',
     'USER_ACCOUNT_ACTIVATED'                => 'Votre compte a été activé avec succès
                                         Merci d\'attendre la validation de l\'administrateur',
     'USER_PASSWORD_CHANGED'                 => 'Votre mot de passe a été réinitialisé. Vous pouvez désormais vous connecter avec votre nouveau mot de passe',

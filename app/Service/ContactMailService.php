@@ -6,13 +6,10 @@ use App\Entity\ContactEntity;
 
 class ContactMailService
 {
-    private const TO = 'magali.thuaire@gmail.com';
-    private const SUBJECT = 'Message de votre blog';
-
     public static function send(
         ContactEntity $contact,
-        $to = self::TO,
-        $subject = self::SUBJECT
+        $to,
+        $subject
     ): bool {
         $header = 'From: ' . $contact->getName() . '<' . $contact->getEmail() . '>';
         $message = $contact->getMessage();

@@ -28,6 +28,10 @@ and then run:
 composer install
 ```
 
+```bash
+tree -I 'node_modules|vendor'
+```
+
 **Database Setup**
 
 Open your MySQL database manager and execute the *MySQL script* to build the database :

@@ -39,7 +39,6 @@ class PostController extends AppController
     {
         /** @var PostEntity|null $posts */
         $post = $this->postManager->findOneByIdWithCommentsApproved($id);
-
         if (!$post) {
             return App::getInstance()->notFound();
         }

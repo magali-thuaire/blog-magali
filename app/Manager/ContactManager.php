@@ -26,8 +26,8 @@ class ContactManager extends EntityManager
         $statement = $qb->getQuery();
         $attributs = [
             ':name' => $contact->getName(),
-            'email' => $contact->getEmail(),
-            'message' => $contact->getMessage()
+            ':email' => $contact->getEmail(),
+            ':message' => $contact->getMessage()
         ];
 
         return $this->execute($statement, $attributs, true);

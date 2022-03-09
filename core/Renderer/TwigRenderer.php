@@ -20,10 +20,10 @@ class TwigRenderer
     public function __construct(string $viewPath)
     {
         $this->viewPath = $viewPath;
-
         $loader = new FilesystemLoader($this->viewPath);
         $this->twig = new Environment($loader, ['debug' => true]);
         $this->twig->addGlobal('session', Session::getAll());
+        $this->twig->addGlobal('url', $_SERVER['REQUEST_URI']);
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addExtension(new IntlExtension());
         $this->twig->addFilter($this->truncateFilter());

@@ -48,7 +48,7 @@ class HomeController extends AppController
 
         if (!$form->hasError()) {
             // Envoi du mail
-            if (ContactMailService::send($contact)) {
+            if (ContactMailService::send($contact, App::$config['EMAIL_DEFAULT_TO'], App::$config['EMAIL_CONTACT_SUBJECT'])) {
                 // Enregistrement en BDD
                 $this->contactManager->new($contact);
                 $form->setSuccess(App::$config['CONTACT_SUCCESS_EMAIL']);
