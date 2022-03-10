@@ -11,7 +11,7 @@ export default function (target, callbackForm = []) {
         let formData = $(target).serialize();
         let messageTarget = '.js-form-message';
         let button = 'button[type=submit]';
-        let alertCallback = [buttonEnabled(button)];
+        let alertCallback = [buttonEnabled];
 
         if (callbackForm.length !== 0) {
             alertCallback = alertCallback.concat(callbackForm);

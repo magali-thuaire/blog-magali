@@ -2,6 +2,7 @@
 
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
@@ -12,20 +13,19 @@ const config = {
         filename: 'app.js'
     },
     plugins: [
-    new MiniCssExtractPlugin({
-        filename: 'app.css'
-    }),
-    new CopyPlugin({
-        patterns: [
-          { from: "./assets/images", to: "images" },
-          { from: "./assets/files", to: "files" },
-        ],
-    }),
-    new CleanWebpackPlugin(),
-
-  ],
-module: {
-    rules: [
+        new MiniCssExtractPlugin({
+            filename: 'app.css'
+        }),
+        new CopyPlugin({
+            patterns: [
+              { from: "./assets/images", to: "images" },
+              { from: "./assets/files", to: "files" },
+            ],
+        }),
+        new CleanWebpackPlugin(),
+    ],
+    module: {
+        rules: [
     {
         test: /\.(js|jsx)$/i,
         loader: "babel-loader",
@@ -55,6 +55,12 @@ module: {
         },
     }
     ],
+    },
+    optimization: {
+        minimizer: [
+            `...`,
+            new CssMinimizerPlugin(),
+        ],
     },
 };
 
