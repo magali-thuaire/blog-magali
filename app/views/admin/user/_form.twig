@@ -18,11 +18,11 @@
             </select>
             <label for="user-role">Rôle</label>
         </div>
-        <div class="form-check mt-2">
+        <div class="form-check form-switch mt-2">
             <input id="user-validated" name="adminValidated" class="form-check-input" type="checkbox" value="" {{ user.adminValidated ? 'checked' : '' }}>
             <label class="form-check-label" for="user-validated">
-                <span class="badge bg-success {{ user.adminValidated ? '' : 'd-none' }}">validé</span>
-                <span class="badge bg-warning {{ user.adminValidated ? 'd-none' : '' }}">en attente de validation</span>
+                <span class="user-validated badge bg-success {{ user.adminValidated ? '' : 'd-none' }}">validé</span>
+                <span class="user-validated badge bg-warning {{ user.adminValidated ? 'd-none' : '' }}">en attente de validation</span>
             </label>
         </div>
         <input type="hidden" name="csrfToken" value="{{ form.csrfToken}}">

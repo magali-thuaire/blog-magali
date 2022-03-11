@@ -20,7 +20,7 @@
             <label>Auteur</label>
         </div>
         {% endif %}
-        <div class="form-check mt-2">
+        <div class="form-check form-switch mt-2">
             <input id="post-published" name="published" class="form-check-input" type="checkbox" value="" {{ post.published ? 'checked' : '' }}>
             <label class="form-check-label" for="post-published">
                 <span class="post-published badge bg-success {{ post.published ? '' : 'd-none' }}">publié</span>
