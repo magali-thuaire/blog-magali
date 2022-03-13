@@ -42,6 +42,21 @@ Configure the <span style="color:green">**_config/_database.php**</span> file. O
 db_name, db_host, db_user, db_pass
 ```
 
+**Email Setup**
+
+Configure the <span style="color:green">**_config/_email.php**</span> file. Open the file and make any adjustments you need.
+
+```
+URL_SITE, EMAIL_DEFAULT_TO, EMAIL_DEFAULT_FROM
+```
+
+**Server Setup**
+
+Configure your <span style="color:green">**php.ini**</span> file.
+
+```
+date.timezone = "Europe/Paris"
+```
 **Webpack Assets**
 
 This app uses Webpack for the CSS, JS and image files. The final built assets are already inside the
@@ -53,6 +68,12 @@ installed and then run:
 ```
 yarn install
 yarn dev --watch
+```
+
+## Default Admin Connexion
+```
+login : superadmin@blog.fr
+password : test
 ```
 
 ## Structure
@@ -70,4 +91,3 @@ yarn dev --watch
 ├── webpack.config.js
 └── yarn.lock
 ```
-
