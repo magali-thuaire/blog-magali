@@ -5,7 +5,6 @@ namespace App\Security;
 use App\App;
 use App\Entity\UserEntity;
 use Core\Security\Security as CoreSecurity;
-use Core\Service\Session;
 use JetBrains\PhpStorm\Pure;
 
 class Security extends CoreSecurity
@@ -27,35 +26,11 @@ class Security extends CoreSecurity
                '/reset-password/' . $user->getEmail() . '/' . $user->getValidationToken();
     }
 
-    public static function isAccessGranted(): bool
-    {
-        $user = self::getUser();
-
-        if (!in_array($user->getRole(), [UserEntity::ROLE_SUPERADMIN, UserEntity::ROLE_ADMIN])) {
-            return false;
-        }
-
-        return true;
-    }
-
-    public static function isSuperAdmin(): bool
-    {
-        $user = self::getUser();
-
-        if ($user->getRole() !== UserEntity::ROLE_SUPERADMIN) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     */
-    #[Pure] public static function getUser()
+    public static function getUser()
     {
         // Récupération de l'utilisateur
-        if (!empty(Session::get('user'))) {
-            return Session::get('user');
+        if (!empty($user = App::request()->get('session', 'user'))) {
+            return $user;
         }
     }
 }

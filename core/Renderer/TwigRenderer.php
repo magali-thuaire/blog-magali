@@ -2,7 +2,7 @@
 
 namespace Core\Renderer;
 
-use Core\Service\Session;
+use Core\Service\Request;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -17,13 +17,13 @@ class TwigRenderer
     protected string $viewPath;
     private Environment $twig;
 
-    public function __construct(string $viewPath)
+    public function __construct(string $viewPath, Request $request)
     {
         $this->viewPath = $viewPath;
         $loader = new FilesystemLoader($this->viewPath);
         $this->twig = new Environment($loader, ['debug' => true]);
-        $this->twig->addGlobal('session', Session::getAll());
-        $this->twig->addGlobal('url', $_SERVER['REQUEST_URI']);
+        $this->twig->addGlobal('session', $request->all('session'));
+        $this->twig->addGlobal('url', $request->get('server', 'REQUEST_URI'));
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addExtension(new IntlExtension());
         $this->twig->addFilter($this->truncateFilter());

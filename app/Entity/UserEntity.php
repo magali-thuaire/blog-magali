@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use Core\Entity\CoreUserEntity;
 use Core\Trait\HydrateTrait;
 use DateTime;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 
-class UserEntity
+class UserEntity extends CoreUserEntity
 {
     use HydrateTrait;
 
@@ -19,7 +20,6 @@ class UserEntity
     private bool $userConfirmed;
     private bool $adminValidated;
     private DateTime $createdAt;
-    private string $role;
 
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -154,21 +154,6 @@ class UserEntity
         }
 
         $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(?string $role): self
-    {
-        if (is_null($role)) {
-            $this->role = self::ROLE_USER;
-        } else {
-            $this->role = $role;
-        }
         return $this;
     }
 

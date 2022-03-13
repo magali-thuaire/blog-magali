@@ -21,10 +21,10 @@ class SecurityController extends AppController
      * @throws LoaderError
      * @throws Exception
      */
-    public function login($messages = [])
+    public function login()
     {
         // Initialisation du formulaire
-        $form = $this->initForm('authenticate', true, $messages);
+        $form = $this->initForm('authenticate');
 
         // Affichage de la vue
         $this->render('security/login.twig', [
@@ -135,14 +135,15 @@ class SecurityController extends AppController
         }
 
         if (!$isTokenValid) {
-            $message = ['error' => App::$config['USER_TOKEN_INVALID']];
+            $messages = ['error' => App::$config['USER_TOKEN_INVALID']];
         } elseif (!$isUserConfirm) {
-            $message = ['error' => App::$config['USER_LINK_INVALID']];
+            $messages = ['error' => App::$config['USER_LINK_INVALID']];
         } else {
-            $message = ['success' => App::$config['USER_ACCOUNT_ACTIVATED']];
+            $messages = ['success' => App::$config['USER_ACCOUNT_ACTIVATED']];
         }
 
-        $this->login($message);
+        $this->request->set('messages', $messages);
+        $this->login();
     }
 
     /**
@@ -224,7 +225,9 @@ class SecurityController extends AppController
         }
 
         if ($form->getError()) {
-            $this->login(['error' => $form->getError()]);
+            $messages = ['error' => $form->getError()];
+            App::request()->set('messages', $messages);
+            $this->login();
         }
 
         // Affichage de la vue
@@ -257,7 +260,9 @@ class SecurityController extends AppController
         }
 
         if (!$form->getError()) {
-            $this->login(['success' => App::$config['USER_PASSWORD_CHANGED']]);
+            $messages = ['success' => App::$config['USER_PASSWORD_CHANGED']];
+            App::request()->set('messages', $messages);
+            $this->login();
         }
 
         // Affichage de la vue

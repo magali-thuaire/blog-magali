@@ -24,8 +24,8 @@ const config = {
         }),
         new CleanWebpackPlugin(),
     ],
-    module: {
-        rules: [
+module: {
+    rules: [
     {
         test: /\.(js|jsx)$/i,
         loader: "babel-loader",

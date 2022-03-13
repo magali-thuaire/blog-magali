@@ -106,9 +106,9 @@ class CommentManager extends EntityManager
     {
         $statement = $this->createCommentQuery()->getQuery();
         $attributs = [
-            ':content' => $comment->getContent(),
-            ':post' => $comment->getPost()->getId(),
-            ':author' => $comment->getAuthor(),
+            ':content'  => $comment->getContent(),
+            ':post'     => $comment->getPost()->getId(),
+            ':username' => $comment->getUsername(),
         ];
         return $this->execute($statement, $attributs);
     }
@@ -171,7 +171,7 @@ class CommentManager extends EntityManager
     {
         return $this->createQueryBuilder()
             ->insert('comment')
-            ->columns('content', 'post', 'author')
+            ->columns('content', 'post', 'username')
         ;
     }
 
@@ -181,7 +181,7 @@ class CommentManager extends EntityManager
     private function getAll(): QueryBuilder
     {
         return $this->createQueryBuilder()
-                    ->select('c.id as commentId', 'c.content', 'c.author', 'c.created_at as createdAt')
+                    ->select('c.id as commentId', 'c.content', 'c.username', 'c.created_at as createdAt')
                     ->from('comment', 'c')
                     ->innerJoin('post', 'p', 'p.id = c.post')
                     ->addSelect('p.id as postId, p.title')

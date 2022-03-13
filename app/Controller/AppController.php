@@ -8,8 +8,7 @@ use App\Security\Security;
 use Core\Manager\EntityManager;
 use Core\Model\FormModel;
 use Core\Security\CsrfToken;
-use Core\Service\Post;
-use Core\Service\Session;
+use Core\Service\Request;
 use Exception;
 use JetBrains\PhpStorm\Pure;
 use stdClass;
@@ -19,6 +18,13 @@ use Twig\Error\SyntaxError;
 
 class AppController
 {
+    protected Request $request;
+
+    public function __construct()
+    {
+        $this->request = App::request();
+    }
+
     /**
      * Retourne le manager de l'entité demandée
      * @param string $entity
@@ -52,12 +58,16 @@ class AppController
      * Retourne un nouveau formulaire avec l'initialisation d'un token csrf
      * @throws Exception
      */
-    protected function initForm(string $tokenKey, bool $tokenInitialize = true, array $messages = []): FormModel
+    protected function initForm(string $tokenKey, bool $tokenInitialize = true): FormModel
     {
         if ($tokenInitialize) {
-            Session::put($tokenKey, uniqid(rand(), true));
+            $this->request->set($tokenKey, uniqid(rand(), true));
         }
-        return new FormModel($tokenKey, $messages);
+
+        $messages = $this->request->get('session', 'messages') ?? [];
+        $this->request->unset('messages');
+
+        return new FormModel($this->request, $tokenKey, $messages);
     }
 
     /**
@@ -71,7 +81,7 @@ class AppController
     protected function createForm(string $tokenKey): FormModel
     {
         // Nettoyage des données postées
-        $formData = Security::checkInputs(Post::getAll());
+        $formData = $this->request->all('request');
 
         // Récupération du token
         $token = new CsrfToken($tokenKey, $formData['csrfToken']);
@@ -113,23 +123,31 @@ class AppController
 
     protected function addMessage(FormModel $form): void
     {
-        Session::put('success', $form->getSuccess());
-        Session::put('error', $form->getError());
+        $this->request->set('success', $form->getSuccess());
+        $this->request->set('error', $form->getError());
     }
 
     protected function getMessage(): stdClass
     {
         $app = new stdClass();
 
-        if (Session::get('success')) {
-            $app->success = Session::get('success');
-            Session::unset('success');
+        if ($success = $this->request->get('session', 'success')) {
+            $app->success = $success;
+            $this->request->unset('success');
         }
-        if (Session::get('error')) {
-            $app->error = Session::get('error');
-            Session::unset('error');
+        if ($error = $this->request->get('session', 'error')) {
+            $app->error = $error;
+            $this->request->unset('error');
         }
 
         return $app;
+    }
+
+    public function __invoke(string $method, $params = null)
+    {
+        if ($params) {
+            return call_user_func_array([$this, "$method"], $params);
+        }
+        return $this->$method($params);
     }
 }

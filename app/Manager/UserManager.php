@@ -20,6 +20,7 @@ class UserManager extends EntityManager
     /**
      * Retourne tous les utilisateurs
      *
+     * @throws Exception
      */
     public function findAll(): ?array
     {
@@ -114,7 +115,7 @@ class UserManager extends EntityManager
      * Mise à jour d'un utilisateur
      *
      * @param UserEntity $user
-     * @param bool       $isAdminValidated
+     * @param bool       $isAdminValidatedChange
      *
      * @return bool
      */

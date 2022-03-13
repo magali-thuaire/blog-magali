@@ -1,39 +1,40 @@
 <?php
 
+use App\Controller\Admin\AdminCommentController;
+use App\Controller\Admin\AdminPostController;
+use App\Controller\Admin\AdminUserController;
+use App\Controller\HomeController;
+use App\Controller\PostController;
+use App\Controller\SecurityController;
+
 return [
-
-// ROUTE
-    'R_HOMEPAGE'                        => '/#home',
-    'R_CONTACT'                         => '/#contact',
-    'R_BLOG'                            => '/post',
-    'R_POST'                            => '/post/',
-    'R_LOGIN'                           => '/login',
-    'R_REGISTER'                        => '/register',
-    'R_LOGOUT'                          => '/logout',
-    'R_FORGOT_PASSWORD'                 => '/forgot-password',
-    'R_ADMIN'                           => '/admin/dashboard',
-    'R_ADMIN_POST_CONFIRM_DELETE'       => '/admin/post/confirm-delete/',
-    'R_ADMIN_POST_DELETE'               => '/admin/post/delete/',
-    'R_ADMIN_POST_UPDATE'               => '/admin/post/update/',
-    'R_ADMIN_POST_NEW'                  => '/admin/post/new',
-    'R_ADMIN_POST_SHOW'                 => '/admin/post/',
-    'R_ADMIN_COMMENT'                   => '/admin/comment',
-    'R_ADMIN_COMMENT_CONFIRM_APPROVE'   => '/admin/comment/confirm-approve/',
-    'R_ADMIN_COMMENT_APPROVE'           => '/admin/comment/approve/',
-    'R_ADMIN_COMMENT_CONFIRM_DELETE'    => '/admin/comment/confirm-delete/',
-    'R_ADMIN_COMMENT_DELETE'            => '/admin/comment/delete/',
-    'R_ADMIN_USER'                      => '/admin/user',
-    'R_ADMIN_USER_CONFIRM_VALIDATE'     => '/admin/user/confirm-validate/',
-    'R_ADMIN_USER_VALIDATE'             => '/admin/user/validate/',
-    'R_ADMIN_USER_CONFIRM_DELETE'       => '/admin/user/confirm-delete/',
-    'R_ADMIN_USER_DELETE'               => '/admin/user/delete/',
-    'R_ADMIN_USER_UPDATE'               => '/admin/user/update/',
-
-// FORM
-    'F_CONTACT'                         => '/contact',
-    'F_COMMENT'                         => '/post/',
-    'F_LOGIN'                           => '/login',
-    'F_REGISTER'                        => '/register',
-    'F_FORGOT_PASSWORD'                 => '/forgot-password',
-    'F_RESET_PASSWORD'                  => '/reset-password',
+//CLIENT
+    'homepage'                  => ['ALL', HomeController::class, ['index']],
+    'contact'                   => ['ALL', HomeController::class, ['index'], ['newContact']],
+    'post'                      => ['ALL', PostController::class, ['show', ['id'], 'index'], ['newComment', ['id']]],
+    'login'                     => ['ALL', SecurityController::class, ['login'], ['authenticate']],
+    'register'                  => ['ALL', SecurityController::class, ['signin'], ['register']],
+    'logout'                    => ['ALL', SecurityController::class, ['logout']],
+    'validate'                  => ['ALL', SecurityController::class, ['validate', ['email', 'token']]],
+    'forgot-password'           => ['ALL', SecurityController::class, ['forgotPassword'], ['emailPassword']],
+    'reset-password'            => ['ALL', SecurityController::class, ['newPassword', ['email', 'token']], ['resetPassword']],
+//ADMIN
+    'dashboard'                 => ['ADMIN', AdminPostController::class, ['index']],
+    'post-confirm-delete'       => ['ADMIN', AdminPostController::class, ['confirmDelete', ['id'], 'index']],
+    'post-delete'               => ['ADMIN', AdminPostController::class, ['index'], ['delete', ['id']]],
+    'post-update'               => ['ADMIN', AdminPostController::class, ['change', ['id'], 'index'], ['update', ['id']]],
+    'post-new'                  => ['ADMIN', AdminPostController::class, ['create'], ['new']],
+    'admin-post'                => ['ADMIN', AdminPostController::class, ['show', ['id'], 'index']],
+    'comment'                   => ['ADMIN', AdminCommentController::class, ['index']],
+    'comment-confirm-approve'   => ['ADMIN', AdminCommentController::class, ['confirmApprove', ['id'], 'index']],
+    'comment-approve'           => ['ADMIN', AdminCommentController::class, ['index', ['id']], ['approve', ['id'], 'index']],
+    'comment-confirm-delete'    => ['ADMIN', AdminCommentController::class, ['confirmDelete', ['id'], 'index']],
+    'comment-delete'            => ['ADMIN', AdminCommentController::class, ['index', ['id']], ['delete', ['id']]],
+//SUPERADMIN
+    'user'                      => ['SUPERADMIN', AdminUserController::class, ['index']],
+    'user-confirm-validate'     => ['SUPERADMIN', AdminUserController::class, ['confirmValidate', ['id'], 'index']],
+    'user-validate'             => ['SUPERADMIN', AdminUserController::class, ['index', ['id']],['validate', ['id']]],
+    'user-confirm-delete'       => ['SUPERADMIN', AdminUserController::class, ['confirmDelete', ['id'], 'index']],
+    'user-delete'               => ['SUPERADMIN', AdminUserController::class, ['index', ['id']], ['delete', ['id']]],
+    'user-update'               => ['SUPERADMIN', AdminUserController::class, ['change', ['id'], 'index'], ['update', ['id']]],
 ];

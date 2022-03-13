@@ -13,28 +13,28 @@ class CommentEntity
     private int $id;
     private string $content;
     private PostEntity $post;
-    private string $author;
+    private string $username;
     private DateTime $createdAt;
     private bool $approved;
 
     private const ERROR_CONTENT = 'Veuillez renseigner un contenu valide';
-    private const ERROR_AUTHOR = 'Veuillez renseigner un nom d\'utilisateur valide';
-    private const ERROR_AUTHOR_LENGTH = 'Veuillez renseigner un nom d\'utilisateur de moins de 50 caractères';
+    private const ERROR_USERNAME = 'Veuillez renseigner un nom d\'utilisateur valide';
+    private const ERROR_USERNAME_LENGTH = 'Veuillez renseigner un nom d\'utilisateur de moins de 50 caractères';
 
     public function getId(): ?int
     {
-        return $this -> id;
+        return $this->id;
     }
 
     public function setId(int $id): self
     {
-        $this -> id = $id;
+        $this->id = $id;
         return $this;
     }
 
     public function getContent(): ?string
     {
-        return $this -> content;
+        return $this->content;
     }
 
     /**
@@ -54,42 +54,42 @@ class CommentEntity
 
     public function getPost(): ?PostEntity
     {
-        return $this -> post;
+        return $this->post;
     }
 
     public function setPost(PostEntity $post): self
     {
-        $this -> post = $post;
+        $this->post = $post;
         return $this;
     }
 
-    public function getAuthor(): ?string
+    public function getUsername(): ?string
     {
-        return $this -> author;
+        return $this->username;
     }
 
     /**
      * @throws Exception
      */
-    public function setAuthor(?string $author): self
+    public function setUsername(?string $username): self
     {
-        if (is_string($author) && !empty($author)) {
-            if (strlen($author) < 20) {
-                $this->author = $author;
+        if (is_string($username) && !empty($username)) {
+            if (strlen($username) < 20) {
+                $this->username = $username;
             } else {
-                throw new Exception(self::ERROR_AUTHOR_LENGTH);
+                throw new Exception(self::ERROR_USERNAME_LENGTH);
             }
         } else {
-            throw new Exception(self::ERROR_AUTHOR);
+            throw new Exception(self::ERROR_USERNAME);
         }
 
-        $this->author = strtolower($author);
+        $this->username = strtolower($username);
         return $this;
     }
 
     public function getCreatedAt(): ?DateTime
     {
-        return $this -> createdAt;
+        return $this->createdAt;
     }
 
     /**
@@ -107,12 +107,12 @@ class CommentEntity
 
     public function isApproved(): bool
     {
-        return $this -> approved;
+        return $this->approved;
     }
 
     public function setApproved(bool $approved): self
     {
-        $this -> approved = $approved;
+        $this->approved = $approved;
         return $this;
     }
 }
