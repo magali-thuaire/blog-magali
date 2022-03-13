@@ -2,9 +2,9 @@ DROP DATABASE IF EXISTS blog_magali ;
 CREATE DATABASE blog_magali;
 CREATE TABLE blog_magali.contact (
                          id INT AUTO_INCREMENT NOT NULL,
-                         message TEXT NOT NULL,
                          name VARCHAR(255) NOT NULL,
                          email VARCHAR(255) NOT NULL,
+                         message TEXT NOT NULL,
                          date DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
                          PRIMARY KEY (id)
 );
@@ -36,8 +36,8 @@ CREATE TABLE blog_magali.post (
                       content TEXT NOT NULL,
                       author INT NOT NULL,
                       published BOOLEAN DEFAULT false NOT NULL,
-                      published_at DATETIME,
                       created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+                      published_at DATETIME,
                       updated_at DATETIME,
                       PRIMARY KEY (id)
 );
@@ -68,8 +68,7 @@ ALTER TABLE blog_magali.comment ADD CONSTRAINT post_comment_fk
 
 set GLOBAL sql_mode = "";
 
-INSERT INTO blog_magali.user (username, email, password, validation_token, created_at, role, user_confirmed, admin_validated) VALUES ('magali', 'magali@thuaire.fr', '$2y$10$/anNHKJvlocJ2UYhY4iRv.DS6LnVkqcFmDoWaHTEAga8dhE2V6v2K', 'validation token', '2022-01-31 09:00:00', 'ROLE_SUPERADMIN', 1, 1);
-INSERT INTO blog_magali.user (username, email, password, validation_token, created_at, role, user_confirmed, admin_validated) VALUES ('magali', 'magali@thuaire.com', '$2y$10$/anNHKJvlocJ2UYhY4iRv.DS6LnVkqcFmDoWaHTEAga8dhE2V6v2K', 'validation token', '2022-01-31 09:00:00', 'ROLE_ADMIN', 1, 0);
+INSERT INTO blog_magali.user (username, email, password, validation_token, created_at, role, user_confirmed, admin_validated) VALUES ('magali', 'blog@magali.fr', '$2y$10$/sWA.Pk0FZLDCCOg6mTNgeBlNCnl6DAMF5qE4K1YuNoqKJmLlQHSy', 'validation token', NOW(), 'ROLE_SUPERADMIN', 1, 1);
 INSERT INTO blog_magali.post (title, header, content, author, published, published_at, created_at, updated_at)
 VALUES
     ('title1', 'Praesent at nulla fringilla nisi iaculis tristique sed et nibh', 'Nullam interdum consequat tortor, ut elementum arcu semper eu. Phasellus scelerisque lacus sit amet orci ullamcorper, eu pretium lacus sodales. Ut blandit arcu lacus, in gravida odio porta quis. Fusce et mollis lorem. Nam viverra fringilla ultricies. Sed ultricies ante et magna fringilla suscipit. Praesent a felis scelerisque, sodales urna nec, laoreet diam. Nunc egestas pharetra nibh. Integer eros neque, tristique eget mattis mattis, interdum et nisi.', 1, true, DATE_ADD(NOW(), INTERVAL -5 MONTH), DATE_ADD(NOW(), INTERVAL -5 MONTH), null),

@@ -1,6 +1,7 @@
 import $ from "jquery";
 import 'datatables.net-bs5';
 import ajaxModal from '../../components/modal/ajax_modal';
+import check from '../../components/check';
 
 $(document).ready(function () {
 
@@ -51,4 +52,7 @@ $(document).ready(function () {
         // Appel AJAX et intégration d'une modale
         ajaxModal(target, 'user-modal');
     });
+
+    check('user-validated');
+
 });

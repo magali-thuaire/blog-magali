@@ -28,10 +28,6 @@ and then run:
 composer install
 ```
 
-```bash
-tree -I 'node_modules|vendor'
-```
-
 **Database Setup**
 
 Open your MySQL database manager and execute the *MySQL script* to build the database :
@@ -58,3 +54,20 @@ installed and then run:
 yarn install
 yarn dev --watch
 ```
+
+## Structure
+```
+.
+├── _config
+├── app
+├── assets
+├── core
+├── public
+├── README.md
+├── composer.json
+├── composer.lock
+├── package.json
+├── webpack.config.js
+└── yarn.lock
+```
+

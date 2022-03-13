@@ -1,6 +1,7 @@
 import $ from "jquery";
 import 'datatables.net-bs5';
 import ajaxModal from '../../components/modal/ajax_modal';
+import check from "../../components/check";
 
 $(document).ready(function () {
 
@@ -52,16 +53,6 @@ $(document).ready(function () {
         ajaxModal(target, 'post-modal');
     });
 
-    $('#post-published').on('click', function () {
-        let target = this;
-        let isPublished = $(target).is(':checked');
+    check('post-published');
 
-        if (isPublished) {
-            $('.post-published.bg-success').removeClass('d-none');
-            $('.post-published.bg-warning').addClass('d-none');
-        } else {
-            $('.post-published.bg-warning').removeClass('d-none');
-            $('.post-published.bg-success').addClass('d-none');
-        }
-    });
 });
