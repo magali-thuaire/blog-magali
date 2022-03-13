@@ -33,7 +33,7 @@ class AdminUserController extends AppController
      * @throws LoaderError
      * @throws Exception
      */
-    public function confirmValidate(int $id)
+    public function confirmValidate(int $id): bool|string
     {
         $user = $this->userManager->findOneById($id, $this->getUser());
         $form = $this->initForm('user-validate');
@@ -80,7 +80,7 @@ class AdminUserController extends AppController
      * @throws LoaderError
      * @throws Exception
      */
-    public function confirmDelete(int $id)
+    public function confirmDelete(int $id): bool|string
     {
         $form = $this->initForm('user-delete');
 

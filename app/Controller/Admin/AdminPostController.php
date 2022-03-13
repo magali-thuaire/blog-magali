@@ -54,7 +54,7 @@ class AdminPostController extends AppController
      * @throws LoaderError
      * @throws Exception
      */
-    public function confirmDelete(int $id)
+    public function confirmDelete(int $id): bool|string
     {
         $post = $this->postManager->findOneById($id);
         $form = $this->initForm('post-delete');

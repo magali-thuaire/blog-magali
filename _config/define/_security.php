@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'ADMIN'                                 => 'ROLE_SUPERADMIN, ROLE_ADMIN',
+    'SUPERADMIN'                            => 'ROLE_SUPERADMIN',
     'INVALID_CSRF_TOKEN'                    => 'CSRF token invalide',
     'INVALID_CREDENTIALS'                   => 'Identifiants invalides',
     'USER_ERROR'                            => 'Veuillez renseigner un %s valide',

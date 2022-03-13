@@ -19,11 +19,10 @@ class HomeController extends AppController
      * @throws LoaderError
      * @throws Exception
      */
-    public function index()
+    public function index(): bool|string
     {
         // Initialisation du formulaire
         $form = $this->initForm('contact');
-
         // Affichage de la vue
         return $this->render('homepage/index.twig', [
             'form' => $form
@@ -34,7 +33,7 @@ class HomeController extends AppController
      * Validation du formulaire depuis appel AJAX
      * @throws Exception
      */
-    public function newContact()
+    public function newContact(): bool|string
     {
         $form = $this->createForm('contact');
 

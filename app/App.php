@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Security\Security;
 use Core\Config;
 use Core\Database\MysqlDatabase;
 use Core\Manager\EntityManager;
 use Core\Renderer\TwigRenderer;
-use Core\Service\Session;
+use Core\Service\Request;
+use Core\Service\Router;
 use stdClass;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -19,6 +21,7 @@ class App
     private $renderer;
     public static $config;
     public static $render_config;
+    public static Router $router;
 
     public static function getInstance(): App
     {
@@ -54,7 +57,7 @@ class App
     public function getRenderer(): TwigRenderer
     {
         if ($this->renderer === null) {
-            $this->renderer = new TwigRenderer(self::$config['VIEWS']);
+            $this->renderer = new TwigRenderer(self::$config['VIEWS'], self::request());
         }
         return $this->renderer;
     }
@@ -65,7 +68,7 @@ class App
         $scandir = scandir($prefix = '../_config/define');
 
         foreach ($scandir as $define) {
-            if (!in_array($define, ['.', '..'])) {
+            if (!in_array($define, ['.', '..', '_route.php'])) {
                 $const[] = require_once $prefix . '/' . $define;
             }
         }
@@ -82,31 +85,44 @@ class App
             }, array_keys($array), $array);
         }
 
+        $routes = require_once '../_config/define/_route.php';
+        App::$config['ROUTES'] = $routes;
+
         self::$render_config = [
-            'config'            => App::$config
+            'config'            => App::$config,
         ];
     }
 
     public static function load()
     {
+        self::$config['ROOT'] = dirname(__DIR__);
+
         /**
          * Chargement des fichiers de configuration
          */
-        App::getInstance()->setConfig();
+        self::getInstance()->setConfig();
 
         /**
-         * Chargement des autoloaders
+         * Chargement de l'autoloader
          */
         require_once self::$config['ROOT'] . '/vendor/autoload.php';
 
+        /**
+         * Chargement de la session
+         */
         session_start();
 
-        if (Session::get('user-created')) {
-            if (time() - Session::get('user-created') > 1800) {
-                Session::unset('user');
-                Session::unset('user-created');
+        if (App::request()->get('session', 'user-created')) {
+            if (time() - App::request()->get('session', 'user-created') > 1800) {
+                App::request()->unset('user-created');
+                App::request()->unset('user');
             }
         }
+
+        /**
+         * Chargement du routeur
+         */
+        self::$router = new Router(App::$config, Security::getUser());
     }
 
     /**
@@ -114,7 +130,7 @@ class App
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function notFound()
+    public function notFound(): bool|string
     {
         header('HTTP/1.0 404');
         return $this->getRenderer()->render('/security/404.twig', App::$render_config);
@@ -125,9 +141,14 @@ class App
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function forbidden()
+    public function forbidden(): bool|string
     {
         header('HTTP/1.0 403');
         return $this->getRenderer()->render('/security/403.twig', App::$render_config);
+    }
+
+    public static function request(): Request
+    {
+        return new Request();
     }
 }

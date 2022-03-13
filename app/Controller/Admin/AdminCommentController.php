@@ -33,7 +33,7 @@ class AdminCommentController extends AppController
      * @throws LoaderError
      * @throws Exception
      */
-    public function confirmApprove(int $id)
+    public function confirmApprove(int $id): bool|string
     {
         $comment = $this->commentManager->findOneUnapprovedByIdIfIsGranted($id, $this->getUser());
         $form = $this->initForm('comment-approve');
@@ -80,7 +80,7 @@ class AdminCommentController extends AppController
      * @throws LoaderError
      * @throws Exception
      */
-    public function confirmDelete(int $id)
+    public function confirmDelete(int $id): bool|string
     {
         $form = $this->initForm('comment-delete');
 

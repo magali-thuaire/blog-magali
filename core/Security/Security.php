@@ -7,8 +7,11 @@ use JetBrains\PhpStorm\Pure;
 class Security
 {
     // Fonction de nettoyage d'une valeur
-    public static function checkInput(string $data): ?string
+    public static function checkInput(?string $data): ?string
     {
+        if (!$data) {
+            return $data;
+        }
         return strip_tags(stripslashes(trim($data)));
     }
 

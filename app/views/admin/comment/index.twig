@@ -23,7 +23,7 @@
                         <td>
                             {{ comment.createdAt|format_datetime('short', 'none', locale='fr') }}
                         </td>
-                        <td>{{ comment.author }}</td>
+                        <td>{{ comment.username }}</td>
                         <td>{{ comment.content|truncate(30, ' ...') }}</td>
                         <td>
                             <a href="{{ config['R_ADMIN_POST_SHOW'] ~ comment.post.id }}" class="btn btn-sm btn-show" data-bs-toggle="tooltip" data-placement="top" title="Voir">

@@ -54,7 +54,7 @@ trait CommentTrait
         // Création du commentaire
         $commentData = [
             'id'                => $data->commentId,
-            'author'            => $data->author,
+            'username'          => $data->username,
             'content'           => $data->content,
             'createdAt'         => $data->createdAt,
         ];

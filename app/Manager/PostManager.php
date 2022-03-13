@@ -17,6 +17,7 @@ class PostManager extends EntityManager
 
     /**
      * Retourne tous les articles publiés, ordonné du plus récent au plus ancien
+     * @throws Exception
      */
     public function findAllPublishedOrderedByNewest(): ?array
     {
@@ -28,6 +29,7 @@ class PostManager extends EntityManager
 
     /**
      * Retourne un unique article identifié à partir de son id, avec ses commentaires approuvés
+     * @throws Exception
      */
     public function findOneByIdWithCommentsApproved(int $id): ?PostEntity
     {
@@ -89,6 +91,7 @@ class PostManager extends EntityManager
 
     /**
      * Retourne tous les articles d'un auteur, ordonné du plus récent au plus ancien
+     * @throws Exception
      */
     public function findAllOrderedByNewest(UserEntity $user): ?array
     {
@@ -269,7 +272,7 @@ class PostManager extends EntityManager
     private function getOneByIdWithComments(): QueryBuilder
     {
         return $this->getAll()
-                    ->addSelect('c.id as commentId', 'c.content as commentContent', 'c.created_at as commentCreatedAt', 'c.author as commentAuthor', 'c.approved')
+                    ->addSelect('c.id as commentId', 'c.content as commentContent', 'c.created_at as commentCreatedAt', 'c.username as commentUsername', 'c.approved')
                     ->leftJoin('comment', 'c', 'c.post = p.id')
                     ->orderBy('c.created_at', 'DESC')
                     ->andWhere('p.id = :id')
@@ -282,7 +285,7 @@ class PostManager extends EntityManager
     private function getOneByIdWithCommentsApproved(): QueryBuilder
     {
         return $this->getOnePublishedById()
-            ->addSelect('c.id as commentId, c.content as commentContent, c.created_at as commentCreatedAt, c.author as commentAuthor')
+            ->addSelect('c.id as commentId, c.content as commentContent, c.created_at as commentCreatedAt, c.username as commentUsername')
             ->leftJoin('comment', 'c', 'c.post = p.id', 'c.approved IS TRUE')
             ->orderBy('c.created_at', 'DESC')
         ;

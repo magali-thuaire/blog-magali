@@ -3,7 +3,7 @@
         <div class="modal-content">
             <form action="{{ form.action }}" method="POST" class="d-inline-block" >
                 <div class="modal-header text-uppercase font-weight-bold">
-                    {{ comment.author }} - {{ comment.createdAt | date('d/m/Y') }} : {{ comment.post.title }}
+                    {{ comment.username }} - {{ comment.createdAt | date('d/m/Y') }} : {{ comment.post.title }}
                 </div>
                 <div class="modal-body text-center text-warning fw-bold p-4">
                     <p class="text-muted">{{ comment.content }}</p>

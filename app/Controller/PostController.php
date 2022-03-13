@@ -18,7 +18,7 @@ class PostController extends AppController
      * @throws RuntimeError
      * @throws LoaderError
      */
-    public function index()
+    public function index(): bool|string
     {
         /** @var PostEntity[]|null $posts */
         $posts = $this->postManager->findAllPublishedOrderedByNewest();
@@ -46,7 +46,7 @@ class PostController extends AppController
         $form = $this->initForm('comment');
 
         if ($this->getUser()) {
-            $form->author = $this->getUser();
+            $form->username = $this->getUser();
         }
 
         $this->render('post/show.twig', [
@@ -59,7 +59,7 @@ class PostController extends AppController
      * Demande l'ajout d'un commentaire
      * @throws Exception
      */
-    public function newComment(int $id)
+    public function newComment(int $id): bool|string
     {
         $form = $this->createForm('comment');
 

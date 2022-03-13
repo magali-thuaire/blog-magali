@@ -117,12 +117,12 @@ trait PostTrait
     {
         foreach ($postData as $data) {
             // Si l'article dispose de commentaires
-            if ($data->commentAuthor) {
+            if ($data->commentUsername) {
                 $commentData = [
                     'id'        => $data->commentId,
                     'content'   => $data->commentContent,
                     'createdAt' => $data->commentCreatedAt,
-                    'author'    => $data->commentAuthor,
+                    'username'  => $data->commentUsername,
                     'approved'  => (property_exists($data, 'approved')) ? $data->approved : false
                 ];
 

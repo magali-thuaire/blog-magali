@@ -2,8 +2,8 @@
     <div class="container blog-post-comment__container">
         <div class="row align-items-center">
             <div class="col-12 col-md-2 text-md-center blog-post-comment__aside">
-                <p class="text-capitalize mb-0"><strong>--{{ comment.author }}</strong></p>
-                <p>le {{ comment.createddAt|format_datetime('long', 'none', locale='fr') }}</p>
+                <p class="text-capitalize mb-0"><strong>--{{ comment.username }}</strong></p>
+                <p>le {{ comment.createdAt|format_datetime('long', 'none', locale='fr') }}</p>
                 {% if admin == true %}
                     {% if comment.approved == true %}
                         <p class="text-decoration-none badge bg-success mb-0">approuvé</p>

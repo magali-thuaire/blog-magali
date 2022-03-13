@@ -47,7 +47,7 @@ CREATE TABLE blog_magali.comment (
                          id INT AUTO_INCREMENT NOT NULL,
                          content TEXT NOT NULL,
                          post INT NOT NULL,
-                         author VARCHAR(50) NOT NULL,
+                         username VARCHAR(50) NOT NULL,
                          created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL ,
                          approved BOOLEAN DEFAULT false NOT NULL,
                          PRIMARY KEY (id)
@@ -68,7 +68,10 @@ ALTER TABLE blog_magali.comment ADD CONSTRAINT post_comment_fk
 
 set GLOBAL sql_mode = "";
 
-INSERT INTO blog_magali.user (username, email, password, validation_token, created_at, role, user_confirmed, admin_validated) VALUES ('magali', 'blog@magali.fr', '$2y$10$/sWA.Pk0FZLDCCOg6mTNgeBlNCnl6DAMF5qE4K1YuNoqKJmLlQHSy', 'validation token', NOW(), 'ROLE_SUPERADMIN', 1, 1);
+INSERT INTO blog_magali.user (username, email, password, validation_token, created_at, role, user_confirmed, admin_validated)
+VALUES
+       ('magali', 'superadmin@blog.fr', '$2y$10$UulyDq77YoY.ybMQdabGBeB8.JppgbMULf2twcT2mjPaBRsmmxgha', 'validationtoken', NOW(), 'ROLE_SUPERADMIN', 1, 1),
+       ('magali', 'admin@blog.fr', '$2y$10$UulyDq77YoY.ybMQdabGBeB8.JppgbMULf2twcT2mjPaBRsmmxgha', 'validationtoken', NOW(), 'ROLE_USER', 1, 0);
 INSERT INTO blog_magali.post (title, header, content, author, published, published_at, created_at, updated_at)
 VALUES
     ('title1', 'Praesent at nulla fringilla nisi iaculis tristique sed et nibh', 'Nullam interdum consequat tortor, ut elementum arcu semper eu. Phasellus scelerisque lacus sit amet orci ullamcorper, eu pretium lacus sodales. Ut blandit arcu lacus, in gravida odio porta quis. Fusce et mollis lorem. Nam viverra fringilla ultricies. Sed ultricies ante et magna fringilla suscipit. Praesent a felis scelerisque, sodales urna nec, laoreet diam. Nunc egestas pharetra nibh. Integer eros neque, tristique eget mattis mattis, interdum et nisi.', 1, true, DATE_ADD(NOW(), INTERVAL -5 MONTH), DATE_ADD(NOW(), INTERVAL -5 MONTH), null),
@@ -78,12 +81,12 @@ VALUES
     ('title5', 'Nulla pretium, enim non tristique pellentesque', 'Vestibulum libero lacus, scelerisque pellentesque tortor sit amet, consectetur efficitur velit. Quisque turpis massa, eleifend id lorem eu, sodales iaculis elit. Praesent sed ipsum eget erat tempus viverra. Pellentesque in metus feugiat, tempus tortor sit amet, viverra orci. Duis eleifend elit a nibh cursus, sit amet laoreet lectus bibendum. Duis ultricies blandit dui, vitae vehicula erat eleifend vel. Vivamus ac quam ultricies, feugiat nibh id, semper urna. Sed consectetur molestie sem vehicula vestibulum. Donec et metus ex. Sed tincidunt sem ac massa scelerisque congue.', 1, true, DATE_ADD(NOW(), INTERVAL -1 MONTH), DATE_ADD(NOW(), INTERVAL -1 MONTH), DATE_ADD(NOW(), INTERVAL -1 MONTH)),
     ('title6', 'Lorem ipsum dolor sit amet', 'Curabitur non metus sagittis, feugiat ipsum at, hendrerit velit. Integer sem augue, lobortis sit amet elit a, dictum maximus libero. Duis eu ligula facilisis, ultricies libero ac, semper mi. Duis aliquet luctus velit, et laoreet ligula bibendum commodo. Donec consectetur interdum tellus nec fermentum. Maecenas non turpis laoreet, tempus quam mollis, elementum lacus. Aenean nec pretium nulla, et porttitor ex. Duis sit amet neque augue. Donec nec leo turpis. Duis id risus lobortis, aliquet dolor consequat, volutpat purus.', 1, true, DATE_ADD(NOW(), INTERVAL -1 DAY), DATE_ADD(NOW(), INTERVAL -1 DAY), null)
 ;
-INSERT INTO blog_magali.comment (content, post, author, created_at, approved)
+INSERT INTO blog_magali.comment (content, post, username, created_at, approved)
 VALUES
     ('Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid assumenda aut culpa cupiditate est nam
     perspiciatis reiciendis rem sed voluptatibus! Amet architecto, aut autem cum facere officia quis reiciendis
-    voluptatem?', 1, 'olivier', '2022-02-08 09:00:00', true),
-    ('Aliquid commodi, distinctio dolorum eaque eius illo impedit, ipsam mollitia, nulla perferendis placeat qui!', 1, 'charlotte', '2022-02-08 09:00:00', true),
-    ('Perspiciatis sit suscipit tempore velit voluptatibus! Corporis dolorum facilis quas soluta voluptas voluptatem.', 6, 'alexine', '2022-02-08 09:00:00', false),
-    ('Assumenda at culpa delectus et facilis molestias officia provident saepe tenetur?', 6, 'alexine', '2022-02-08 09:00:00', true)
+    voluptatem?', 1, 'olivier', DATE_ADD(NOW(), INTERVAL 1 DAY), true),
+    ('Aliquid commodi, distinctio dolorum eaque eius illo impedit, ipsam mollitia, nulla perferendis placeat qui!', 1, 'charlotte', DATE_ADD(NOW(), INTERVAL 2 DAY), true),
+    ('Perspiciatis sit suscipit tempore velit voluptatibus! Corporis dolorum facilis quas soluta voluptas voluptatem.', 6, 'alexine', DATE_ADD(NOW(), INTERVAL 3 DAY), false),
+    ('Assumenda at culpa delectus et facilis molestias officia provident saepe tenetur?', 6, 'alexine', DATE_ADD(NOW(), INTERVAL 4 DAY), true)
 ;
