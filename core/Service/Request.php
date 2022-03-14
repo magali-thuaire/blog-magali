@@ -29,7 +29,7 @@ class Request
     public function set($key, $value)
     {
         $_SESSION[$key] = $value;
-        $this->request['session'][$key] = $_SESSION[$key];
+        $this->request['session'][$key] = $value;
     }
 
     public function unset($key)

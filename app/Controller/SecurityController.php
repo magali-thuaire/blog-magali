@@ -143,7 +143,7 @@ class SecurityController extends AppController
         }
 
         $this->request->set('messages', $messages);
-        $this->login();
+        header('Location: ' . App::$config['R_LOGIN']);
     }
 
     /**
@@ -226,8 +226,8 @@ class SecurityController extends AppController
 
         if ($form->getError()) {
             $messages = ['error' => $form->getError()];
-            App::request()->set('messages', $messages);
-            $this->login();
+            $this->request->set('messages', $messages);
+            header('Location: ' . App::$config['R_LOGIN']);
         }
 
         // Affichage de la vue
@@ -261,8 +261,8 @@ class SecurityController extends AppController
 
         if (!$form->getError()) {
             $messages = ['success' => App::$config['USER_PASSWORD_CHANGED']];
-            App::request()->set('messages', $messages);
-            $this->login();
+            $this->request->set('messages', $messages);
+            header('Location: ' . App::$config['R_LOGIN']);
         }
 
         // Affichage de la vue

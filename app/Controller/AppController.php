@@ -60,14 +60,14 @@ class AppController
      */
     protected function initForm(string $tokenKey, bool $tokenInitialize = true): FormModel
     {
+        
         if ($tokenInitialize) {
             $this->request->set($tokenKey, uniqid(rand(), true));
         }
 
-        $messages = $this->request->get('session', 'messages') ?? [];
-        $this->request->unset('messages');
+        $form = new FormModel($this->request, $tokenKey);
 
-        return new FormModel($this->request, $tokenKey, $messages);
+        return $form;
     }
 
     /**
