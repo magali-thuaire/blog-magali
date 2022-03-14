@@ -19,10 +19,12 @@ class FormModel
     /**
      * @throws Exception
      */
-    public function __construct(Request $request, string $keyToken = null, array $messages = [])
+    public function __construct(Request $request, string $keyToken = null)
     {
         $csrfToken = new CsrfToken($keyToken, $request->get('session', $keyToken));
         $this->setCsrfToken($csrfToken);
+        $messages =  $request->get('session', 'messages') ?? [];
+        $request->unset('messages');
 
         if (!empty($messages)) {
             if (array_key_exists('success', $messages)) {
