@@ -1,4 +1,5 @@
-# Blog Professionnel PHP
+# Blog Magali
+*Blog Professionnel PHP (POO et Design Patterns)*
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/17359770e1184cfab6bf0ff01b210f21)](https://www.codacy.com/gh/magali-thuaire/blog-magali/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=magali-thuaire/blog-magali&amp;utm_campaign=Badge_Grade)
 
