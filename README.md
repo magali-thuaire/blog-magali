@@ -1,6 +1,13 @@
-# Blog de Magali
+# Blog Professionnel PHP
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/17359770e1184cfab6bf0ff01b210f21)](https://www.codacy.com/gh/magali-thuaire/blog-magali/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=magali-thuaire/blog-magali&amp;utm_campaign=Badge_Grade)
+
+## Compétences
+
+-	Conceptualiser l'ensemble de son application en décrivant sa structure (Entités / Domain Objects)
+-	Créer et maintenir l’architecture technique d’un site
+-	Proposer un code propre et facilement évolutif 
+-	Assurer le suivi qualité́ d’un projet
 
 ## Setup
 
